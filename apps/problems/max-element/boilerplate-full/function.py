@@ -2,7 +2,7 @@
 import sys
   
 ##USER_CODE_HERE##
-
+  
 def main():
     input = sys.stdin.read().split()
     size_arr = int(input.pop(0))

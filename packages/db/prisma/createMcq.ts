@@ -6,17 +6,17 @@ import prismaClient from "../src";
 async function main() {
   const newMCQ = await prismaClient.mCQProblem.create({
     data: {
-      question: "What is the capital of France?",
+      question: "What is the primary purpose of the Transmission Control Protocol (TCP) in the TCP/IP model?",
       description: "Choose the correct option.",
       category: "Geographhy",
       hidden: false,
       difficulty: "HARD",
       options: {
         create: [
-          { optionText: "Something", isCorrect: true, description: "The capital of France." },
-          { optionText: "may be it is", isCorrect: false, description: "The capital of England." },
-          { optionText: "I dont know", isCorrect: false, description: "The capital of Germany." },
-          { optionText: "Are u okay", isCorrect: false , description: "The capital of Spain." },
+          { optionText: "To provide a connectionless data transfer service", isCorrect: true, description: "The capital of France." },
+          { optionText: "To resolve domain names to IP addresses", isCorrect: false, description: "The capital of England." },
+          { optionText: "To ensure reliable and ordered delivery of data", isCorrect: false, description: "The capital of Germany." },
+          { optionText: "To handle routing of data packets across networks", isCorrect: false , description: "The capital of Spain." },
         ],
       },
     },

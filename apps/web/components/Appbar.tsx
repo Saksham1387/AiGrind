@@ -3,12 +3,13 @@ import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { signIn } from "next-auth/react";
 import { Button } from "@repo/ui/button";
-import { CodeIcon } from "./Icon";
 import { ModeToggle } from "./ModeToggle";
+import { use, useEffect, useState } from "react";
+import Image from 'next/image'
+
 export function Appbar() {
   const { data: session, status: sessionStatus } = useSession();
   const isLoading = sessionStatus === "loading";
-
   return (
     <header className="bg-neutral-800 text-white px-4 md:px-6 py-3 flex items-center justify-between">
       <Link href="/" className="flex items-center gap-2" prefetch={false}>
@@ -26,8 +27,10 @@ export function Appbar() {
           MCQs
         </Link>
       </nav>
+
       {!isLoading && session?.user && (
         <div className="flex items-center gap-4">
+          <Streak userId={session?.user.id}></Streak>
           <ModeToggle />
           <Button onClick={() => signOut()}>Logout</Button>
         </div>
@@ -38,10 +41,52 @@ export function Appbar() {
         <ModeToggle />
         <Button onClick={() => signIn()}>Sign in</Button>
         </div>
-      
       )}
 
       {isLoading && <div className="flex items-center gap-4"></div>}
+
     </header>
   );
+}
+
+
+function Streak({ userId }: { userId: string }) {
+  const [count, setCount] = useState(0)
+  useEffect(()=>{
+    const fetchStreak = async () => {
+      try {
+        const res = await fetch("/api/streak", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({userId}),
+        });
+        if (!res.ok) {
+          throw new Error(`HTTP error! Status: ${res.status}`);
+        }
+        const data = await res.json();
+        if (data && data.streak && data.streak.currentStreak !== undefined) {
+          setCount(data.streak.currentStreak);
+        } else {
+          console.error("Invalid data structure:", data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch streak:", error);
+      }
+    };
+    fetchStreak();
+  },[userId])
+  return(
+    <div className="flex flex-row mr-5 ">
+      <Button className="bg-black hover:bg-transparent">
+        <div>
+          <p className="text-xl mt-1 mr-3 text-white">{count}</p>
+        </div>
+        <div>
+          <Image src="/streak.gif" alt="streak" width={20} height={20} className=""/>
+        </div>
+      </Button>
+    </div>
+  )
 }

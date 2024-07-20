@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { db } from "../../../db"; 
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../lib/auth";
+import { updateStreak } from '../../../db/updateStreak';
 
 
 export async function GET(request: Request) {
@@ -76,6 +77,7 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'No correct option found' }, { status: 500 });
       }
 
+      console.log("Selected Option ID: ", selectedOptionId)
       const isCorrect = selectedOptionId === correctOption.id;
 
       await db.mCQSubmission.create({
@@ -88,14 +90,16 @@ export async function POST(request: Request) {
       });
 
       if(isCorrect){
+        console.log("Incrementing solved count")
         await db.mCQProblem.update({
           where: { id: mcqId },
           data: {
             solved: {
               increment: 1,
-            },
-          },
-      })}
+            }}})
+            
+        await updateStreak(userId);
+      }
 
       return NextResponse.json({
         isCorrect,

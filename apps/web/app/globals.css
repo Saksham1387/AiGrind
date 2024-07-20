@@ -2,6 +2,18 @@
   @tailwind components;
   @tailwind utilities;
 
+  .day-streak::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 5px;
+    height: 5px;
+    background-color: red; /* Or any color you prefer */
+    border-radius: 50%;
+  }
+  
   @layer base {
     :root {
       --chart-1: 12 76% 61%;

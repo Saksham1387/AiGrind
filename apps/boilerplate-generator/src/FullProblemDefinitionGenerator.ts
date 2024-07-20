@@ -232,6 +232,8 @@ fn main() -> io::Result<()> {
 `;
   }
 
+  
+
   generatePython(): string {
     const inputs = this.inputFields
       .map((field) => `${field.name}: ${this.mapTypeToPython(field.type)}`)
@@ -263,6 +265,42 @@ if __name__ == "__main__":
     main()
   `;
 }
+
+// generatePython() {
+//   const inputs = this.inputFields
+//     .map((field) => `${field.name}: ${this.mapTypeToPython(field.type)}`)
+//     .join(", ");
+//   const inputReads = this.inputFields
+//     .map((field) => {
+//       if (field.type.startsWith("list<")) {
+//         return `size_${field.name} = int(input.pop(0))\n    ${field.name} = [int(x) for x in input[:size_${field.name}]]\n    input = input[size_${field.name}:]`;
+//       } else {
+//         return `${field.name} = int(input.pop(0))`;
+//       }
+//     })
+//     .join("\n    ");
+//   const functionCall = `result = ${this.functionName}(${this.inputFields.map((field) => field.name).join(", ")})`;
+//   const outputWrite = `print(result)`;
+
+//   return `
+// import sys
+
+// ##USER_CODE_HERE##
+
+// def main():
+//   input = sys.stdin.read().strip().split()
+//   print("Input:", input)  # Debugging statement
+//   ${inputReads}
+//   print("Processed inputs:")  # Debugging statement
+//   ${this.inputFields.map((field) => `print("${field.name}:", ${field.name})`).join("\n    ")}
+//   ${functionCall}
+//   ${outputWrite}
+
+// if __name__ == "__main__":
+//   main()
+// `;
+// }
+
 
   mapTypeToPython(type: string): string {
     switch (type) {

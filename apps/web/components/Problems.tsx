@@ -1,3 +1,4 @@
+"use client"
 import {
   Table,
   TableHeader,
@@ -7,8 +8,30 @@ import {
   TableCell,
 } from "@repo/ui/table";
 import { getColor, getProblems } from "../app/db/problem";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import SkeletonTable from './skeletons/problems';
+
+export interface Problem {
+  id: string;
+  title: string;
+  difficulty: string;
+  solved: number;
+}
 
 const Problems = () => {
+  const [Problems, setProblems] = useState<Problem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProblems = async () => {
+      const problems = await fetch('/api/submission/all').then(res => res.json());
+      setProblems(problems);
+      setLoading(false);
+    };
+    fetchProblems();
+  }, []);
+
   return (
     <section className="bg-white dark:bg-gray-900 py-8 md:py-12 min-h-screen">
       <div className="container mx-auto px-4 md:px-6">
@@ -19,15 +42,19 @@ const Problems = () => {
           </p>
         </div>
         <div className="">
-        <ProblemCard/>
+       {loading ? <SkeletonTable /> : <ProblemCard problems={Problems} />}
       </div>
       </div>
     </section>
   );
 };
 
-async function ProblemCard() {
-  const problems = await getProblems();
+function ProblemCard({problems}:any) {
+
+  const router = useRouter();
+  const handleRoute = (id:any) => {
+    router.push(`/problem/${id}`);
+  };
   return (
     <div className="">
       <Table>
@@ -40,9 +67,11 @@ async function ProblemCard() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {problems.map((problem, index) => (
+          {problems.map((problem:any, index:any) => (
             
-              <TableRow className="hover:bg-gray-100">
+              <TableRow className="hover:bg-gray-100 hover:cursor-pointer"
+              onClick={()=>{handleRoute(problem.id)}}
+              >
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{problem.title}</TableCell>
                 <TableCell className={getColor(problem.difficulty)}>{problem.difficulty}</TableCell>

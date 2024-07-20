@@ -1,23 +1,18 @@
 "use client"
-
-import { TrendingUp } from "lucide-react"
 import { Pie, PieChart } from "recharts"
-
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
-} from "../../../packages/ui/src/@/components/ui/card"
+} from "../../../../packages/ui/src/@/components/ui/card"
 import {
   ChartConfig,
   ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "../../../packages/ui/src/@/components/ui/chart"
-
+  ChartLegend,
+  ChartLegendContent,
+} from "../../../../packages/ui/src/@/components/ui/chart"
 const chartData = [
   { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
   { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
@@ -54,30 +49,26 @@ const chartConfig = {
 
 export function Piechart() {
   return (
-    <Card className="flex flex-col">
+    <Card className="flex flex-col h-[400px] w-[300px]">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Pie Chart - Label</CardTitle>
+        <CardTitle>Pie Chart - Legend</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px] pb-0 [&_.recharts-pie-label-text]:fill-foreground"
+          className="mx-auto aspect-square max-h-[300px]"
         >
           <PieChart>
-            <ChartTooltip content={<ChartTooltipContent hideLabel />} />
-            <Pie data={chartData} dataKey="visitors" label nameKey="browser" />
+            <Pie data={chartData} dataKey="visitors" />
+            <ChartLegend
+              content={<ChartLegendContent nameKey="browser" />}
+              className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center"
+            />
           </PieChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
-        </div>
-      </CardFooter>
     </Card>
   )
 }
+
