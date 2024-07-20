@@ -11,6 +11,7 @@ CREATE TYPE "Difficulty" AS ENUM ('EASY', 'MEDIUM', 'HARD');
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
+    "username" TEXT,
     "name" TEXT,
     "token" TEXT,
     "password" TEXT NOT NULL,
@@ -127,6 +128,57 @@ CREATE TABLE "ContestPoints" (
 );
 
 -- CreateTable
+CREATE TABLE "MCQProblem" (
+    "id" TEXT NOT NULL,
+    "question" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "hidden" BOOLEAN NOT NULL DEFAULT true,
+    "category" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "solved" INTEGER NOT NULL DEFAULT 0,
+    "difficulty" "Difficulty" NOT NULL,
+
+    CONSTRAINT "MCQProblem_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "MCQOption" (
+    "id" TEXT NOT NULL,
+    "optionText" TEXT NOT NULL,
+    "isCorrect" BOOLEAN NOT NULL,
+    "description" TEXT NOT NULL,
+    "mcqProblemId" TEXT NOT NULL,
+
+    CONSTRAINT "MCQOption_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "MCQSubmission" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "mcqProblemId" TEXT NOT NULL,
+    "selectedOptionId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "result" TEXT NOT NULL,
+
+    CONSTRAINT "MCQSubmission_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ContestMCQProblem" (
+    "id" TEXT NOT NULL,
+    "contestId" TEXT NOT NULL,
+    "mcqProblemId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "index" INTEGER NOT NULL,
+    "solved" INTEGER NOT NULL DEFAULT 0,
+
+    CONSTRAINT "ContestMCQProblem_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "ar_internal_metadata" (
     "key" VARCHAR NOT NULL,
     "value" VARCHAR,
@@ -222,6 +274,9 @@ CREATE UNIQUE INDEX "ContestSubmission_userId_problemId_contestId_key" ON "Conte
 CREATE UNIQUE INDEX "ContestPoints_contestId_userId_key" ON "ContestPoints"("contestId", "userId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "ContestMCQProblem_contestId_mcqProblemId_key" ON "ContestMCQProblem"("contestId", "mcqProblemId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "submissions_token_key" ON "submissions"("token");
 
 -- CreateIndex
@@ -259,6 +314,24 @@ ALTER TABLE "ContestSubmission" ADD CONSTRAINT "ContestSubmission_contestId_fkey
 
 -- AddForeignKey
 ALTER TABLE "ContestPoints" ADD CONSTRAINT "ContestPoints_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "MCQOption" ADD CONSTRAINT "MCQOption_mcqProblemId_fkey" FOREIGN KEY ("mcqProblemId") REFERENCES "MCQProblem"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "MCQSubmission" ADD CONSTRAINT "MCQSubmission_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "MCQSubmission" ADD CONSTRAINT "MCQSubmission_mcqProblemId_fkey" FOREIGN KEY ("mcqProblemId") REFERENCES "MCQProblem"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "MCQSubmission" ADD CONSTRAINT "MCQSubmission_selectedOptionId_fkey" FOREIGN KEY ("selectedOptionId") REFERENCES "MCQOption"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ContestMCQProblem" ADD CONSTRAINT "ContestMCQProblem_contestId_fkey" FOREIGN KEY ("contestId") REFERENCES "Contest"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ContestMCQProblem" ADD CONSTRAINT "ContestMCQProblem_mcqProblemId_fkey" FOREIGN KEY ("mcqProblemId") REFERENCES "MCQProblem"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "submissions" ADD CONSTRAINT "submissions_submissionId_fkey" FOREIGN KEY ("submissionId") REFERENCES "Submission"("id") ON DELETE SET NULL ON UPDATE CASCADE;

@@ -5,6 +5,7 @@ import { authOptions } from "../../../lib/auth";
 
 export async function GET(req: NextRequest,request: Request) {
   const session = await getServerSession(authOptions);
+  console.log(session);
   if (!session?.user) {
     return NextResponse.json(
       {

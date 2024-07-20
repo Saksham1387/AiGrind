@@ -5,6 +5,8 @@ import { NextAuthOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import { JWTPayload, SignJWT, importJWK } from "jose";
 import { Session } from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+import GitHubProvider from "next-auth/providers/github";
 
 interface token extends JWT {
   uid: string;
@@ -42,6 +44,14 @@ const generateJWT = async (payload: JWTPayload) => {
 
 export const authOptions = {
   providers: [
+    GitHubProvider({
+      clientId: process.env.GITHUB_ID || "",
+      clientSecret: process.env.GITHUB_SECRET || ""
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID || "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || ""
+    }),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -68,6 +78,7 @@ export const authOptions = {
         });
 
         if (userDb) {
+          // @ts-ignore
           if (await bcrypt.compare(credentials.password, userDb.password)) {
             const jwt = await generateJWT({
               id: userDb.id,
@@ -89,7 +100,7 @@ export const authOptions = {
             return null
           }
 
-          if (credentials.username.password < 3) {
+          if (credentials.password.length < 3) {
             return null
           }
 
@@ -119,6 +130,33 @@ export const authOptions = {
   ],
   secret: process.env.NEXTAUTH_SECRET || "secr3t",
   callbacks: {
+    async signIn({ user, account, profile }) {
+      if (account && (account.provider === 'google' || account.provider === 'github' ) && user.email) {
+        console.log("User", user);
+        // Check if the user already exists in the database
+        let userDb = await db.user.findFirst({
+          where: {
+            email: user.email,
+          },
+        });
+
+        // If user does not exist, create a new user entry
+        if (!userDb) {
+          userDb = await db.user.create({
+            data: {
+              email: user.email,
+              name: user.name,
+              // Add any additional fields you require
+            },
+          });
+        }
+      }
+      return true;
+    },
+    async redirect({ url, baseUrl }) {
+      // Ensures redirect always goes to the home page
+      return baseUrl;
+    },
     session: async ({ session, token }) => {
       const newSession: session = session as session;
       if (newSession.user && token.uid) {
@@ -139,6 +177,5 @@ export const authOptions = {
   },
   pages: {
     signIn: "/signin",
-    
   },
 } satisfies NextAuthOptions;

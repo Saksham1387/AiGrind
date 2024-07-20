@@ -87,6 +87,16 @@ export async function POST(request: Request) {
         },
       });
 
+      if(isCorrect){
+        await db.mCQProblem.update({
+          where: { id: mcqId },
+          data: {
+            solved: {
+              increment: 1,
+            },
+          },
+      })}
+
       return NextResponse.json({
         isCorrect,
         message: isCorrect ? 'Correct answer!' : 'Incorrect answer.',

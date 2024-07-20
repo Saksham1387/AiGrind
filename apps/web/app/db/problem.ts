@@ -40,7 +40,14 @@ export const getProblem = async (problemId: string, contestId?: string) => {
   return problem;
 };
 
-export const getProblems = async () => {
+export interface Problem {
+  id: string;
+  title: string;
+  difficulty: string;
+  solved: number;
+}
+
+export const getProblems = async ():Promise<Problem[]> => {
   const problems = await db.problem.findMany({
     where: {
       hidden: false,
@@ -52,11 +59,43 @@ export const getProblems = async () => {
   return problems;
 };
 
-type MCQProblem = {
+export function getColor(status: string) {
+  switch (status) {
+    case "EASY":
+      return "text-green-500";
+    case "HARD":
+      return "text-red-500";
+    case "MEDIUM":
+      return "text-yellow-500";
+    case "AC":
+      return "text-green-500";
+    case "FAIL":
+      return "text-red-500";
+    case "true":
+      return "text-green-500";
+    case "false":
+      return "text-red-500";
+    case "TLE":
+      return "text-red-500";
+    case "COMPILATION_ERROR":
+      return "text-red-500";
+    case "PENDING":
+      return "text-yellow-500";
+    case "REJECTED":
+      return "text-red-500";
+    default:
+      return "text-gray-500";
+  }
+}
+
+
+interface MCQProblem {
   id: string;
   question: string;
   description: string;
-  category: string | null; // Update to allow null
+  category: string | null;
+  solved: number,
+  difficulty: string;    // Update to allow null
   options: {
     id: string;
     optionText: string;

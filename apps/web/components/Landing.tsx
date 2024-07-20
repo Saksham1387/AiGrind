@@ -1,6 +1,6 @@
 import { Contests } from "./Contests";
 import { Hero } from "./Hero";
-import { Problems } from "./Problems";
+import  Problems  from "./Problems";
 
 export function Landing() {
   return (

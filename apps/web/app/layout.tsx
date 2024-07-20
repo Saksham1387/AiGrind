@@ -38,14 +38,14 @@
 //     </html>
 //   );
 // }
-
+"use client";
 import { Chivo } from "next/font/google";
 import { Rubik } from "next/font/google";
 import "./globals.css";
 import { Appbar } from "../components/Appbar";
 import { Footer } from "../components/Footer";
 import { Providers, ThemeProvider } from "../providers";
-
+import { usePathname } from 'next/navigation';
 const chivo = Chivo({
   subsets: ["latin"],
   display: "swap",
@@ -62,12 +62,15 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }): JSX.Element {
+  const pathname = usePathname();
+  const noAppBarRoutes = ['/signin','/signup','/forgot-password'];
+  const hideAppBar = noAppBarRoutes.includes(pathname);
   return (
     <html lang="en">
       <body className={`${chivo.variable} ${rubik.variable} min-h-screen flex flex-col`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <Providers>
-            <Appbar />
+          {!hideAppBar && <Appbar />}
             <main className="flex-grow">{children}</main>
             <Footer />
           </Providers>

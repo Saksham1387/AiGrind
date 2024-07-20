@@ -12,8 +12,8 @@
     "./textarea": "./src/@/components/ui/textarea.tsx",
     "./tabs": "./src/@/components/ui/tabs.tsx",
     "./radio-group": "./src/@/components/ui/radio-group.tsx",
-    "./input": "./src/@/components/ui/input.tsx"
-
+    "./input": "./src/@/components/ui/input.tsx",
+    "./chart": "./src/@/components/ui/chart.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
@@ -42,6 +42,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.383.0",
+    "recharts": "^2.12.7",
     "shadcn-ui": "^0.8.0",
     "tailwind-merge": "^2.3.0"
   }

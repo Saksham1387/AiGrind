@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Piechart } from "./PieChart";
 
 export function Hero() {
   return (
@@ -14,30 +15,9 @@ export function Hero() {
               Participate in challenges, solve problems, and climb the
               leaderboard.
             </p>
-            <div className="flex gap-4 pt-16">
-              <Link
-                href="/contests"
-                className="inline-flex items-center justify-center rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white shadow transition-colors hover:bg-gray-900/90 focus:outline-none focus:ring-1 focus:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus:ring-gray-300"
-                prefetch={false}
-              >
-                View Contests
-              </Link>
-              <Link
-                href="/problems"
-                className="inline-flex items-center justify-center rounded-md border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 shadow-sm transition-colors hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:border-gray-800 dark:bg-gray-950 dark:text-gray-50 dark:hover:bg-gray-800 dark:focus:ring-gray-300"
-                prefetch={false}
-              >
-                Practice
-              </Link>
-            </div>
+            <Piechart></Piechart>
           </div>
-          <div className="hidden md:block">
-            <img
-              src="/Home-page.jpeg"
-              alt="Code100x"
-              className="rounded-xl "
-            />
-          </div>
+         
         </div>
       </div>
     </section>

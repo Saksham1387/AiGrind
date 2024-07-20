@@ -6,16 +6,17 @@ import prismaClient from "../src";
 async function main() {
   const newMCQ = await prismaClient.mCQProblem.create({
     data: {
-      question: "Is Paris the capital of France?",
+      question: "What is the capital of France?",
       description: "Choose the correct option.",
-      category: "General Knowledge",
+      category: "Geographhy",
       hidden: false,
+      difficulty: "HARD",
       options: {
         create: [
-          { optionText: "I dont know", isCorrect: true, description: "The capital of France." },
+          { optionText: "Something", isCorrect: true, description: "The capital of France." },
           { optionText: "may be it is", isCorrect: false, description: "The capital of England." },
-          { optionText: "I dont think so", isCorrect: false, description: "The capital of Germany." },
-          { optionText: "Yes", isCorrect: false , description: "The capital of Spain." },
+          { optionText: "I dont know", isCorrect: false, description: "The capital of Germany." },
+          { optionText: "Are u okay", isCorrect: false , description: "The capital of Spain." },
         ],
       },
     },
