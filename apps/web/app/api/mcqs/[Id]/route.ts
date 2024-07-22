@@ -39,7 +39,7 @@ export async function POST(request: Request) {
     try {
 
       const session = await getServerSession(authOptions);
-
+      console.log("Session: ", session)
         if (!session?.user) {
             return NextResponse.json(
               {
@@ -70,7 +70,7 @@ export async function POST(request: Request) {
       if (!mcq) {
         return NextResponse.json({ error: 'MCQ not found' }, { status: 404 });
       }
-
+      console.log("MCQ: ", mcq)
       const correctOption = mcq.options.find(option => option.isCorrect);
   
       if (!correctOption) {
@@ -94,9 +94,8 @@ export async function POST(request: Request) {
         await db.mCQProblem.update({
           where: { id: mcqId },
           data: {
-            solved: {
-              increment: 1,
-            }}})
+            solved:"solved"
+          }})
             
         await updateStreak(userId);
       }

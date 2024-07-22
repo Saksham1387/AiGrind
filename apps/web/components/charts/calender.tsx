@@ -5,11 +5,9 @@ import { useSession } from "next-auth/react";
 
 const fetchStreakDates = async (userId: string) => {
   const response = await fetch("/api/streak/dates", {
-    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ userId }),
   });
   const data = await response.json();
   // @ts-ignore
@@ -26,6 +24,7 @@ const Calendarh = () => {
     const getStreakDates = async () => {
       const dates = await fetchStreakDates(userId);
       setStreakDates(dates);
+      console.log(dates);
     };
 
     getStreakDates();
@@ -33,7 +32,7 @@ const Calendarh = () => {
 
   return (
     <div>
-        <Calendar streakDates={streakDates} />;
+        <Calendar streakDates={streakDates} />
 
     </div>
   )

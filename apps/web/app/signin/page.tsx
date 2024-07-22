@@ -45,7 +45,7 @@ const SigninPage = () => {
     setLoading(true);
     e.preventDefault();
     const result: SignInResponse | undefined = await signIn("credentials", {
-      username: email.current,
+      email: email.current,
       password: password.current,
       redirect: false,
     });

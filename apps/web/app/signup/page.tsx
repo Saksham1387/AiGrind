@@ -20,6 +20,7 @@ const SignupPage = () => {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState(false);
+  const [passerror, setPassError] = useState(false);
 
 
   const handleProviderLogin = async (provider:string) => {
@@ -49,6 +50,14 @@ const SignupPage = () => {
     e.preventDefault();
     setLoading(true);
 
+    const PASSWORD_MIN_LENGTH = 8; 
+    const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
+
+    if (passwordValue.length < PASSWORD_MIN_LENGTH || !PASSWORD_REGEX.test(passwordValue)) {
+      setPassError(true);
+      return null;
+    }
+
     if (passwordValue !== confirmPasswordValue) {
       console.error("Passwords do not match.");
       setLoading(false);
@@ -76,7 +85,7 @@ const SignupPage = () => {
       console.log("Sign-up successful.");
       const signInResult = await signIn("credentials", {
         redirect: false,
-        username: email,
+        email: email,
         password: passwordValue,
       });
       console.log(signInResult);
@@ -160,6 +169,24 @@ const SignupPage = () => {
                   )}
                 </div>
               </div>
+              <div>
+                {passerror && (
+                  <p className="text-red-500 text-sm text-center">
+                    Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one number
+                    <button className="ml-3 text-decoration-line: underline text-red-500 text-sm text-center" 
+                    onClick={()=>{
+                      
+                      setPasswordValue("")
+                      setConfirmPasswordValue("")
+                      setError(false)
+                      setLoading(false)
+                      setPassError(false)
+                    }}
+                    >Try Again</button>
+                  </p>
+                )}
+                </div>
+
               <div className="grid gap-2">
                 <Label htmlFor="confirmPassword">Confirm Password</Label>
                 <div className="relative">

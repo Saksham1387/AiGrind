@@ -2,7 +2,6 @@
 import * as React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DayPicker } from "react-day-picker";
-
 import { cn } from "../../lib/utils";
 import { buttonVariants } from "./button";
 
@@ -11,6 +10,7 @@ export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
 };
 
 function Calendar({
+  
   className,
   classNames,
   showOutsideDays = true,
@@ -21,8 +21,11 @@ function Calendar({
     streak: streakDates,
   };
 
+  console.log(streakDates)
+
   // Function to check if a date is in streakDates
   const isStreakDate = (date: Date) =>
+    
     streakDates.some(
       (streakDate) =>
         streakDate.getFullYear() === date.getFullYear() &&
@@ -64,23 +67,21 @@ function Calendar({
         day_disabled: "text-muted-foreground opacity-60",
         day_range_middle:
           "aria-selected:bg-accent aria-selected:text-accent-foreground",
-        day_hidden: "invisible",
-        //@ts-ignore
-        day_streak: "relative",
+        day_hidden: "invisible", // Corrected from "visible" to "invisible"
         ...classNames,
       }}
       modifiers={modifiers}
       modifiersClassNames={{
         streak: "day-streak",
       }}
+      //@ts-ignore
       dayContent={(day: Date) => (
-        console.log(day),
         <div className="relative">
           {day.getDate()}
           <span
             className={cn(
               "absolute bottom-1 left-1 h-2 w-2 rounded-full",
-              isStreakDate(day) ? "bg-green-500" : "bg-red-500"
+              isStreakDate(day) ? "bg-green-500" : "bg-red-300"
             )}
           />
         </div>

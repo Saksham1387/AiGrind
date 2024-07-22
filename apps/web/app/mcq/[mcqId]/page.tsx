@@ -6,6 +6,8 @@ import { CardTitle, CardDescription } from '@repo/ui/card';
 import axios from 'axios';
 import { McqISubmission, McqSubmissionTable } from '../../../components/SubmissionTable';
 import { ArrowLeftFromLine, ArrowRightFromLine } from 'lucide-react';
+import { get } from 'http';
+import { getComments } from '../../db/comment';
 
 type MCQOption = {
   id: string;
@@ -19,14 +21,25 @@ type MCQProblem = {
   options: MCQOption[];
 };
 
-type Comment = {
+
+interface User {
+  id: string;
+  name?: string; // Optional property if you have user's name
+  email?: string; // Optional property if you have user's email
+}
+
+// Define the Comment interface
+interface Comment {
   id: string;
   text: string;
-  author: string;
-};
+  createdAt: string; // ISO string representation of date-time
+  updatedAt: string; // ISO string representation of date-time
+  user: User; // User who made the comment
+  MCQProblemId?: string; // Optional if you may not always have this
+}
 
 export default function MCQ({ params: { mcqId } }: { params: { mcqId: string } }) {
-  console.log(mcqId);
+
   const [mcq, setMcq] = useState<MCQProblem | null>(null);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [submissionResult, setSubmissionResult] = useState<string | null>(null);
@@ -47,8 +60,13 @@ export default function MCQ({ params: { mcqId } }: { params: { mcqId: string } }
 
   useEffect(() => {
     const fetchComments = async () => {
-      const response = await axios.get(`/api/mcqs/${mcqId}/comments`);
+      const response = await axios.post(`api/mcqs/comments/all`,{
+        mcqId
+      });
+      // const response = await getComments(mcqId);
+      // const comments = await response.json();
       setComments(response.data);
+      console.log(comments)
     };
     fetchComments();
   }, [mcqId]);
@@ -84,8 +102,9 @@ export default function MCQ({ params: { mcqId } }: { params: { mcqId: string } }
 
   const handleAddComment = async () => {
     if (!newComment.trim()) return;
-    const response = await axios.post(`/api/mcqs/${mcqId}/comments`, {
+    const response = await axios.post(`/api/mcqs/comments`, {
       text: newComment,
+      mcqId
     });
     setComments([...comments, response.data]);
     setNewComment('');
@@ -152,7 +171,7 @@ export default function MCQ({ params: { mcqId } }: { params: { mcqId: string } }
                 {comments.map((comment) => (
                   <li key={comment.id} className="mb-2">
                     <div className="text-lg">{comment.text}</div>
-                    <div className="text-sm text-gray-500">- {comment.author}</div>
+                    
                   </li>
                 ))}
               </ul>
@@ -178,9 +197,7 @@ export default function MCQ({ params: { mcqId } }: { params: { mcqId: string } }
 }
 
 function Submissions({ mcqId }: { mcqId: string }) {
-
   const [submissions, setSubmissions] = useState<McqISubmission[]>([]);
-  
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get(

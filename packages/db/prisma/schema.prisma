@@ -186,7 +186,7 @@ model MCQProblem {
   options            MCQOption[]
   contestMCQProblems ContestMCQProblem[]
   mcqSubmissions     MCQSubmission[]
-  solved             Int           @default(0)
+  solved             String        @default("unsolved")
   difficulty         Difficulty    @default(MEDIUM) 
   comments           Comment[]   
 }
@@ -195,7 +195,7 @@ model MCQOption {
   id            String    @id @default(cuid())
   optionText    String
   isCorrect     Boolean
-  description   String
+  description   String?
   mcqProblemId  String
   mcqProblem    MCQProblem @relation(fields: [mcqProblemId], references: [id])
   mcqSubmissions MCQSubmission[]

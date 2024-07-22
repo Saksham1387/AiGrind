@@ -17,7 +17,7 @@ interface MCQProblem {
     title: string;
     explanation: string;
     category: string | null;
-    solved: number,
+    solved: string,
     difficulty: string;    // Update to allow null
     options: {
       id: string;
@@ -77,7 +77,7 @@ const McqProblemCard = ({ mcqProblems }) => {
             <TableHead>Title</TableHead>
             <TableHead>Category</TableHead>
             <TableHead>Difficulty</TableHead>
-            <TableHead>Solved</TableHead>
+            <TableHead>Status</TableHead>
             <TableHead>Question</TableHead>
           </TableRow>
         </TableHeader>

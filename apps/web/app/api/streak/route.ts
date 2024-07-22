@@ -1,9 +1,15 @@
 import { db } from '../../db';
 import { NextResponse } from 'next/server';
+import { getServerSession } from "next-auth";
+import { authOptions } from '../../lib/auth';
 
-export async function POST(request: Request) {
+export async function GET(request: Request) {
+    const session = await getServerSession(authOptions);
+    if (!session?.user) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     try{
-        const { userId } = await request.json();
+        const userId = session.user.id;
         const streak = await db.streak.findUnique({
             where: { userId },
           });

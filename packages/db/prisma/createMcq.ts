@@ -3,18 +3,18 @@ import prismaClient from "../src";
 async function main() {
   const newMCQ = await prismaClient.mCQProblem.create({
     data: {
-      question: "What is the main goal of Reinforcement Learning?",
-      explanation: "RL aims to maximize the cumulative reward that an agent receives through its actions in an environment.",
-      title: "Goal of RL",
+      question: "What does the 'Q' in Q-Learning stand for?",
+      explanation: " The 'Q' stands for Quality, representing the quality of a state-action combination in terms of expected rewards.",
+      title: "Q Learning",
       category: "Reinforcement Learning",
       hidden: false,
       difficulty: "EASY",
       options: {
         create: [
-          { optionText: "Minimizing loss", isCorrect: false, description: "The capital of France." },
-          { optionText: "Maximizing cumulative reward", isCorrect: true, description: "The capital of England." },
-          { optionText: "Predicting future values", isCorrect: false, description: "The capital of Germany." },
-          { optionText: " Reducing error", isCorrect: false , description: "The capital of Spain." },
+          { optionText: "Quality", isCorrect: true, description: "The capital of France." },
+          { optionText: "Quantity", isCorrect: false, description: "The capital of England." },
+          { optionText: "Query", isCorrect: false, description: "The capital of Germany." },
+          { optionText: "Quota", isCorrect: false , description: "The capital of Spain." },
         ],
       },
     },

@@ -3,12 +3,15 @@ import { db } from '../../db';
 import bcrypt from 'bcrypt';
 
 export async function POST(request: Request) {
+  
+
   try {
     const { fullname, username, email, password } = await request.json();
     
     if (!fullname || !username || !email || !password) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
+
 
     const existingUser = await db.user.findFirst({
       where: {
