@@ -119,6 +119,7 @@ export const authOptions = {
           return {
             id: user.id,
             name: credentials.username,
+            username: credentials.username,
             email: credentials.username,
             token: jwt,
           };

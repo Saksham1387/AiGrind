@@ -32,7 +32,7 @@ const Calendarh = () => {
   }, [userId]);
 
   return (
-    <div className="">
+    <div>
         <Calendar streakDates={streakDates} />;
 
     </div>

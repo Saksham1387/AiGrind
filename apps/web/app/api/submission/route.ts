@@ -269,16 +269,17 @@ export async function POST(req: NextRequest) {
     );
   }
   console.log(submissionInput.data.languageId);
-  const problem = await getProblem(
+    const problem = await getProblem(
     dbProblem.slug,
     submissionInput.data.languageId
   );
+
+  console.log("this si the probelm",problem);
   problem.fullBoilerplateCode = problem.fullBoilerplateCode.replace(
     "##USER_CODE_HERE##",
     submissionInput.data.code
   );
   
-    console.log(problem);
   const response = await axios.post(
     `${JUDGE0_URI}/submissions/batch?base64_encoded=false`,
     {

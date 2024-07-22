@@ -1,4 +1,5 @@
 import fs from "fs";
+import path from "path";
 
 type SUPPORTED_LANGS = "js" | "cpp" | "rs"|"java"|"py";
 
@@ -10,6 +11,7 @@ interface Problem {
 }
 
 const MOUNT_PATH = process.env.MOUNT_PATH ?? "/home/ubuntu/algorithmic-arena/apps/problems";
+
 export const getProblem = async (
   problemId: string,
   languageId: SUPPORTED_LANGS,
@@ -18,9 +20,10 @@ export const getProblem = async (
     problemId,
     languageId,
   );
+
+  console.log("fullBoilderPlate", fullBoilderPlate);
   const inputs = await getProblemInputs(problemId);
   const outputs = await getProblemOutputs(problemId);
-
   return {
     id: problemId,
     fullBoilerplateCode: fullBoilderPlate,
@@ -43,9 +46,11 @@ async function getProblemFullBoilerplateCode(
         }
         resolve(data);
       },
+
     );
   });
 }
+
 
 async function getProblemInputs(problemId: string): Promise<string[]> {
   return new Promise((resolve, reject) => {

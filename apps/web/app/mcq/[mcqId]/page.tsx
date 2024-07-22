@@ -58,7 +58,6 @@ export default function MCQ({ params: { mcqId } }: { params: { mcqId: string } }
       alert('Please select an option.');
       return;
     }
-
     try {
       const res = await fetch(`/api/mcqs/${mcqId}`, {
         method: 'POST',
@@ -85,16 +84,15 @@ export default function MCQ({ params: { mcqId } }: { params: { mcqId: string } }
 
   const handleAddComment = async () => {
     if (!newComment.trim()) return;
-
     const response = await axios.post(`/api/mcqs/${mcqId}/comments`, {
       text: newComment,
     });
-
     setComments([...comments, response.data]);
     setNewComment('');
   };
 
   if (!mcq) return <div>Loading...</div>;
+
   return (
     <div className="relative min-h-screen w-full bg-white flex flex-col items-center py-10 dark:bg-gray-800">
       <Button
@@ -180,7 +178,9 @@ export default function MCQ({ params: { mcqId } }: { params: { mcqId: string } }
 }
 
 function Submissions({ mcqId }: { mcqId: string }) {
+
   const [submissions, setSubmissions] = useState<McqISubmission[]>([]);
+  
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get(
@@ -193,6 +193,7 @@ function Submissions({ mcqId }: { mcqId: string }) {
   }, [mcqId]);
 
   console.log(submissions);
+
   return (
     <div>
       <McqSubmissionTable submissions={submissions} />

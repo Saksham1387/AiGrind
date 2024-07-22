@@ -24,6 +24,7 @@ model User {
   mcqSubmissions     MCQSubmission[]
   streaks            Streak[] 
   streakDates        StreakDate[]
+  comments           Comment[]
 }
 
 model StreakDate {
@@ -89,7 +90,23 @@ model Problem {
   contests           ContestProblem[]
   submissions        Submission[]
   defaultCode        DefaultCode[]
+  comments           Comment[]
 }
+
+
+model Comment {
+  id          String    @id @default(cuid())
+  text        String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
+  problemId   String?
+  problem     Problem?  @relation(fields: [problemId], references: [id])
+  userId      String
+  MCQProblemId String?
+  user       User      @relation(fields: [userId], references: [id])
+  mcqProblem MCQProblem? @relation(fields: [MCQProblemId], references: [id])
+}
+
 
 model DefaultCode {
   id         String   @id @default(cuid())
@@ -160,7 +177,8 @@ model ContestPoints {
 model MCQProblem {
   id                 String        @id @default(cuid())
   question           String
-  description        String
+  title              String
+  explanation        String
   hidden             Boolean       @default(true)
   category           String?       // Added category field
   createdAt          DateTime      @default(now())
@@ -169,7 +187,8 @@ model MCQProblem {
   contestMCQProblems ContestMCQProblem[]
   mcqSubmissions     MCQSubmission[]
   solved             Int           @default(0)
-  difficulty         Difficulty    @default(MEDIUM)   
+  difficulty         Difficulty    @default(MEDIUM) 
+  comments           Comment[]   
 }
 
 model MCQOption {

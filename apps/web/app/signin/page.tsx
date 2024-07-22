@@ -78,7 +78,7 @@ const SigninPage = () => {
                     id="email"
                     type="email"
                     placeholder="m@example.com"
-                    required
+                    
                     onChange={(e) => {
                       email.current = e.target.value;
                     }}
@@ -98,7 +98,7 @@ const SigninPage = () => {
                     <Input
                       id="password"
                       type={showPassword ? "text" : "password"}
-                      required
+                        
                       value={passwordValue}
                       onChange={(e) => {
                         setPasswordValue(e.target.value);

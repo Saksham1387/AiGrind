@@ -1,8 +1,7 @@
 "use client";
-
 import * as React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { DayPicker, DateRange } from "react-day-picker";
+import { DayPicker } from "react-day-picker";
 
 import { cn } from "../../lib/utils";
 import { buttonVariants } from "./button";
@@ -22,6 +21,15 @@ function Calendar({
     streak: streakDates,
   };
 
+  // Function to check if a date is in streakDates
+  const isStreakDate = (date: Date) =>
+    streakDates.some(
+      (streakDate) =>
+        streakDate.getFullYear() === date.getFullYear() &&
+        streakDate.getMonth() === date.getMonth() &&
+        streakDate.getDate() === date.getDate()
+    );
+
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
@@ -40,8 +48,7 @@ function Calendar({
         nav_button_next: "absolute right-2",
         table: "w-full border-collapse space-y-1",
         head_row: "flex",
-        head_cell:
-          "text-muted-foreground rounded-md w-12 font-normal text-xs", // Small text size
+        head_cell: "text-muted-foreground rounded-md w-12 font-normal text-xs", // Small text size
         row: "flex w-full mt-4",
         cell: "h-12 w-12 text-center text-xs p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
         day: cn(
@@ -66,8 +73,20 @@ function Calendar({
       modifiersClassNames={{
         streak: "day-streak",
       }}
+      dayContent={(day: Date) => (
+        console.log(day),
+        <div className="relative">
+          {day.getDate()}
+          <span
+            className={cn(
+              "absolute bottom-1 left-1 h-2 w-2 rounded-full",
+              isStreakDate(day) ? "bg-green-500" : "bg-red-500"
+            )}
+          />
+        </div>
+      )}
       components={{
-        IconLeft: ({ ...props }) => <ChevronLeft className="h-6 w-6" />,
+        IconLeft: ({ ...props }) => <ChevronLeft className="h-6 w-10" />,
         IconRight: ({ ...props }) => <ChevronRight className="h-6 w-6" />,
       }}
       {...props}

@@ -10,10 +10,12 @@ import {
 import { getColor } from "../app/db/problem";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+
 interface MCQProblem {
     id: string;
     question: string;
-    description: string;
+    title: string;
+    explanation: string;
     category: string | null;
     solved: number,
     difficulty: string;    // Update to allow null
@@ -24,7 +26,7 @@ interface MCQProblem {
       description: string;
       mcqProblemId: string;
     }[];
-  };
+};
 
 import SkeletonTable from './skeletons/problems';
 const McqProblems = () => {
@@ -45,9 +47,9 @@ const McqProblems = () => {
     <section className="bg-white dark:bg-black py-8 md:py-12 min-h-screen">
       <div className="container mx-auto px-4 md:px-6">
         <div className="mb-6">
-          <h2 className="text-2xl font-bold mb-2">Popular MCQ Problems</h2>
+          <h2 className="text-2xl font-bold mb-2">MCQ Problems</h2>
           <p className="text-gray-500 dark:text-gray-400 mb-3">
-            Check out the most popular programming problems on Code100x.
+            Here are some of the popular problems asked in the interviews.
           </p>
         </div>
         <div>
@@ -76,7 +78,7 @@ const McqProblemCard = ({ mcqProblems }) => {
             <TableHead>Category</TableHead>
             <TableHead>Difficulty</TableHead>
             <TableHead>Solved</TableHead>
-            <TableHead>Description</TableHead>
+            <TableHead>Question</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -88,13 +90,13 @@ const McqProblemCard = ({ mcqProblems }) => {
               onClick={() => handleRoute(problem.id)}
             >
               <TableCell>{index + 1}</TableCell>
-              <TableCell>{problem.question}</TableCell>
+              <TableCell>{problem.title}</TableCell>
               <TableCell>{problem.category}</TableCell>
               <TableCell className={getColor(problem.difficulty)}>
                 {problem.difficulty}
               </TableCell>
               <TableCell>{problem.solved}</TableCell>
-              <TableCell>{problem.description.substring(0, 20)}...</TableCell>
+              <TableCell>{problem.question.substring(0, 20)}...</TableCell>
             </TableRow>
           ))}
         </TableBody>

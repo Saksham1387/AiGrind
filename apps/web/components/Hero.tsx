@@ -27,16 +27,7 @@ export function Hero() {
         </div>
       </div>
     </section>
-  );
+  )
 }
 
-{
-  /* <h1 className="text-3xl md:text-4xl font-bold mb-4 w-full text-center">
-    Welcome to DataDex
-  </h1>
-  <p className="text-gray-500 dark:text-gray-400 mb-6 text-center">
-  DataDex is a cutting-edge platform designed for hosting exciting programmingmifjsdifjosdjfisdojfidsjo
-  contests and challenges. Weather you are a senior developer or a beginner,
-    </p>      
-                                     */
-}
+
