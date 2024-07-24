@@ -115,9 +115,9 @@ const DashboardProblems = () => {
     <section className="bg-white dark:bg-gray-900 py-8 md:py-12 min-h-screen">
       <div className="container mx-auto px-4 md:px-6">
         <div className="mb-6">
-          <h2 className="text-2xl font-bold mb-2">Popular Problems</h2>
+          <h2 className="text-2xl font-bold mb-2">TOP 20 !</h2>
           <p className="text-gray-500 dark:text-gray-400 mb-3">
-            Check out the most popular Questions asked in the ML Interviews.
+            Check out the most popular 20 Questions asked in the ML Interviews.
           </p>
           <div className="flex justify-center gap-16 mb-8">
             <div className="relative">
@@ -139,7 +139,7 @@ const DashboardProblems = () => {
                 <ChevronDownIcon className="ml-2" />
               </button>
               {isCategoryDropdownVisible && (
-                <div className="absolute mt-2 w-72 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-lg z-10 p-4 grid grid-cols-3 gap-4">
+                <div className="absolute mt-2 w-[450px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-lg z-10 p-4 grid grid-cols-3 gap-4">
                   {categories.map(category => (
                     <label key={category} className="flex items-center text-left">
                       <input 

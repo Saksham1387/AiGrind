@@ -1,11 +1,13 @@
-
-import { get } from "http";
+"use client"
+import { useSession } from "next-auth/react";
 import { Landing } from "../components/Landing";
-import styles from "./page.module.css";
-import { getMCQProblems, getProblems } from "./db/problem";
+import HomePage from "../components/Home/HomePage";
 
 export default function Page(): JSX.Element {
-  
+  const { data: session, status: sessionStatus } = useSession();
+  if(!session){
+    return <HomePage />
+  }
   return (
     <main>
       <Landing />
