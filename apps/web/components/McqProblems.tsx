@@ -8,12 +8,12 @@ import {
   TableCell,
 } from "@repo/ui/table";
 import { getColor } from "../app/db/problem";
-import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 import { ChevronDownIcon, ChevronLeft, ChevronRight } from "lucide-react";
 import { MCQProblem } from "../app/types/types";
 import { Button } from "@repo/ui/button";
-import SkeletonTable from "./skeletons/problems";
+import { SkeletonTable } from "./skeletons/problems";
 
 const SORT_ORDER = {
   DEFAULT: "default",
@@ -27,7 +27,7 @@ const categories = [
   "Deep Learning",
   "Machine Learning",
   "Linear Algebra",
-  "Generative AI"
+  "Generative AI",
 ];
 
 const ITEMS_PER_PAGE = 20;
@@ -38,14 +38,17 @@ const McqProblems = () => {
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [isStatusDropdownVisible, setIsStatusDropdownVisible] = useState(false);
-  const [isCategoryDropdownVisible, setIsCategoryDropdownVisible] = useState(false);
-  const [isDifficultyDropdownVisible, setIsDifficultyDropdownVisible] = useState(false);
-  const [sortOrder, setSortOrder] = useState<keyof typeof SORT_ORDER>("default");
+  const [isCategoryDropdownVisible, setIsCategoryDropdownVisible] =
+    useState(false);
+  const [isDifficultyDropdownVisible, setIsDifficultyDropdownVisible] =
+    useState(false);
+  const [sortOrder, setSortOrder] =
+    useState<keyof typeof SORT_ORDER>("DEFAULT");
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchProblems = async () => {
-      const problems = await fetch('/api/mcqs').then(res => res.json());
+      const problems = await fetch("/api/mcqs").then((res) => res.json());
       setMcqProblems(problems);
       setLoading(false);
     };
@@ -53,9 +56,13 @@ const McqProblems = () => {
   }, []);
 
   const filteredProblems = useMemo(() => {
-    return mcqProblems.filter(problem => {
+    return mcqProblems.filter((problem) => {
       if (selectedStatus && problem.solved !== selectedStatus) return false;
-      if (selectedCategories.length > 0 && !selectedCategories.includes(problem.category)) return false;
+      if (
+        selectedCategories.length > 0 &&
+        !selectedCategories.includes(problem.category || "")
+      )
+        return false;
       return true;
     });
   }, [mcqProblems, selectedStatus, selectedCategories]);
@@ -73,9 +80,15 @@ const McqProblems = () => {
     const difficulties = ["Easy", "Medium", "Hard"];
     return shuffledProblems.slice().sort((a, b) => {
       if (sortOrder === SORT_ORDER.HARD_TO_EASY) {
-        return difficulties.indexOf(b.difficulty) - difficulties.indexOf(a.difficulty);
+        return (
+          difficulties.indexOf(b.difficulty) -
+          difficulties.indexOf(a.difficulty)
+        );
       } else if (sortOrder === SORT_ORDER.EASY_TO_HARD) {
-        return difficulties.indexOf(a.difficulty) - difficulties.indexOf(b.difficulty);
+        return (
+          difficulties.indexOf(a.difficulty) -
+          difficulties.indexOf(b.difficulty)
+        );
       }
       return 0;
     });
@@ -87,7 +100,10 @@ const McqProblems = () => {
     return sortedProblems.slice(startIndex, endIndex);
   }, [sortedProblems, currentPage]);
 
-  const totalPages = useMemo(() => Math.ceil(sortedProblems.length / ITEMS_PER_PAGE), [sortedProblems]);
+  const totalPages = useMemo(
+    () => Math.ceil(sortedProblems.length / ITEMS_PER_PAGE),
+    [sortedProblems]
+  );
 
   const handleStatusFilter = (status: string | null) => {
     setSelectedStatus(status);
@@ -96,9 +112,9 @@ const McqProblems = () => {
   };
 
   const handleCategoryFilter = (category: string) => {
-    setSelectedCategories(prevCategories =>
+    setSelectedCategories((prevCategories) =>
       prevCategories.includes(category)
-        ? prevCategories.filter(c => c !== category)
+        ? prevCategories.filter((c) => c !== category)
         : [...prevCategories, category]
     );
     setCurrentPage(1); // Reset to first page on filter change
@@ -142,29 +158,53 @@ const McqProblems = () => {
           </p>
           <div className="flex justify-center gap-16 mb-8">
             <div className="relative">
-              <button onClick={toggleStatusDropdown} className="bg-neutral-800 text-white px-4 py-2 rounded flex items-center">
+              <button
+                onClick={toggleStatusDropdown}
+                className="bg-neutral-800 text-white px-4 py-2 rounded flex items-center"
+              >
                 Status
                 <ChevronDownIcon className="ml-2" />
               </button>
               {isStatusDropdownVisible && (
                 <div className="absolute mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-lg z-10">
-                  <button onClick={() => handleStatusFilter(null)} className="block w-full text-left px-4 border-b hover:bg-gray-100 dark:hover:bg-gray-700 p-2">All</button>
-                  <button onClick={() => handleStatusFilter('solved')} className="block w-full text-left px-4 py-2 border-b hover:bg-gray-100 dark:hover:bg-gray-700">Solved</button>
-                  <button onClick={() => handleStatusFilter('unsolved')} className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Unsolved</button>
+                  <button
+                    onClick={() => handleStatusFilter(null)}
+                    className="block w-full text-left px-4 border-b hover:bg-gray-100 dark:hover:bg-gray-700 p-2"
+                  >
+                    All
+                  </button>
+                  <button
+                    onClick={() => handleStatusFilter("solved")}
+                    className="block w-full text-left px-4 py-2 border-b hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    Solved
+                  </button>
+                  <button
+                    onClick={() => handleStatusFilter("unsolved")}
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    Unsolved
+                  </button>
                 </div>
               )}
             </div>
             <div className="relative">
-              <button onClick={toggleCategoryDropdown} className="bg-neutral-800 text-white px-4 py-2 rounded flex items-center">
+              <button
+                onClick={toggleCategoryDropdown}
+                className="bg-neutral-800 text-white px-4 py-2 rounded flex items-center"
+              >
                 Category
                 <ChevronDownIcon className="ml-2" />
               </button>
               {isCategoryDropdownVisible && (
                 <div className="absolute mt-2 w-[450px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-lg z-10 p-4 grid grid-cols-3 gap-4">
-                  {categories.map(category => (
-                    <label key={category} className="flex items-center text-left">
-                      <input 
-                        type="checkbox" 
+                  {categories.map((category) => (
+                    <label
+                      key={category}
+                      className="flex items-center text-left"
+                    >
+                      <input
+                        type="checkbox"
                         checked={selectedCategories.includes(category)}
                         onChange={() => handleCategoryFilter(category)}
                         className="mr-2 accent-green-500"
@@ -176,24 +216,48 @@ const McqProblems = () => {
               )}
             </div>
             <div className="relative">
-              <button onClick={toggleDifficultyDropdown} className="bg-neutral-800 text-white px-4 py-2 rounded flex items-center">
+              <button
+                onClick={toggleDifficultyDropdown}
+                className="bg-neutral-800 text-white px-4 py-2 rounded flex items-center"
+              >
                 Difficulty
                 <ChevronDownIcon className="ml-2" />
               </button>
               {isDifficultyDropdownVisible && (
                 <div className="absolute mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-lg z-10">
-                  <button onClick={() => handleSortOrder(SORT_ORDER.DEFAULT)} className="block w-full text-left px-4 border-b hover:bg-gray-100 dark:hover:bg-gray-700 p-2">Default</button>
-                  <button onClick={() => handleSortOrder(SORT_ORDER.HARD_TO_EASY)} className="block w-full text-left px-4 py-2 border-b hover:bg-gray-100 dark:hover:bg-gray-700">Hard to Easy</button>
-                  <button onClick={() => handleSortOrder(SORT_ORDER.EASY_TO_HARD)} className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Easy to Hard</button>
+                  <button
+                    onClick={() => handleSortOrder(SORT_ORDER.DEFAULT)}
+                    className="block w-full text-left px-4 border-b hover:bg-gray-100 dark:hover:bg-gray-700 p-2"
+                  >
+                    Default
+                  </button>
+                  <button
+                    onClick={() => handleSortOrder(SORT_ORDER.HARD_TO_EASY)}
+                    className="block w-full text-left px-4 py-2 border-b hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    Hard to Easy
+                  </button>
+                  <button
+                    onClick={() => handleSortOrder(SORT_ORDER.EASY_TO_HARD)}
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    Easy to Hard
+                  </button>
                 </div>
               )}
             </div>
           </div>
         </div>
-        <div className={`${isStatusDropdownVisible || isCategoryDropdownVisible || isDifficultyDropdownVisible ? 'mt-44' : ''}`}>
-          {loading ? <SkeletonTable /> : <McqProblemCard mcqProblems={paginatedProblems} />}
+        <div
+          className={`${isStatusDropdownVisible || isCategoryDropdownVisible || isDifficultyDropdownVisible ? "mt-44" : ""}`}
+        >
+          {loading ? (
+            <SkeletonTable />
+          ) : (
+            <McqProblemCard mcqProblems={paginatedProblems} />
+          )}
         </div>
-        
+
         <div className="flex justify-center mt-8">
           <Button
             onClick={() => handlePageChange(currentPage - 1)}
@@ -215,15 +279,12 @@ const McqProblems = () => {
             <ChevronRight></ChevronRight>
           </Button>
         </div>
-
-
-
       </div>
     </section>
   );
 };
 
-const McqProblemCard = ({ mcqProblems }) => {
+const McqProblemCard = ({ mcqProblems }: { mcqProblems: MCQProblem[] }) => {
   const router = useRouter();
 
   const handleRoute = (id: string) => {
@@ -267,4 +328,3 @@ const McqProblemCard = ({ mcqProblems }) => {
 };
 
 export default McqProblems;
-       

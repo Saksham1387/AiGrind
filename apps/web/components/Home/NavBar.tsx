@@ -21,8 +21,6 @@ const Navbar = () => {
   const router = useRouter();
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
-  
-
   const handleMailClick = (email:any) => {
     const mailtoLink = `mailto:${email}`;
     window.location.href = mailtoLink;

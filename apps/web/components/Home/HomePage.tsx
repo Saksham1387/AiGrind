@@ -1,9 +1,8 @@
-import Navbar from './Navbar';
 import HeroSection from './HeroSection';
 import FeatureSection from './FeatureSection';
 import Workflow from './Workflow';
 import Testimonials from './Testimonials';
-import Footer from './Footer';
+import Navbar from './Navbar';
 
 export default function HomePage() {
     return (
@@ -14,7 +13,6 @@ export default function HomePage() {
           <FeatureSection />
           <Workflow />
           {/* <Testimonials /> */}
-          {/* <Footer /> */}
         </div>
         </>
       )

@@ -10,9 +10,10 @@ import {
 import { getColor } from "../app/db/problem";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import SkeletonTable from './skeletons/problems';
+
 import { Button } from "@repo/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { SkeletonTable } from "./skeletons/problems";
 
 export interface Problem {
   id: string;

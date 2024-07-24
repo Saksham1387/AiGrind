@@ -4,7 +4,7 @@ import { signOut, useSession } from "next-auth/react";
 import { signIn } from "next-auth/react";
 import { Button } from "@repo/ui/button";
 import { ModeToggle } from "./ModeToggle";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/avatar";
 import {
   DropdownMenu,
@@ -13,13 +13,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../../../packages/ui/src/@/components/ui/dropdown-menu";
-import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export function Appbar() {
   const { data: session, status: sessionStatus } = useSession();
   const isLoading = sessionStatus === "loading";
   const userImage = session?.user?.image;
-  const router = useRouter();
+
   return (
     <header className="bg-black text-white px-4 md:px-6 py-3 flex items-center justify-between">
       <Link href="/" className="flex items-center gap-2" prefetch={false}>
@@ -45,7 +45,7 @@ export function Appbar() {
 
       {!isLoading && session?.user && (
         <div className="flex items-center gap-4">
-          <Streak userId={session?.user?.id}></Streak>
+          <Streak ></Streak>
           <ModeToggle />
           <DropdownMenu>
             <DropdownMenuTrigger>
@@ -59,12 +59,9 @@ export function Appbar() {
             <DropdownMenuContent>
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              {/* <button >Logout</button> */}
               <div className="py-3 px-2">
                 <p>Email: {session?.user?.email}</p>
-                {/* <p>Username: {session?.user?.username}</p> */}
                 <p>Name: {session?.user?.name}</p>
-                {/* <p>Name: {session?.user?.username}</p> */}
               </div>
               <DropdownMenuLabel
                 onClick={() => signOut()}
@@ -89,8 +86,8 @@ export function Appbar() {
   );
 }
 
-function Streak({ userId }: { userId: string }) {
-  const router = useRouter();
+function Streak() {
+  const router = usePathname();
   const [count, setCount] = useState(0);
   useEffect(() => {
     const fetchStreak = async () => {

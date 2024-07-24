@@ -1,6 +1,5 @@
 import { scrollToComponent } from "./Navbar";
 
-
 const Footer = () => {
   return (
     <footer className="w-fulltext-black ">
@@ -32,12 +31,12 @@ const Footer = () => {
               </button>
             </li>
             <li>
-              <button href="#" className="hover:underline me-4 md:me-6">
+              <button className="hover:underline me-4 md:me-6">
                 Licensing
               </button>
             </li>
             <li>
-              <button href="#" className="hover:underline">
+              <button className="hover:underline">
                 Contact
               </button>
             </li>

@@ -1,7 +1,7 @@
 import fs from "fs";
-import path from "path";
 
-type SUPPORTED_LANGS = "js" | "cpp" | "rs"|"java"|"py";
+type SUPPORTED_LANGS = "js" | "cpp" | "rs"| "java" | "py" ;
+const MOUNT_PATH = process.env.MOUNT_PATH ?? "/home/ubuntu/algorithmic-arena/apps/problems";
 
 interface Problem {
   id: string;
@@ -10,7 +10,6 @@ interface Problem {
   outputs: string[];
 }
 
-const MOUNT_PATH = process.env.MOUNT_PATH ?? "/home/ubuntu/algorithmic-arena/apps/problems";
 
 export const getProblem = async (
   problemId: string,

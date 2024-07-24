@@ -10,6 +10,7 @@ import { get } from 'http';
 import { getComments } from '../../db/comment';
 import { McqISubmission } from '../../types/types';
 import { McqSubmissionTable } from '../../../components/SubmissionTable';
+import { ProblemSkeleton } from '../../../components/skeletons/problems';
 
 type MCQOption = {
   id: string;
@@ -46,8 +47,7 @@ export default function MCQ({ params: { mcqId } }: { params: { mcqId: string } }
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [submissionResult, setSubmissionResult] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("mcq");
-  const [comments, setComments] = useState<Comment[]>([]);
-  const [newComment, setNewComment] = useState<string>('');
+
 
   useEffect(() => {
     if (mcqId) {
@@ -60,18 +60,7 @@ export default function MCQ({ params: { mcqId } }: { params: { mcqId: string } }
     }
   }, [mcqId]);
 
-  useEffect(() => {
-    const fetchComments = async () => {
-      const response = await axios.post(`api/mcqs/comments/all`,{
-        mcqId
-      });
-      // const response = await getComments(mcqId);
-      // const comments = await response.json();
-      setComments(response.data);
-      console.log(comments)
-    };
-    fetchComments();
-  }, [mcqId]);
+
 
   const handleSubmit = async () => {
     if (!selectedOption) {
@@ -102,17 +91,9 @@ export default function MCQ({ params: { mcqId } }: { params: { mcqId: string } }
     }
   };
 
-  const handleAddComment = async () => {
-    if (!newComment.trim()) return;
-    const response = await axios.post(`/api/mcqs/comments`, {
-      text: newComment,
-      mcqId
-    });
-    setComments([...comments, response.data]);
-    setNewComment('');
-  };
-
-  if (!mcq) return <div>Loading...</div>;
+  if (!mcq) return <div>
+    <ProblemSkeleton></ProblemSkeleton>
+  </div>;
 
   return (
     <div className="relative min-h-screen w-full bg-white flex flex-col items-center py-10 dark:bg-gray-800">

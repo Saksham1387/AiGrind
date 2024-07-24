@@ -45,15 +45,6 @@ const generateJWT = async (payload: JWTPayload) => {
   return jwt;
 };
 
-
-// Initialize the RandomUsernameGenerator
-// const usernameGenerator = new RandomUsernameGenerator();
-
-// Generate a random username
-// const randomName = usernameGenerator.generate();
-
-// Output the random username
-console.log(randomName);
 export const authOptions = {
   providers: [
     GitHubProvider({
@@ -93,8 +84,6 @@ export const authOptions = {
         });
 
         if (userDb) {
-          console.log("inside 2")
-
           // @ts-ignore
           if (await bcrypt.compare(credentials.password, userDb.password)) {
             const jwt = await generateJWT({
