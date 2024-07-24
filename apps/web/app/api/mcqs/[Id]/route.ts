@@ -33,86 +33,98 @@ export async function GET(request: Request) {
   }
 }
 
-
-
 export async function POST(request: Request) {
-    try {
-
-      const session = await getServerSession(authOptions);
-      console.log("Session: ", session)
-        if (!session?.user) {
-            return NextResponse.json(
-              {
-                message: "You must be logged in to submit a problem",
-              },
-              {
-                status: 401,
-              }
-          );
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user) {
+      return NextResponse.json(
+        {
+          message: "You must be logged in to submit a problem",
+        },
+        {
+          status: 401,
         }
-      
-      const userId = session.user.id;
-      const { selectedOptionId } = await request.json();
-      const url = new URL(request.url);
-      const mcqId = url.pathname.split('/').pop(); 
-  
-      if (!mcqId || !selectedOptionId || !userId) {
-        return NextResponse.json({ error: 'mcqId, selectedOptionId, and userId are required' }, { status: 400 });
-      }
-  
-      const mcq = await db.mCQProblem.findUnique({
-        where: { id: mcqId },
-        include: {
-          options: true,
-        },
-      });
-
-      if (!mcq) {
-        return NextResponse.json({ error: 'MCQ not found' }, { status: 404 });
-      }
-      console.log("MCQ: ", mcq)
-      const correctOption = mcq.options.find(option => option.isCorrect);
-  
-      if (!correctOption) {
-        return NextResponse.json({ error: 'No correct option found' }, { status: 500 });
-      }
-
-      console.log("Selected Option ID: ", selectedOptionId)
-      const isCorrect = selectedOptionId === correctOption.id;
-
-      await db.mCQSubmission.create({
-        data: {
-          userId,
-          mcqProblemId: mcqId,
-          selectedOptionId,
-          result: isCorrect ? 'true' : 'false',
-        },
-      });
-
-      if(isCorrect){
-        console.log("Incrementing solved count")
-        await db.mCQProblem.update({
-          where: { id: mcqId },
-          data: {
-            solved:"solved"
-          }})
-            
-        await updateStreak(userId);
-      }
-
-      return NextResponse.json({
-        isCorrect,
-        message: isCorrect ? 'Correct answer!' : 'Incorrect answer.',
-      });
-
-    } catch (error) {
-      console.error(error);
-      return NextResponse.json({ error: 'Failed to process submission' }, { status: 500 });
+      );
     }
 
+    const userId = session.user.id;
+    const { selectedOptionId } = await request.json();
+    const url = new URL(request.url);
+    const mcqId = url.pathname.split('/').pop();
+
+    if (!mcqId || !selectedOptionId || !userId) {
+      return NextResponse.json({ error: 'mcqId, selectedOptionId, and userId are required' }, { status: 400 });
+    }
+
+    const mcq = await db.mCQProblem.findUnique({
+      where: { id: mcqId },
+      include: {
+        options: true,
+      },
+    });
+
+    if (!mcq) {
+      return NextResponse.json({ error: 'MCQ not found' }, { status: 404 });
+    }
+    const correctOption = mcq.options.find(option => option.isCorrect);
+
+    if (!correctOption) {
+      return NextResponse.json({ error: 'No correct option found' }, { status: 500 });
+    }
+
+    const isCorrect = selectedOptionId === correctOption.id;
+
+    await db.mCQSubmission.create({
+      data: {
+        userId,
+        mcqProblemId: mcqId,
+        selectedOptionId,
+        result: isCorrect ? 'true' : 'false',
+      },
+    });
+
+    if (isCorrect) {
+      const userMCQProblem = await db.userMCQProblem.findUnique({
+        where: {
+          userId_mcqProblemId: {
+            userId,
+            mcqProblemId: mcqId,
+          },
+        },
+      });
+
+      if (userMCQProblem) {
+        await db.userMCQProblem.update({
+          where: {
+            userId_mcqProblemId: {
+              userId,
+              mcqProblemId: mcqId,
+            },
+          },
+          data: {
+            solved: "solved",
+          },
+        });
+      } else {
+        await db.userMCQProblem.create({
+          data: {
+            userId,
+            mcqProblemId: mcqId,
+            solved: "solved",
+          },
+        });
+      }
+
+      await updateStreak(userId);
+    }
+
+    return NextResponse.json({
+      isCorrect,
+      message: isCorrect ? 'Correct answer!' : 'Incorrect answer.',
+    });
+
+  } catch (error) {
+    console.error("Error in submission handler:", error);
+    return NextResponse.json({ error: 'Failed to process submission' }, { status: 500 });
+  }
 }
-
-
-
-
-

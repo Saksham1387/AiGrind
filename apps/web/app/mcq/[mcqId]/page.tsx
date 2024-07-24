@@ -4,10 +4,12 @@ import { Tabs, TabsList, TabsTrigger } from "@repo/ui/tabs";
 import { Button } from '@repo/ui/button';
 import { CardTitle, CardDescription } from '@repo/ui/card';
 import axios from 'axios';
-import { McqISubmission, McqSubmissionTable } from '../../../components/SubmissionTable';
+
 import { ArrowLeftFromLine, ArrowRightFromLine } from 'lucide-react';
 import { get } from 'http';
 import { getComments } from '../../db/comment';
+import { McqISubmission } from '../../types/types';
+import { McqSubmissionTable } from '../../../components/SubmissionTable';
 
 type MCQOption = {
   id: string;
@@ -165,25 +167,7 @@ export default function MCQ({ params: { mcqId } }: { params: { mcqId: string } }
               <Button className="mt-4 p-3" onClick={handleSubmit}>Submit</Button>
               {submissionResult && <p className="text-lg mt-4">{submissionResult}</p>} {/* Display result message */}
             </div>
-            <div className="mt-10 w-full">
-              <h3 className="text-xl mb-4">Discussion</h3>
-              <ul className="mb-4">
-                {comments.map((comment) => (
-                  <li key={comment.id} className="mb-2">
-                    <div className="text-lg">{comment.text}</div>
-                    
-                  </li>
-                ))}
-              </ul>
-              <textarea
-                className="w-full p-2 border rounded mb-2 bg-white text-black placeholder-black"
-                rows={4}
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                placeholder="Add a comment"
-              ></textarea>
-              <Button onClick={handleAddComment}>Add Comment</Button>
-            </div>
+            
           </div>
         )}
         {activeTab === "submissions" && (

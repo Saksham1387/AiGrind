@@ -1,121 +1,3 @@
-// "use client"
-// import {
-//   Table,
-//   TableHeader,
-//   TableRow,
-//   TableHead,
-//   TableBody,
-//   TableCell,
-// } from "@repo/ui/table";
-// import { getColor, getProblems } from "../app/db/problem";
-// import { useRouter } from "next/navigation";
-// import { useEffect, useState } from "react";
-// import SkeletonTable from './skeletons/problems';
-// import React from "react";
-
-// export interface Problem {
-//   id: string;
-//   title: string;
-//   difficulty: string;
-//   solved: number;
-// }
-
-// interface MCQProblem {
-//     id: string;
-//     question: string;
-//     title: string;
-//     explanation: string;
-//     category: string | null;
-//     solved: number,
-//     difficulty: string;    // Update to allow null
-//     options: {
-//       id: string;
-//       optionText: string;
-//       isCorrect: boolean;
-//       description: string;
-//       mcqProblemId: string;
-//     }[];
-// };
-
-
-
-// const DashboardProblems = () => {
-//   const [Problems, setProblems] = useState<Problem[]>([]);
-//   const [McqProblems, setMcqProblems] = useState<MCQProblem[]>([]);
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     const fetchProblems = async () => {
-//       const problems = await fetch('/api/submission/all').then(res => res.json());
-//       setProblems(problems);
-//       setLoading(false);
-//     };
-//     fetchProblems();
-
-//     const fetchMcqProblems = async () => {
-//         const problems = await fetch('/api/mcqs').then(res => res.json());
-//         setMcqProblems(problems);
-//         setLoading(false);
-//       };
-//       fetchMcqProblems();
-
-//   }, []);
-
-//   return (
-//     <section className="bg-white dark:bg-gray-900 py-8 md:py-12 min-h-screen">
-//       <div className="container mx-auto px-4 md:px-6">
-//         <div className="mb-6">
-//           <h2 className="text-2xl font-bold mb-2">Coding Problems</h2>
-//           <p className="text-gray-500 dark:text-gray-400 mb-3">
-//             Check out the most popular programming problems on DataDex.
-//           </p>
-//         </div>
-//         <div className="">
-//        {loading ? <SkeletonTable /> : <ProblemCard problems={Problems} McqProblems={McqProblems} />}
-//       </div>
-//       </div>
-//     </section>
-//   );
-// };
-
-// function ProblemCard({problems,McqProblems}:any) {
-
-//   const router = useRouter();
-//   const handleRoute = (id:any) => {
-//     router.push(`/problem/${id}`);
-//   };
-//   return (
-//     <div className="">
-//       <Table>
-//         <TableHeader>
-//           <TableRow className="hover:bg-white">
-//             <TableHead>S.No</TableHead>
-//             <TableHead>Title</TableHead>
-//             <TableHead>Difficulty</TableHead>
-//             <TableHead>Submissions</TableHead>
-//           </TableRow>
-//         </TableHeader>
-//         <TableBody>
-//           {problems.map((problem:any, index:any) => (
-            
-//               <TableRow className="hover:bg-gray-100 hover:cursor-pointer"
-//               onClick={()=>{handleRoute(problem.id)}}
-//               >
-//                 <TableCell>{index + 1}</TableCell>
-//                 <TableCell>{problem.title}</TableCell>
-//                 <TableCell className={getColor(problem.difficulty)}>{problem.difficulty}</TableCell>
-//                 <TableCell>{problem.solved}</TableCell>
-//               </TableRow>
-            
-//           ))}
-//         </TableBody>
-//       </Table>
-//     </div>
-//   );
-// }
-// export default DashboardProblems;
-
-
 "use client"
 import {
   Table,
@@ -125,40 +7,36 @@ import {
   TableBody,
   TableCell,
 } from "@repo/ui/table";
-import { getColor, getProblems } from "../app/db/problem";
+import { getColor } from "../app/db/problem";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import SkeletonTable from './skeletons/problems';
-import React from "react";
+import { ChevronUp, ChevronDown, ChevronDownIcon, ChevronLeft, ChevronRight } from "lucide-react";
+import { MCQProblem, Problem } from "../app/types/types";
+import SkeletonTable from "./skeletons/problems";
+import { Button } from "@repo/ui/button";
 
-export interface Problem {
-  id: string;
-  title: string;
-  difficulty: string;
-  solved: number;
-}
 
-interface MCQProblem {
-  id: string;
-  question: string;
-  title: string;
-  explanation: string;
-  category: string | null;
-  solved: number,
-  difficulty: string;    // Update to allow null
-  options: {
-    id: string;
-    optionText: string;
-    isCorrect: boolean;
-    description: string;
-    mcqProblemId: string;
-  }[];
-};
 
 const DashboardProblems = () => {
-  const [Problems, setProblems] = useState<Problem[]>([]);
-  const [McqProblems, setMcqProblems] = useState<MCQProblem[]>([]);
+  const [problems, setProblems] = useState<Problem[]>([]);
+  const [mcqProblems, setMcqProblems] = useState<MCQProblem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [isStatusDropdownVisible, setIsStatusDropdownVisible] = useState(false);
+  const [isCategoryDropdownVisible, setIsCategoryDropdownVisible] = useState(false);
+  const [sortOrder, setSortOrder] = useState<"default" | "hard-to-easy" | "easy-to-hard">("default");
+  const [currentPage, setCurrentPage] = useState(1);
+  const router = useRouter();
+  const ITEMS_PER_PAGE = 10;
+  const categories = [
+    "NLP",
+    "Reinforcement Learning",
+    "Deep Learning",
+    "Machine Learning",
+    "Linear Algebra",
+    "Generative AI"
+  ];
 
   useEffect(() => {
     const fetchProblems = async () => {
@@ -169,13 +47,69 @@ const DashboardProblems = () => {
     fetchProblems();
 
     const fetchMcqProblems = async () => {
-      const problems = await fetch('/api/mcqs').then(res => res.json());
-      setMcqProblems(problems);
+      const mcqProblems = await fetch('/api/mcqs').then(res => res.json());
+      setMcqProblems(mcqProblems);
       setLoading(false);
     };
     fetchMcqProblems();
-
   }, []);
+
+  const filteredProblems = mcqProblems.filter(problem => {
+    if (selectedStatus && problem.solved !== selectedStatus) return false;
+    if (selectedCategories.length > 0 && !selectedCategories.includes(problem.category)) return false;
+    return true;
+  });
+
+  const handleStatusFilter = (status: string | null) => {
+    setSelectedStatus(status);
+    setIsStatusDropdownVisible(false);
+  };
+
+  const handleCategoryFilter = (category: string) => {
+    setSelectedCategories(prevCategories =>
+      prevCategories.includes(category)
+        ? prevCategories.filter(c => c !== category)
+        : [...prevCategories, category]
+    );
+  };
+
+  const toggleStatusDropdown = () => {
+    setIsStatusDropdownVisible(!isStatusDropdownVisible);
+    setIsCategoryDropdownVisible(false);
+  };
+
+  const toggleCategoryDropdown = () => {
+    setIsCategoryDropdownVisible(!isCategoryDropdownVisible);
+    setIsStatusDropdownVisible(false);
+  };
+
+  const sortedProblems = () => {
+    if (sortOrder === "default") return filteredProblems;
+
+    const difficulties = ["Easy", "Medium", "Hard"];
+    return filteredProblems.slice().sort((a, b) => {
+      if (sortOrder === "hard-to-easy") {
+        return difficulties.indexOf(b.difficulty) - difficulties.indexOf(a.difficulty);
+      } else {
+        return difficulties.indexOf(a.difficulty) - difficulties.indexOf(b.difficulty);
+      }
+    });
+  };
+
+  const indexOfLastProblem = currentPage * ITEMS_PER_PAGE;
+  const indexOfFirstProblem = indexOfLastProblem - ITEMS_PER_PAGE;
+  const currentProblems = mcqProblems.slice(indexOfFirstProblem, indexOfLastProblem);
+
+  // Calculate total pages
+  const totalPages = Math.ceil(problems.length / ITEMS_PER_PAGE);
+
+  const handleRoute = (id: string) => {
+    router.push(`/problem/${id}`);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   return (
     <section className="bg-white dark:bg-gray-900 py-8 md:py-12 min-h-screen">
@@ -185,31 +119,76 @@ const DashboardProblems = () => {
           <p className="text-gray-500 dark:text-gray-400 mb-3">
             Check out the most popular Questions asked in the ML Interviews.
           </p>
+          <div className="flex justify-center gap-16 mb-8">
+            <div className="relative">
+              <button onClick={toggleStatusDropdown} className="bg-neutral-800 text-white px-4 py-2 rounded flex items-center">
+                Status
+                <ChevronDownIcon className="ml-2" />
+              </button>
+              {isStatusDropdownVisible && (
+                <div className="absolute mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-lg z-10">
+                  <button onClick={() => handleStatusFilter(null)} className="block w-full text-left px-4 py-2 border-b hover:bg-gray-100 dark:hover:bg-gray-700">All</button>
+                  <button onClick={() => handleStatusFilter('solved')} className="block w-full text-left px-4 py-2 border-b hover:bg-gray-100 dark:hover:bg-gray-700">Solved</button>
+                  <button onClick={() => handleStatusFilter('unsolved')} className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Unsolved</button>
+                </div>
+              )}
+            </div>
+            <div className="relative">
+              <button onClick={toggleCategoryDropdown} className="bg-neutral-800 text-white px-4 py-2 rounded flex items-center">
+                Category
+                <ChevronDownIcon className="ml-2" />
+              </button>
+              {isCategoryDropdownVisible && (
+                <div className="absolute mt-2 w-72 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-lg z-10 p-4 grid grid-cols-3 gap-4">
+                  {categories.map(category => (
+                    <label key={category} className="flex items-center text-left">
+                      <input 
+                        type="checkbox" 
+                        checked={selectedCategories.includes(category)}
+                        onChange={() => handleCategoryFilter(category)}
+                        className="mr-2 accent-green-500"
+                      />
+                      <span className="ml-2">{category}</span>
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-        <div className="">
-          {loading ? <SkeletonTable /> : <ProblemCard problems={Problems} mcqProblems={McqProblems} />}
+        <div className={`${isStatusDropdownVisible || isCategoryDropdownVisible ? 'mt-44' : ''}`}>
+          {loading ? <SkeletonTable /> : 
+          <div>
+          <ProblemCard problems={problems} mcqProblems={sortedProblems()} sortOrder={sortOrder} setSortOrder={setSortOrder} /> 
+          <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+              </div>
+          }
         </div>
       </div>
     </section>
   );
 };
 
-function shuffleArray(array: any[]) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
-
-function ProblemCard({ problems, mcqProblems }: { problems: Problem[], mcqProblems: MCQProblem[] }) {
+const ProblemCard = ({ problems, mcqProblems, sortOrder, setSortOrder }: { problems: Problem[], mcqProblems: MCQProblem[], sortOrder: string, setSortOrder: (order: string) => void }) => {
   const router = useRouter();
 
   const handleRoute = (id: string) => {
     router.push(`/problem/${id}`);
   };
 
-  // Combine and shuffle problems
+  const handleSort = () => {
+    //@ts-ignore
+    setSortOrder(prevOrder => {
+      if (prevOrder === "default") return "hard-to-easy";
+      if (prevOrder === "hard-to-easy") return "easy-to-hard";
+      return "default";
+    });
+  };
+
   const combinedProblems = [...problems, ...mcqProblems];
   const shuffledProblems = shuffleArray(combinedProblems);
 
@@ -220,13 +199,25 @@ function ProblemCard({ problems, mcqProblems }: { problems: Problem[], mcqProble
           <TableRow className="hover:bg-white">
             <TableHead>S.No</TableHead>
             <TableHead>Title</TableHead>
-            <TableHead>Difficulty</TableHead>
+            <TableHead onClick={handleSort} className="cursor-pointer flex items-center">
+              Difficulty
+              <div className="flex flex-col ml-2">
+                <ChevronUp
+                  size={12}
+                  className={sortOrder === "easy-to-hard" ? "text-black" : "text-gray-500"}
+                />
+                <ChevronDown
+                  size={12}
+                  className={sortOrder === "hard-to-easy" ? "text-black" : "text-gray-500"}
+                />
+              </div>
+            </TableHead>
             <TableHead>Submissions</TableHead>
-            </TableRow>
+          </TableRow>
         </TableHeader>
         <TableBody>
           {shuffledProblems.map((problem: any, index: any) => (
-            <TableRow className="hover:bg-gray-100 hover:cursor-pointer"
+            <TableRow className="hover:bg-gray-100 hover:cursor-pointer" key={problem.id}
               onClick={() => { handleRoute(problem.id) }}
             >
               <TableCell>{index + 1}</TableCell>
@@ -236,8 +227,64 @@ function ProblemCard({ problems, mcqProblems }: { problems: Problem[], mcqProble
             </TableRow>
           ))}
         </TableBody>
-        </Table>
+      </Table>
     </div>
-    );
+  );
+};
+
+function shuffleArray(array: any[]) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j= Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
 }
+
+
+function Pagination({
+  currentPage,
+  totalPages,
+  onPageChange
+}: {
+  currentPage: number,
+  totalPages: number,
+  onPageChange: (page: number) => void
+}) {
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      onPageChange(currentPage - 1);
+    }
+  };
+
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      onPageChange(currentPage + 1);
+    }
+  };
+
+  return (
+    <div className="flex justify-center mt-8">
+          <Button
+            onClick={handlePrevious}
+            disabled={currentPage === 1}
+            className="mr-3 bg-transparent text-white hover:bg-slate-700"
+          >
+            <ChevronLeft></ChevronLeft>
+            Previous
+          </Button>
+          <span className="text-gray-700 dark:text-gray-300 mt-2">
+            {currentPage} of {totalPages}
+          </span>
+          <Button
+            onClick={handleNext}
+            disabled={currentPage === totalPages}
+            className="ml-3 bg-transparent text-white hover:bg-slate-700 "
+          >
+            Next
+            <ChevronRight></ChevronRight>
+          </Button>
+        </div>
+  );
+}
+    
 export default DashboardProblems;

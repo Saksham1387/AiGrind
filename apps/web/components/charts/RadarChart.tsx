@@ -1,7 +1,7 @@
-"use client"
-import { TrendingUp } from "lucide-react"
-import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from "recharts"
+"use client";
 
+import { useState, useEffect } from "react";
+import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from "recharts";
 import {
   Card,
   CardContent,
@@ -16,60 +16,83 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "../../../../packages/ui/src/@/components/ui/chart"
-const chartData = [
-  { month: "Reinforcement Learning", desktop: 186 },
-  { month: "Deep Learning", desktop: 305 },
-  { month: "NLP", desktop: 237 },
-  { month: "Generative AI", desktop: 273 },
-  { month: "Linear Algebra", desktop: 209 },
-  { month: "Machine Learning", desktop: 214 },
-]
 
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
+interface ChartData {
+  category: string;
+  count: number;
+}
+
+const chartConfig: ChartConfig = {
+  categories: {
+    label: "Categories",
     color: "hsl(var(--chart-1))",
   },
-} satisfies ChartConfig
+};
+
 
 export function Radarchart() {
+  const [chartData, setChartData] = useState<ChartData[]>([]);
+
+  useEffect(() => {
+    async function getData() {
+      async function fetchSolvedProblemsStats(): Promise<ChartData[]> {
+        const response = await fetch(`/api/stats`,{
+          method:"POST",
+          headers:{
+            "Content-Type":"application/json"
+          },
+          body:JSON.stringify({
+            type:"categoryCounts"
+          })
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        return await response.json();
+      }
+      try {
+        const data = await fetchSolvedProblemsStats();
+        setChartData(data);
+      } catch (error) {
+        console.error("Error fetching chart data:", error);
+      }
+    }
+
+    getData();
+  }, []);
+
   return (
-    <Card className="w-[300px]">
-      <CardHeader className="items-center">
-        <CardTitle>Radar Chart - Dots</CardTitle>
-        <CardDescription>
-          Showing total visitors for the last 6 months
-        </CardDescription>
+    <Card  className="w-[300px]">
+      <CardHeader className="items-center text-center">
+        <CardTitle>Skill Level</CardTitle>
+        <CardDescription>Solve Problems to see your stats</CardDescription>
       </CardHeader>
-      <CardContent className="">
+      <CardContent className="pb-0">
         <ChartContainer
           config={chartConfig}
-          className="m-5 aspect-square max-h-[350px]"
+          className="mx-auto aspect-square max-h-[250px]"
         >
-          <RadarChart data={chartData}>
+          <RadarChart data={chartData} className="w-[300px]">
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-            <PolarAngleAxis dataKey="month" />
+            <PolarAngleAxis dataKey="category" />
             <PolarGrid />
             <Radar
-              dataKey="desktop"
-              fill="var(--color-desktop)"
+              dataKey="count"
+              fill="var(--color-categories)"
               fillOpacity={0.6}
               dot={{
-                r: 4,
+                r: 5,
                 fillOpacity: 1,
               }}
             />
           </RadarChart>
         </ChartContainer>
       </CardContent>
-      {/* <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
+      <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 leading-none text-muted-foreground">
-          January - June 2024
+          Data based on problem-solving stats
         </div>
-      </CardFooter> */}
+      </CardFooter>
     </Card>
-  )
+  );
 }

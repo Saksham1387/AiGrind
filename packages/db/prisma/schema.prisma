@@ -25,6 +25,7 @@ model User {
   streaks            Streak[] 
   streakDates        StreakDate[]
   comments           Comment[]
+  userMCQProblems  UserMCQProblem[] 
 }
 
 model StreakDate {
@@ -188,8 +189,25 @@ model MCQProblem {
   mcqSubmissions     MCQSubmission[]
   solved             String        @default("unsolved")
   difficulty         Difficulty    @default(MEDIUM) 
-  comments           Comment[]   
+  comments           Comment[]  
+  userMCQProblems    UserMCQProblem[] 
 }
+
+model UserMCQProblem {
+  id           String     @id @default(cuid())
+  user         User       @relation(fields: [userId], references: [id])
+  userId       String
+  mcqProblem   MCQProblem @relation(fields: [mcqProblemId], references: [id])
+  mcqProblemId String
+  solved       String     @default("unsolved")
+
+  @@unique([userId, mcqProblemId])
+}
+
+
+
+
+
 
 model MCQOption {
   id            String    @id @default(cuid())

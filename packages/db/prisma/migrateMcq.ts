@@ -1,127 +1,91 @@
 import { Client } from '@notionhq/client';
-import prismaClient from "../src";
+import prismaClient from '../src';
 
+// Initialize Notion client
 const notion = new Client({ auth: "secret_9nC7iT4WKnZScdp2puGm308QsMEzTX6EFEIoIU63hwN" });
 
-type NotionBlock = {
-  object: string;
-  id: string;
-  type: string;
-  heading_2?: {
-    text: Array<{ plain_text: string }>;
-  };
-  heading_3?: {
-    text: Array<{ plain_text: string }>;
-  };
-  paragraph?: {
-    text: Array<{ plain_text: string }>;
-  };
-  bulleted_list_item?: {
-    text: Array<{ plain_text: string }>;
-  };
-  toggle?: {
-    text: Array<{ plain_text: string }>;
-  };
+// Notion database IDs for each level
+const notionDBs = {
+  easy: 'c2a20d37b07340ceb1725c8d84b11c77',
+  medium: '3bd3eea9785f4b92818ced1e71b36cf1',
+  hard: '65fe6c35d2e84a75bce70f42c22537a2',
 };
 
-// Fetch data from Notion API
-async function fetchNotionData(pageId: string) {
-  try {
-    const response = await notion.blocks.children.list({
-      block_id: pageId,
-      page_size: 50,
-    });
-    return response.results as NotionBlock[];
-  } catch (error) {
-    console.error('Error fetching Notion data:', error);
-    throw error;
-  }
+// Helper function to fetch data from Notion
+//@ts-ignore
+async function fetchNotionDatabase(databaseId) {
+  const response = await notion.databases.query({ database_id: databaseId });
+  return response.results;
 }
 
-// Parse and save data to the database
-async function parseAndSaveData() {
-  const pageId = '855801f6965c4fa5ad4b86ad70c641bb'; // Replace with your actual page ID
-  try {
-    const blocks = await fetchNotionData(pageId);
+// Helper function to parse Notion pages to MCQs
+//@ts-ignore
+function parseNotionPageToMCQ(page, difficulty) {
+  const properties = page.properties;
+  
+  console.log(properties); // Debugging line to inspect the properties structure
 
-    for (const block of blocks) {
-      if (block.type === 'heading_2' && block.heading_2) {
-        const category = block.heading_2.text[0].plain_text;
-        const questions = await fetchNotionData(block.id);
+  const question = properties['Column 1']?.rich_text?.[0]?.text?.content || '';
+  const explanation = properties['Column 4']?.rich_text?.[0]?.text?.content || '';
+  const title = properties.Title?.title?.[0]?.text?.content || '';
+  const category = "Reinforcement Learning"; // Assuming this is a constant value for now
+  const optionsText = properties['Column 2']?.rich_text?.[0]?.text?.content || '';
+  const correctOptionText = properties['Column 3']?.rich_text?.[0]?.text?.content || '';
 
-        for (const questionBlock of questions) {
-          if (questionBlock.type === 'paragraph' && questionBlock.paragraph) {
-            const difficulty = questionBlock.paragraph.text[0].plain_text;
-            console.log('Category:', category, 'Difficulty:', difficulty);
-            const mcqs = await fetchNotionData(questionBlock.id);
+  // Check if all required properties were found
+  if (!question || !explanation || !title || !category || !optionsText || !correctOptionText) {
+    console.error('Missing required properties:', { question, explanation, title, category, optionsText, correctOptionText });
+    throw new Error('Missing required properties in the Notion page');
+  }
 
-            for (const mcqBlock of mcqs) {
-              if (mcqBlock.type === 'heading_3' && mcqBlock.heading_3) {
-                const title = mcqBlock.heading_3.text[0].plain_text;
-                const mcqDetails = await fetchNotionData(mcqBlock.id);
+  // Split options text into individual options, assuming they are separated by commas
+  //@ts-ignore
+  const optionsArray = optionsText.split(',').map(option => option.trim());
+//@ts-ignore
+  const options = optionsArray.map(option => ({
+    optionText: option,
+    isCorrect: option === correctOptionText,
+    description: "",
+  }));
 
-                let question = '';
-                let options: any[] = [];
-                let correctOption = '';
-                let explanation = '';
+  return {
+    question,
+    explanation,
+    title,
+    category,
+    hidden: false, // Adjust this if you have a hidden property
+    difficulty,
+    options: { create: options },
+  };
+}
 
-                for (const detail of mcqDetails) {
-                  if (detail.type === 'paragraph' && detail.paragraph) {
-                    question = detail.paragraph.text[0].plain_text;
-                  } else if (detail.type === 'bulleted_list_item' && detail.bulleted_list_item) {
-                    const optionText = detail.bulleted_list_item.text[0].plain_text;
-                    const isCorrect = optionText.startsWith('*');
-                    options.push({
-                      text: isCorrect ? optionText.slice(1) : optionText,
-                      isCorrect,
-                    });
-                  } else if (detail.type === 'toggle' && detail.toggle) {
-                    explanation = detail.toggle.text[0].plain_text;
-                  }
-                }
+async function main() {
+  const levels = ['easy', 'medium', 'hard'];
 
-                console.log('Inserting MCQProblem:', {
-                  title,
-                  question,
-                  explanation,
-                  category,
-                  difficulty: difficulty.toUpperCase(),
-                  options,
-                });
+  for (const level of levels) {
+    //@ts-ignore
+    const notionPages = await fetchNotionDatabase(notionDBs[level]);
 
-                await prismaClient.mCQProblem.create({
-                  data: {
-                    title,
-                    question,
-                    explanation,
-                    category,
-                    difficulty: difficulty.toUpperCase() as 'EASY' | 'MEDIUM' | 'HARD', // Adjust this as necessary
-                    options: {
-                      create: options,
-                    },
-                  },
-                });
+    for (const page of notionPages) {
+      try {
+        const newMCQ = parseNotionPageToMCQ(page, level.toUpperCase());
 
-                console.log(`Inserted MCQProblem with title: ${title}`);
-              }
-            }
-          }
-        }
+        await prismaClient.mCQProblem.create({
+          data: newMCQ,
+        });
+
+        console.log(`MCQ Created: ${newMCQ.question}`);
+      } catch (error) {
+        console.error('Error creating MCQ:', error);
       }
     }
-  } catch (error) {
-    console.error('Error parsing and saving data:', error);
-    throw error;
   }
 }
 
-// Run the script
-parseAndSaveData()
-  .then(() => {
-    console.log('Data imported successfully');
-  })
-  .catch((error) => {
-    console.error('Error importing data:', error);
+main()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
   })
   .finally(async () => {
     await prismaClient.$disconnect();

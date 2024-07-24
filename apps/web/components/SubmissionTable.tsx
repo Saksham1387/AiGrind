@@ -12,22 +12,7 @@ import {
   TableCell,
 } from "@repo/ui/table";
 import { CheckIcon, ClockIcon, CircleX } from "lucide-react";
-import { ReactElement, JSXElementConstructor, ReactNode, ReactPortal, AwaitedReactNode } from "react";
-
-export interface ISubmission {
-  id: string;
-  time: string;
-  memory: string;
-  problemId: string;
-  languageId: string;
-  code: string;
-  fullCode: string;
-  status: string;
-  testcases: {
-    status: string;
-    index: number;
-  }[];
-}
+import { ISubmission, McqISubmission } from "../app/types/types";
 
 function getColor(status: string) {
   switch (status) {
@@ -116,13 +101,7 @@ export function SubmissionTable({
     </div>
   );
 }
-export interface McqISubmission {
-  id: string;
-  user: { email: string };
-  selectedOption: { optionText: string };
-  createdAt: string;
-  result: string;
-}
+
 
 
 

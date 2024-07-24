@@ -1,4 +1,3 @@
-import { Contests } from "./Contests";
 import { Hero } from "./Hero";
 import DashboardProblems from "./DashboardProb";
 

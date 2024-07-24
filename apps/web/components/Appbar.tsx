@@ -27,9 +27,9 @@ export function Appbar() {
         <span className="text-lg font-bold">DataDex</span>
       </Link>
       <nav className="hidden md:flex items-center gap-6">
-        <Link href="/contests" className="hover:underline" prefetch={false}>
+        {/* <Link href="/contests" className="hover:underline" prefetch={false}>
           Contests
-        </Link>
+        </Link> */}
         <Link href="/problems" className="hover:underline" prefetch={false}>
           Problems
         </Link>
@@ -45,7 +45,7 @@ export function Appbar() {
 
       {!isLoading && session?.user && (
         <div className="flex items-center gap-4">
-          <Streak userId={session?.user.id}></Streak>
+          <Streak userId={session?.user?.id}></Streak>
           <ModeToggle />
           <DropdownMenu>
             <DropdownMenuTrigger>
@@ -62,6 +62,7 @@ export function Appbar() {
               {/* <button >Logout</button> */}
               <div className="py-3 px-2">
                 <p>Email: {session?.user?.email}</p>
+                {/* <p>Username: {session?.user?.username}</p> */}
                 <p>Name: {session?.user?.name}</p>
                 {/* <p>Name: {session?.user?.username}</p> */}
               </div>
@@ -89,6 +90,7 @@ export function Appbar() {
 }
 
 function Streak({ userId }: { userId: string }) {
+  const router = useRouter();
   const [count, setCount] = useState(0);
   useEffect(() => {
     const fetchStreak = async () => {
@@ -97,13 +99,11 @@ function Streak({ userId }: { userId: string }) {
           headers: {
             "Content-Type": "application/json",
           },
-          // body: JSON.stringify({ userId }),
         });
         if (!res.ok) {
           throw new Error(`HTTP error! Status: ${res.status}`);
         }
         const data = await res.json();
-        console.log(data);
         if (data && data.streak && data.streak.currentStreak !== undefined) {
           setCount(data.streak.currentStreak);
         } else {
@@ -114,7 +114,7 @@ function Streak({ userId }: { userId: string }) {
       }
     };
     fetchStreak();
-  }, [userId]);
+  }, [router]);
   return (
     <div className="flex flex-row mr-5 ">
       <Button className="bg-black hover:bg-transparent">

@@ -268,13 +268,13 @@ export async function POST(req: NextRequest) {
       }
     );
   }
-  console.log(submissionInput.data.languageId);
+
     const problem = await getProblem(
     dbProblem.slug,
     submissionInput.data.languageId
   );
 
-  console.log("this si the probelm",problem);
+
   problem.fullBoilerplateCode = problem.fullBoilerplateCode.replace(
     "##USER_CODE_HERE##",
     submissionInput.data.code

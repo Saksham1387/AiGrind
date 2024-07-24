@@ -24,16 +24,13 @@ const Calendarh = () => {
     const getStreakDates = async () => {
       const dates = await fetchStreakDates(userId);
       setStreakDates(dates);
-      console.log(dates);
     };
-
     getStreakDates();
   }, [userId]);
 
   return (
     <div>
         <Calendar streakDates={streakDates} />
-
     </div>
   )
   
