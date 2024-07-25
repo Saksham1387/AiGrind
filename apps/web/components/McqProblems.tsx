@@ -262,7 +262,7 @@ const McqProblems = () => {
           <Button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="mr-3 bg-transparent text-white hover:bg-slate-700"
+            className="mr-3 bg-transparent text-black hover:bg-slate-700"
           >
             <ChevronLeft></ChevronLeft>
             Previous
@@ -273,7 +273,7 @@ const McqProblems = () => {
           <Button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="ml-3 bg-transparent text-white hover:bg-slate-700 "
+            className="ml-3 bg-transparent text-black hover:bg-slate-700 "
           >
             Next
             <ChevronRight></ChevronRight>

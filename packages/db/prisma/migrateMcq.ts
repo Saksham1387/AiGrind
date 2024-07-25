@@ -6,9 +6,9 @@ const notion = new Client({ auth: "secret_9nC7iT4WKnZScdp2puGm308QsMEzTX6EFEIoIU
 
 // Notion database IDs for each level
 const notionDBs = {
-  easy: 'c2a20d37b07340ceb1725c8d84b11c77',
-  medium: '3bd3eea9785f4b92818ced1e71b36cf1',
-  hard: '65fe6c35d2e84a75bce70f42c22537a2',
+  easy: '42f21b3284ff435a943ce5de6a5e62a9',
+  medium: '0e2ef72234be4db1818d144f60b1be3b',
+  hard: '283b9a63d0ba46a1932904430a69f6d1',
 };
 
 // Helper function to fetch data from Notion
@@ -28,7 +28,7 @@ function parseNotionPageToMCQ(page, difficulty) {
   const question = properties['Column 1']?.rich_text?.[0]?.text?.content || '';
   const explanation = properties['Column 4']?.rich_text?.[0]?.text?.content || '';
   const title = properties.Title?.title?.[0]?.text?.content || '';
-  const category = "Reinforcement Learning"; // Assuming this is a constant value for now
+  const category = "Machine Learning"; // Assuming this is a constant value for now
   const optionsText = properties['Column 2']?.rich_text?.[0]?.text?.content || '';
   const correctOptionText = properties['Column 3']?.rich_text?.[0]?.text?.content || '';
 
