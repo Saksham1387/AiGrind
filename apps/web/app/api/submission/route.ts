@@ -79,9 +79,9 @@ export async function POST(req: NextRequest) {
     submissionInput.data.code
   );
   
+  console.log(problem);
   const response = await axios.post(
     `${JUDGE0_URI}/submissions/batch?base64_encoded=false`,
-    
     {
       submissions: problem.inputs.map((input, index) => ({
         
@@ -90,13 +90,14 @@ export async function POST(req: NextRequest) {
           "##INPUT_FILE_INDEX##",
           index.toString()
         ),
-        expected_output: problem.outputs[index],
-      })),
+        expected_output: problem.outputs[index]
+      }))
     }
   );
+  console.log(response.data);
 
  
-console.log(response.data);
+
 
   const submission = await db.submission.create({
     data: {

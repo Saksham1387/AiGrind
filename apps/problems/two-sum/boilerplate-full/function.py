@@ -1,15 +1,18 @@
-
-import sys
-
 ##USER_CODE_HERE##
-
+  
 def main():
-    input = sys.stdin.read().strip().split()
-    num1 = int(input.pop(0)) 
-    num2 = int(input.pop(0))
+    input_file_path = '/dev/problems/two-sum/tests/inputs/##INPUT_FILE_INDEX##.txt'
+    with open(input_file_path, 'r') as file:
+        input_data = file.read().strip().split('\n')
+    input_list = [int(x) for x in ' '.join(input_data).split()]
+      
+    num1 = int(input_list.pop(0))
+    num2 = int(input_list.pop(0))
+      
     result = sum(num1, num2)
+      
     print(result)
-
+  
 if __name__ == "__main__":
     main()
-  
+    

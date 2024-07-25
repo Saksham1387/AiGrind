@@ -5,7 +5,7 @@ Implement a function to compute the regularization term for linear regression. G
 ### Function Signature
 
 ```python
-
+def compute_regularization(weights: list[float], lambda_: float) -> float:
 
 Input
 weights (list of float): A list of model weights.

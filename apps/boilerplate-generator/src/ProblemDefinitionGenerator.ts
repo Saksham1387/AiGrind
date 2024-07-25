@@ -67,19 +67,16 @@ export class ProblemDefinitionParser {
     return `fn ${this.functionName}(${inputs}) -> ${outputType} {\n    // Implementation goes here\n    result\n}`;
   }
 
-  generateJava(): string{
+  generateJava(): string {
     const inputs = this.inputFields
       .map((field) => `${this.mapTypeToJava(field.type)} ${field.name}`)
       .join(", ");
     return `public static ${this.mapTypeToJava(this.outputFields[0].type)} ${this.functionName}(${inputs}) {\n    // Implementation goes here\n    return result;\n}`;
   }
 
-  generatePython(): string{
-    const inputs = this.inputFields
-      .map((field) => `${field.name}: ${this.mapTypeToPython(field.type)}`)
-      .join(", ");
-    const outputType = this.mapTypeToPython(this.outputFields[0].type);
-    return `def ${this.functionName}(${inputs}) -> ${outputType}:\n    # Implementation goes here\n    return result`;
+  generatePython(): string {
+    const inputs = this.inputFields.map((field) => field.name).join(", ");
+    return `def ${this.functionName}(${inputs}):\n    # Implementation goes here\n    return result\n`;
   }
 
   mapTypeToRust(type: string): string {
@@ -128,28 +125,28 @@ export class ProblemDefinitionParser {
     }
   }
 
-  mapTypeToJava(type:string):string {
-  switch (type) {
-    case "int":
-      return "int";
-    case "float":
-      return "float";
-    case "string":
-      return "String";
-    case "bool":
-      return "boolean";
-    case "list<int>":
-      return "List<Integer>";
-    case "list<float>":
-      return "List<Float>";
-    case "list<string>":
-      return "List<String>";
-    case "list<bool>":
-      return "List<Boolean>";
-    default:
-      return "unknown";
+  mapTypeToJava(type: string): string {
+    switch (type) {
+      case "int":
+        return "int";
+      case "float":
+        return "float";
+      case "string":
+        return "String";
+      case "bool":
+        return "boolean";
+      case "list<int>":
+        return "List<Integer>";
+      case "list<float>":
+        return "List<Float>";
+      case "list<string>":
+        return "List<String>";
+      case "list<bool>":
+        return "List<Boolean>";
+      default:
+        return "unknown";
+    }
   }
-}
 
   mapTypeToPython(type: string): string {
     switch (type) {

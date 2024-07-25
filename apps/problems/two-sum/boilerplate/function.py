@@ -1,3 +1,3 @@
-def sum(num1: int, num2: int) -> int:
+def sum(num1, num2):
     # Implementation goes here
     return result

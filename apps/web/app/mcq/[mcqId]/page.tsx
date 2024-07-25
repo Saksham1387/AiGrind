@@ -1,16 +1,13 @@
-'use client';
-import { useState, useEffect } from 'react';
+"use client";
+import { useState, useEffect } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@repo/ui/tabs";
-import { Button } from '@repo/ui/button';
-import { CardTitle, CardDescription } from '@repo/ui/card';
-import axios from 'axios';
-
-import { ArrowLeftFromLine, ArrowRightFromLine } from 'lucide-react';
-import { get } from 'http';
-import { getComments } from '../../db/comment';
-import { McqISubmission } from '../../types/types';
-import { McqSubmissionTable } from '../../../components/SubmissionTable';
-import { ProblemSkeleton } from '../../../components/skeletons/problems';
+import { Button } from "@repo/ui/button";
+import { CardTitle, CardDescription } from "@repo/ui/card";
+import axios from "axios";
+import { ArrowLeftFromLine, ArrowRightFromLine } from "lucide-react";
+import { McqISubmission } from "../../types/types";
+import { McqSubmissionTable } from "../../../components/SubmissionTable";
+import { ProblemSkeleton } from "../../../components/skeletons/problems";
 
 type MCQOption = {
   id: string;
@@ -25,30 +22,21 @@ type MCQProblem = {
   explanation: string;
 };
 
-
 interface User {
   id: string;
   name?: string; // Optional property if you have user's name
   email?: string; // Optional property if you have user's email
 }
 
-// Define the Comment interface
-interface Comment {
-  id: string;
-  text: string;
-  createdAt: string; // ISO string representation of date-time
-  updatedAt: string; // ISO string representation of date-time
-  user: User; // User who made the comment
-  MCQProblemId?: string; // Optional if you may not always have this
-}
-
-export default function MCQ({ params: { mcqId } }: { params: { mcqId: string } }) {
-
+export default function MCQ({
+  params: { mcqId },
+}: {
+  params: { mcqId: string };
+}) {
   const [mcq, setMcq] = useState<MCQProblem | null>(null);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [submissionResult, setSubmissionResult] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("mcq");
-
 
   useEffect(() => {
     if (mcqId) {
@@ -61,18 +49,16 @@ export default function MCQ({ params: { mcqId } }: { params: { mcqId: string } }
     }
   }, [mcqId]);
 
-
-
   const handleSubmit = async () => {
     if (!selectedOption) {
-      alert('Please select an option.');
+      alert("Please select an option.");
       return;
     }
     try {
       const res = await fetch(`/api/mcqs/${mcqId}`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           selectedOptionId: selectedOption,
@@ -84,29 +70,32 @@ export default function MCQ({ params: { mcqId } }: { params: { mcqId: string } }
       if (res.ok) {
         setSubmissionResult(result.message); // Update the result state
       } else {
-        setSubmissionResult(result.error || 'Submission failed.');
+        setSubmissionResult(result.error || "Submission failed.");
       }
     } catch (error) {
       console.error(error);
-      setSubmissionResult('An error occurred.');
+      setSubmissionResult("An error occurred.");
     }
   };
 
-  if (!mcq) return <div>
-    <ProblemSkeleton></ProblemSkeleton>
-  </div>;
+  if (!mcq)
+    return (
+      <div>
+        <ProblemSkeleton></ProblemSkeleton>
+      </div>
+    );
 
   return (
     <div className="relative min-h-screen w-full bg-white flex flex-col items-center py-10 dark:bg-gray-800">
       <Button
         className="absolute top-4 left-4 text-lg p-2"
-        onClick={() => console.log('Previous')}
+        onClick={() => console.log("Previous")}
       >
         <ArrowLeftFromLine></ArrowLeftFromLine>
       </Button>
       <Button
         className="absolute top-4 right-4 text-lg p-2"
-        onClick={() => console.log('Next')}
+        onClick={() => console.log("Next")}
       >
         <ArrowRightFromLine></ArrowRightFromLine>
       </Button>
@@ -119,15 +108,21 @@ export default function MCQ({ params: { mcqId } }: { params: { mcqId: string } }
             onValueChange={setActiveTab}
           >
             <TabsList className="grid grid-cols-2 w-full">
-              <TabsTrigger className="" value="mcq">MCQ</TabsTrigger>
-              <TabsTrigger className="" value="submissions">Submissions</TabsTrigger>
+              <TabsTrigger className="" value="mcq">
+                MCQ
+              </TabsTrigger>
+              <TabsTrigger className="" value="submissions">
+                Submissions
+              </TabsTrigger>
             </TabsList>
           </Tabs>
         </div>
         {activeTab === "mcq" && (
           <div className="flex flex-col items-center w-full">
             <CardTitle className="mb-3 mt-5 text-2xl">{mcq.question}</CardTitle>
-            <CardDescription className="mb-3 text-xl">{mcq.description}</CardDescription>
+            <CardDescription className="mb-3 text-xl">
+              {mcq.description}
+            </CardDescription>
             <div className="flex flex-col items-center space-y-2 w-full">
               <ul className="space-y-2 w-full">
                 {mcq.options.map((option) => (
@@ -146,13 +141,17 @@ export default function MCQ({ params: { mcqId } }: { params: { mcqId: string } }
                 ))}
               </ul>
               <div className="mt-10"></div>
-              <Button className="mt-4 p-3" onClick={handleSubmit}>Submit</Button>
-              {submissionResult && <p className="text-lg mt-4">{submissionResult} 
-                <p className='text-md'>Explanation: {mcq.explanation}</p>
-                </p>} {/* Display result message */}
-
+              <Button className="mt-4 p-3" onClick={handleSubmit}>
+                Submit
+              </Button>
+              {submissionResult && (
+                <p className="text-lg mt-4">
+                  {submissionResult}
+                  <p className="text-md">Explanation: {mcq.explanation}</p>
+                </p>
+              )}{" "}
+              {/* Display result message */}
             </div>
-            
           </div>
         )}
         {activeTab === "submissions" && (
@@ -169,9 +168,7 @@ function Submissions({ mcqId }: { mcqId: string }) {
   const [submissions, setSubmissions] = useState<McqISubmission[]>([]);
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(
-        `/api/mcqs/bulk?mcqId=${mcqId}`
-      );
+      const response = await axios.get(`/api/mcqs/bulk?mcqId=${mcqId}`);
       console.log(response.data);
       setSubmissions(response.data.submissions || []);
     };

@@ -1,3 +1,3 @@
-def maxElement(arr: List[int]) -> int:
+def maxElement(arr):
     # Implementation goes here
     return result

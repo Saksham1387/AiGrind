@@ -1,3 +1,3 @@
-def compute_regularization(weights: List[float], lambda_: float) -> float:
+def compute_regularization(weights, lambda_):
     # Implementation goes here
     return result

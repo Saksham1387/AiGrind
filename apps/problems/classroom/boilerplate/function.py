@@ -1,3 +1,3 @@
-def classroom(arr: List[int]) -> int:
+def classroom(arr):
     # Implementation goes here
     return result

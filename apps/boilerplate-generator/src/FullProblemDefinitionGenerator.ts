@@ -232,40 +232,39 @@ fn main() -> io::Result<()> {
 `;
   }
 
-generatePython(): string {
-  const inputs = this.inputFields
-    .map((field) => `${field.name}: ${this.mapTypeToPython(field.type)}`)
-    .join(", ");
+
+  generatePython(): string {
+    const inputs = this.inputFields.map((field) => field.name).join(", ");
+    const inputReads = this.inputFields
+      .map((field) => {
+        if (field.type.startsWith("list<")) {
+          return `size_${field.name} = int(input_list.pop(0))\n${field.name} = [int(x) for x in input_list[:size_${field.name}]]`;
+        } else {
+          return `${field.name} = int(input_list.pop(0))`;
+        }
+      })
+      .join("\n    ");
+    const functionCall = `result = ${this.functionName}(${this.inputFields.map((field) => field.name).join(", ")})`;
+    const outputWrite = `print(result)`;
   
-  const inputReads = this.inputFields
-    .map((field) => {
-      if (field.type.startsWith("list<")) {
-        return `size_${field.name} = int(input.pop(0))\n${field.name} = [int(x) for x in input[:size_${field.name}]]\ninput = input[size_${field.name}:]`;
-      } else {
-        return `${field.name} = int(input.pop(0))`;
-      }
-    })
-    .join("/n");
+    return `##USER_CODE_HERE##
   
-  const functionCall = `result = ${this.functionName}(${this.inputFields.map((field) => field.name).join(", ")})`;
-  const outputWrite = `print(result)`;
-
-  return `
-import sys
-
-##USER_CODE_HERE##
-
 def main():
-    input = sys.stdin.read().strip().split()
+    input_file_path = '/dev/problems/two-sum/tests/inputs/##INPUT_FILE_INDEX##.txt'
+    with open(input_file_path, 'r') as file:
+        input_data = file.read().strip().split('\\n')
+    input_list = [int(x) for x in ' '.join(input_data).split()]
+      
     ${inputReads}
+      
     ${functionCall}
+      
     ${outputWrite}
-
+  
 if __name__ == "__main__":
     main()
-  `;
-}
-
+    `;
+  }
 
   mapTypeToPython(type: string): string {
     switch (type) {
@@ -278,15 +277,15 @@ if __name__ == "__main__":
       case "bool":
         return "bool";
       case "list<int>":
-        return "List[int]";
+        return "int";
       case "list<float>":
-        return "List[float]";
+        return "float";
       case "list<string>":
-        return "List[str]";
+        return "str";
       case "list<bool>":
-        return "List[bool]";
+        return "lambda x: x.lower() in ('true', '1')";
       default:
-        return "unknown";
+        return "str";
     }
   }
 
