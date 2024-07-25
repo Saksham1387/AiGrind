@@ -22,6 +22,7 @@ type MCQProblem = {
   question: string;
   description: string;
   options: MCQOption[];
+  explanation: string;
 };
 
 
@@ -146,7 +147,10 @@ export default function MCQ({ params: { mcqId } }: { params: { mcqId: string } }
               </ul>
               <div className="mt-10"></div>
               <Button className="mt-4 p-3" onClick={handleSubmit}>Submit</Button>
-              {submissionResult && <p className="text-lg mt-4">{submissionResult}</p>} {/* Display result message */}
+              {submissionResult && <p className="text-lg mt-4">{submissionResult} 
+                <p className='text-md'>Explanation: {mcq.explanation}</p>
+                </p>} {/* Display result message */}
+
             </div>
             
           </div>
