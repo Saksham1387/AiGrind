@@ -110,7 +110,6 @@ export const authOptions = {
           if (credentials.password.length < 3) {
             return null
           }
-          console.log("inside 3")
 
           const user = await db.user.create({
             data: {
@@ -166,7 +165,7 @@ export const authOptions = {
     },
     async redirect({ url, baseUrl }) {
       // Ensures redirect always goes to the home page
-      return baseUrl;
+      return baseUrl + '/dashboard';
     },
     session: async ({ session, token,user }) => {
       const newSession: session = session as session;

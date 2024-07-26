@@ -45,14 +45,16 @@ export function Appbar() {
 
       {!isLoading && session?.user && (
         <div className="flex items-center gap-4">
-          <Streak ></Streak>
+          <Streak></Streak>
           <ModeToggle />
           <DropdownMenu>
-            <DropdownMenuTrigger>
+            <DropdownMenuTrigger className="px-3">
               <Avatar>
                 <AvatarImage
+                  className="h-10 w-10"
                   src={userImage ? userImage : "https://github.com/shadcn.png"}
-                />
+                ></AvatarImage>
+
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>

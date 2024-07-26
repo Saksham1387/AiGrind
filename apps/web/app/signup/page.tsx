@@ -13,7 +13,6 @@ const SignupPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordValue, setPasswordValue] = useState("");
   const [confirmPasswordValue, setConfirmPasswordValue] = useState("");
   const [fullName, setFullName] = useState("");
@@ -22,12 +21,11 @@ const SignupPage = () => {
   const [error, setError] = useState(false);
   const [passerror, setPassError] = useState(false);
 
-
   const handleProviderLogin = async (provider:string) => {
     if(provider === "google"){
       const result = await signIn("google", { redirect: false });
     if (result?.ok) {
-      router.push("/");
+      router.push("/dashboard");
     } else if (result?.error) {
       console.error(result.error);
     } else {
@@ -36,7 +34,7 @@ const SignupPage = () => {
     }else if(provider === "github"){
       const result = await signIn("github", { redirect: false });
       if (result?.ok) {
-        router.push("/");
+        router.push("/dashboard");
       } else if (result?.error) {
         console.error(result.error);
       } else {
@@ -90,7 +88,7 @@ const SignupPage = () => {
       });
       console.log(signInResult);
       if (signInResult?.ok) {
-        router.push("/");
+        router.push("/dashboard");
       } else if (signInResult?.error) {
         console.error(signInResult.error);
         setError(true);
@@ -179,7 +177,7 @@ const SignupPage = () => {
                       setPasswordValue("")
                       setConfirmPasswordValue("")
                       setError(false)
-                      setLoading(false)
+                      
                       setPassError(false)
                     }}
                     >Try Again</button>
@@ -212,7 +210,7 @@ const SignupPage = () => {
                   )}
                 </div>
               </div>
-              <Button type="submit" className="w-full" onClick={handleSubmit} disabled={loading}>
+              <Button type="submit" className="w-full" onClick={handleSubmit}>
                 Sign Up
               </Button>
 

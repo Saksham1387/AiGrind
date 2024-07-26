@@ -2,9 +2,9 @@
 import { useState, useEffect } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@repo/ui/tabs";
 import { Button } from "@repo/ui/button";
-import { CardTitle, CardDescription } from "@repo/ui/card";
+import { CardDescription } from "@repo/ui/card";
 import axios from "axios";
-import { ArrowLeftFromLine, ArrowRightFromLine } from "lucide-react";
+import { ArrowLeftFromLine, ArrowRightFromLine, Lightbulb, LightbulbOff } from "lucide-react";
 import { McqISubmission } from "../../types/types";
 import { McqSubmissionTable } from "../../../components/SubmissionTable";
 import { ProblemSkeleton } from "../../../components/skeletons/problems";
@@ -20,12 +20,13 @@ type MCQProblem = {
   description: string;
   options: MCQOption[];
   explanation: string;
+  correctAnswer: string; 
 };
 
 interface User {
   id: string;
-  name?: string; // Optional property if you have user's name
-  email?: string; // Optional property if you have user's email
+  name?: string;
+  email?: string; 
 }
 
 export default function MCQ({
@@ -36,6 +37,8 @@ export default function MCQ({
   const [mcq, setMcq] = useState<MCQProblem | null>(null);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [submissionResult, setSubmissionResult] = useState<string | null>(null);
+  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [showExplanation, setShowExplanation] = useState(false);
   const [activeTab, setActiveTab] = useState("mcq");
 
   useEffect(() => {
@@ -69,13 +72,33 @@ export default function MCQ({
 
       if (res.ok) {
         setSubmissionResult(result.message); // Update the result state
+        setIsCorrect(result.correct);
+        if (result.correct) {
+          setShowExplanation(true); // Show explanation if the answer is correct
+        }
       } else {
         setSubmissionResult(result.error || "Submission failed.");
+        setIsCorrect(false);
       }
     } catch (error) {
       console.error(error);
       setSubmissionResult("An error occurred.");
+      setIsCorrect(false);
     }
+  };
+
+  const handleShowExplanation = () => {
+    setShowExplanation(!showExplanation);
+  };
+
+  const handleNextQuestion = () => {
+    const nextMcqId = getNextMcqId(mcqId); 
+    window.location.href = `/mcq/${nextMcqId}`;
+  };
+
+  const handlePreviousQuestion = () => {
+    const previousMcqId = getPreviousMcqId(mcqId); 
+    window.location.href = `/mcq/${previousMcqId}`;
   };
 
   if (!mcq)
@@ -89,17 +112,17 @@ export default function MCQ({
     <div className="relative min-h-screen w-full bg-white flex flex-col items-center py-10 dark:bg-gray-800">
       <Button
         className="absolute top-4 left-4 text-lg p-2"
-        onClick={() => console.log("Previous")}
+        onClick={handlePreviousQuestion}
       >
         <ArrowLeftFromLine></ArrowLeftFromLine>
       </Button>
       <Button
         className="absolute top-4 right-4 text-lg p-2"
-        onClick={() => console.log("Next")}
+        onClick={handleNextQuestion}
       >
         <ArrowRightFromLine></ArrowRightFromLine>
       </Button>
-      <div className="bg-white dark:bg-gray-900 max-h-[1000px] p-6 rounded-lg w-full max-w-[1300px] shadow-lg flex flex-col   justify-center">
+      <div className="bg-white dark:bg-gray-900 max-h-[1000px] p-6 rounded-lg w-full max-w-[1300px] shadow-lg flex flex-col justify-center">
         <div className="w-full">
           <Tabs
             defaultValue="mcq"
@@ -118,16 +141,19 @@ export default function MCQ({
           </Tabs>
         </div>
         {activeTab === "mcq" && (
-          <div className="flex flex-col items-center w-full">
-            <CardTitle className="mb-3 mt-5 text-2xl">{mcq.question}</CardTitle>
-            <CardDescription className="mb-3 text-xl">
-              {mcq.description}
-            </CardDescription>
-            <div className="flex flex-col items-center space-y-2 w-full">
-              <ul className="space-y-2 w-full">
+          <div className="flex flex-row w-full mt-5">
+            <div className="w-1/2 p-4 border-r border-gray-300">
+              <p className="mb-3 text-xl">{mcq.question}</p>
+              <CardDescription className="mb-3 text-xl">
+                {mcq.description}
+              </CardDescription>
+            </div>
+            <div className="w-1/2 p-4 flex flex-col items-center">
+              <p className="mb-4 text-lg font-bold">Choose options from the following:</p>
+              <ul className="space-y-4 w-full">
                 {mcq.options.map((option) => (
                   <li key={option.id} className="w-full">
-                    <label className="hover:cursor-pointer text-lg flex items-center w-full">
+                    <label className="hover:cursor-pointer text-md flex items-center w-full border p-4 rounded-lg shadow-md">
                       <input
                         className="mr-2"
                         type="radio"
@@ -140,17 +166,46 @@ export default function MCQ({
                   </li>
                 ))}
               </ul>
-              <div className="mt-10"></div>
-              <Button className="mt-4 p-3" onClick={handleSubmit}>
-                Submit
-              </Button>
+              <div className="mt-10 w-full flex justify-center">
+                <Button
+                  className={`p-3 ${isCorrect === true ? "bg-green-500" : isCorrect === false ? "bg-red-500" : ""
+                    }`}
+                  onClick={handleSubmit}
+                >
+                  Submit
+                </Button>
+              </div>
               {submissionResult && (
-                <p className="text-lg mt-4">
-                  {submissionResult}
-                  <p className="text-md">Explanation: {mcq.explanation}</p>
-                </p>
-              )}{" "}
-              {/* Display result message */}
+                <div className="text-lg mt-4 text-center">
+                  <p>{submissionResult}</p>
+                  {isCorrect === false && (
+                    <Button
+                      className="mt-2"
+                      onClick={handleShowExplanation}
+                    >
+                      {showExplanation ? (
+                        <>
+                          <LightbulbOff className="mr-2" />
+                          Hide Solution
+                        </>
+                      ) : (
+                        <>
+                          <Lightbulb className="mr-2" />
+                          Show Solution
+                        </>
+                      )}
+                    </Button>
+                  )}
+                  {showExplanation && (
+                    <div className="border p-4 rounded-lg shadow-md mt-4">
+                      <p className="text-md font-bold">Correct Answer:</p>
+                      <p className="text-md">{mcq.correctAnswer}</p>
+                      <p className="text-md font-bold mt-2">Explanation:</p>
+                      <p className="text-md">{mcq.explanation}</p>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -183,3 +238,11 @@ function Submissions({ mcqId }: { mcqId: string }) {
     </div>
   );
 }
+
+// function getNextMcqId(currentMcqId) {
+//   // Logic to get the next question ID
+// }
+
+// function getPreviousMcqId(currentMcqId) {
+//   // Logic to get the previous question ID
+// }

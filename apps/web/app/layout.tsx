@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }): JSX.Element {
   const pathname = usePathname();
-  const noAppBarRoutes = ['/signin','/signup','/forgot-password'];
+  const noAppBarRoutes = ['/signin','/signup','/forgot-password','/'];
   const hideAppBar = noAppBarRoutes.includes(pathname);
   return (
     <html lang="en">

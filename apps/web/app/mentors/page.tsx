@@ -1,10 +1,8 @@
-
-
+"use client"
 import React from 'react';
 import { BriefcaseBusiness } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
-
-// Mentor data
 const mentors = [
   {
     mentorName: 'Parth Thirwani',
@@ -56,6 +54,7 @@ const MentorCard: React.FC<any> = ({
   satisfaction,
   experience
 }) => {
+  const router = useRouter();
   return (
     <div className="rounded-lg border text-card-foreground shadow-sm md:p-1 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
       <div className="flex flex-row gap- 6">   
@@ -93,7 +92,7 @@ const MentorCard: React.FC<any> = ({
                 </a>
               </h3>
               <div className="flex flex-wrap gap-2">
-                {skills.map((skill, index) => (
+                {skills.map((skill:any, index:any) => (
                   <button
                     key={index}
                     className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-7 rounded-md px-2"
@@ -105,7 +104,7 @@ const MentorCard: React.FC<any> = ({
             </div>
             <p className="text-sm text-muted-foreground">{description}</p>
             <div className="flex flex-wrap gap-2">
-              {companyLogos.map((logo, index) => (
+              {companyLogos.map((logo:any, index:any) => (
                 <div key={index} className="flex items-center gap-2">
                   <img
                     src={logo.src}
@@ -123,8 +122,12 @@ const MentorCard: React.FC<any> = ({
           <div className="grid gap-4 bg-muted/20 p-4 rounded-lg">
             <div className="flex items-center justify-between">
               <div className="text-lg font-bold">{price}</div>
-              <button className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-8 rounded-md px-3">
-                Book Now
+              <button 
+              onClick={()=>{
+                router.push('https://cal.com/saksham34')
+              }}
+              className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-8 rounded-md px-3">
+                Get a free session
               </button>
             </div>
             <div className="grid gap-2">

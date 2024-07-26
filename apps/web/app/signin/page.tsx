@@ -21,7 +21,7 @@ const SigninPage = () => {
     if(provider === "google"){
       const result = await signIn("google", { redirect: false });
     if (result?.ok) {
-      router.push("/");
+      router.push("/dashboard");
     } else if (result?.error) {
       console.error(result.error);
     } else {
@@ -51,7 +51,7 @@ const SigninPage = () => {
     });
     if (result?.ok) {
       // Manually redirect
-      router.push("/");
+      router.push("/dashboard");
     } else if (result?.error) {
       console.error(result.error);
     } else {
