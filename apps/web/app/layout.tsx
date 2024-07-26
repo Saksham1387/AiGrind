@@ -24,17 +24,19 @@ export default function RootLayout({
 }): JSX.Element {
   const pathname = usePathname();
   const noAppBarRoutes = ['/signin','/signup','/forgot-password','/'];
+  const noFooterRoutes = ['/signin','/signup','/forgot-password'];
   const hideAppBar = noAppBarRoutes.includes(pathname);
+  const hideFooter = noFooterRoutes.includes(pathname);
   return (
     <html lang="en">
       <body className={`${chivo.variable} ${rubik.variable} min-h-screen flex flex-col`}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        {/* <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange> */}
           <Providers>
           {!hideAppBar && <Appbar />}
-            <main className="flex-grow">{children}</main>
-            <Footer />
+            <main className="flex-grow ">{children}</main>
+            {!hideFooter && <Footer />}
           </Providers>
-        </ThemeProvider>
+        {/* </ThemeProvider> */}
       </body>
     </html>
   );

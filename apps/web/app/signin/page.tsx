@@ -61,13 +61,49 @@ const SigninPage = () => {
 
   return (
     <>
-      <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
-        <div className="flex items-center justify-center py-12">
+      <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 ">
+      <div className="h-full w-[900px] overflow-hidden">
+          <div className="relative h-screen w-full">
+            <video
+              src="/SignupVid.mp4"
+              className="absolute h-full w-full object-cover z-0"
+              autoPlay
+              loop
+              muted
+            />
+            <div className=" flex-col absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center">
+              <div className="mr-[650px]">
+                <Image
+                  src="/Main-logo.png"
+                  alt="Logo"
+                  width={100}
+                  height={100}
+                  className="object-contain"
+                />
+              </div>
+              <div className="mt-[350px] mr-[250px]">
+                <h1 className="text-slate-300 text-2xl mb-3">Welcome to</h1>
+                <h1 className="text-white text-6xl">AiGrind Community </h1>
+                <h1 className="text-white text-md mt-4">
+                Join a growing community of AI enthusiasts.
+                </h1>
+                <button 
+                onClick={()=>router.push("/")}
+
+                className="font-light text-green-300 text-xs hover:underline">
+                  Know more{" "}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center justify-center">
           <div className="mx-auto grid w-[350px] gap-6">
-            <div className="grid gap-2 text-center">
-              <h1 className="text-3xl font-bold">Login</h1>
-              <p className="text-balance text-muted-foreground">
-                Enter your email below to login to your account
+          <div className="grid gap-2 mb-5">
+              <h1 className="text-3xl font-bold">Welcome Back!</h1>
+              <p className="text-3xl font-bold">Login to your account</p>
+              <p className="text-sm text-muted-foreground font-light">
+              Welcome! Where data and code ignite innovation.
               </p>
             </div>
             <form onSubmit={handleSubmit}>
@@ -183,15 +219,7 @@ const SigninPage = () => {
             </form>
           </div>
         </div>
-        <div className="hidden bg-muted lg:block">
-          <Image
-            src="/signin-img.jpg"
-            alt="Image"
-            width="1920"
-            height="1080"
-            className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-          />
-        </div>
+        
       </div>
     </>
   );

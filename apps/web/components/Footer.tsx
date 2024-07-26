@@ -2,7 +2,7 @@ export const Footer = () => {
   return (
 
 
-<footer className="bg-black shadow dark:bg-gray-900 text-white">
+<footer className="bg-mediumgray shadow dark:bg-gray-900 text-white border-t-[0.2px] border-gray-600">
     <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
         <div className="sm:flex sm:items-center sm:justify-between">
             <a href="https://flowbite.com/" className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">

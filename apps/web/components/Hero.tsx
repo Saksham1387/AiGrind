@@ -6,7 +6,7 @@ import Calendarh from "./charts/calender";
 
 export function Hero() {
   return (
-    <section className="bg-white dark:bg-gray-900 py-8 md:py-12">
+    <section className="  py-8 md:py-12">
       <div className="container px-4 md:px-6">
         <div className="grid md:grid-cols-2 gap-8 md:gap-12">
           <div className="flex flex-row gap-[200px]">

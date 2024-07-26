@@ -1,7 +1,5 @@
-"use client"
 import React from 'react';
 import { BriefcaseBusiness } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 
 const mentors = [
   {
@@ -18,7 +16,7 @@ const mentors = [
     price: 'Rs 500',
     sessionDuration: '1 hour session',
     flexibleScheduling: 'Flexible scheduling',
-    satisfaction: 'Guaranteed satisfaction',
+    satisfaction: '2 Free Sessions',
     experience: '0-1 experience'
   },
   {
@@ -54,16 +52,14 @@ const MentorCard: React.FC<any> = ({
   satisfaction,
   experience
 }) => {
-  const router = useRouter();
   return (
-    <div className="rounded-lg border text-card-foreground shadow-sm md:p-1 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
-      <div className="flex flex-row gap- 6">   
+    <div className="rounded-lg border:gray-700 text-white bg-mediumgray shadow-sm md:p-1 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+      <div className="flex flex-row gap-6">   
         <div className='p-3'>
           <img
             src={mentorImage}
             alt={`${mentorName} Image`}
-            
-            className="object-cover border rounded-lg aspect-square w-[900px] h-[370px]"
+            className="object-cover rounded-lg aspect-square w-[900px] h-[370px]"
           />
         </div>
 
@@ -92,19 +88,19 @@ const MentorCard: React.FC<any> = ({
                 </a>
               </h3>
               <div className="flex flex-wrap gap-2">
-                {skills.map((skill:any, index:any) => (
+                {skills.map((skill, index) => (
                   <button
                     key={index}
-                    className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-7 rounded-md px-2"
+                    className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium bg-darkgray text-white ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-7 rounded-md px-2"
                   >
                     {skill}
                   </button>
                 ))}
               </div>
             </div>
-            <p className="text-sm text-muted-foreground">{description}</p>
+            <p className="text-sm text-gray-400">{description}</p>
             <div className="flex flex-wrap gap-2">
-              {companyLogos.map((logo:any, index:any) => (
+              {companyLogos.map((logo, index) => (
                 <div key={index} className="flex items-center gap-2">
                   <img
                     src={logo.src}
@@ -119,15 +115,11 @@ const MentorCard: React.FC<any> = ({
               ))}
             </div>
           </div>
-          <div className="grid gap-4 bg-muted/20 p-4 rounded-lg">
+          <div className="grid gap-4 bg-lightgray p-4 rounded-lg">
             <div className="flex items-center justify-between">
               <div className="text-lg font-bold">{price}</div>
-              <button 
-              onClick={()=>{
-                router.push('https://cal.com/saksham34')
-              }}
-              className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-8 rounded-md px-3">
-                Get a free session
+              <button className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-8 rounded-md px-3">
+                Book Now
               </button>
             </div>
             <div className="grid gap-2">
@@ -142,7 +134,7 @@ const MentorCard: React.FC<any> = ({
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="w-5 h-5 text-muted-foreground"
+                  className="w-5 h-5 text-gray-400"
                 >
                   <path d="M8 2v4"></path>
                   <path d="M16 2v4"></path>
@@ -162,7 +154,7 @@ const MentorCard: React.FC<any> = ({
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="w-5 h-5 text-muted-foreground"
+                  className="w-5 h-5 text-gray-400"
                 >
                   <circle cx="12" cy="12" r="10"></circle>
                   <polyline points="12 6 12 12 16 14"></polyline>
@@ -173,7 +165,7 @@ const MentorCard: React.FC<any> = ({
                 <BriefcaseBusiness
                   width={24}
                   height={24}
-                  className="w-5 h-5 text-muted-foreground"
+                  className="w-5 h-5 text-gray-400"
                 />
                 <span className="text-sm">{experience}</span>
               </div>
@@ -188,7 +180,7 @@ const MentorCard: React.FC<any> = ({
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="w-5 h-5 text-muted-foreground"
+                  className="w-5 h-5 text-gray-400"
                 >
                   <path d="M20 6 9 17l-5-5"></path>
                 </svg>
@@ -204,13 +196,15 @@ const MentorCard: React.FC<any> = ({
 
 const MentorshipPage: React.FC = () => {
   return (
-    <div className="container mx-auto py-6">
-      <h1 className="text-3xl font-bold mb-4 text-center">Mentorship Page</h1>
-      <p className="text-xl mb-6 text-center">Welcome to the 1:1 Mentorship page. Here you can find mentors to help you with your coding journey.</p>
-      <div className="grid gap-6">
-        {mentors.map((mentor, index) => (
-          <MentorCard key={index} {...mentor} />
-        ))}
+    <div className="bg-darkgray min-h-screen">
+      <div className="container mx-auto py-6">
+        <h1 className="text-3xl font-bold mb-4 text-center text-white">Mentorship Page</h1>
+        <p className="text-xl mb-6 text-center text-white">Welcome to the 1:1 Mentorship page. Here you can find mentors to help you with your coding journey.</p>
+        <div className="grid gap-6">
+          {mentors.map((mentor, index) => (
+            <MentorCard key={index} {...mentor} />
+          ))}
+        </div>
       </div>
     </div>
   );

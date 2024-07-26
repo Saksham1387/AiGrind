@@ -1,4 +1,6 @@
+
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
   darkMode: ["class"],
   content: [
@@ -16,6 +18,7 @@ module.exports = {
       screens: {
         "2xl": "1400px",
       },
+      
     },
     extend: {
       colors: {
@@ -52,6 +55,11 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Added colors
+        Textgray: "#96a09f",
+        lightgray: "#272627",
+        mediumgray: "#1d1c1d",
+        darkgray: "#181819",
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -58,7 +58,7 @@ export class FullProblemDefinitionParser {
           return `${this.mapTypeToCpp(field.type)} ${field.name};\n  std::istringstream(lines[${index}]) >> ${field.name};`;
         }
       })
-      .join("\n  ");
+      .join("\n   ");
     const outputType = this.outputFields[0].type;
     const functionCall = `${outputType} result = ${this.functionName}(${this.inputFields.map((field) => field.name).join(", ")});`;
     const outputWrite = `std::cout << result << std::endl;`;
@@ -238,7 +238,7 @@ fn main() -> io::Result<()> {
     const inputReads = this.inputFields
       .map((field) => {
         if (field.type.startsWith("list<")) {
-          return `size_${field.name} = int(input_list.pop(0))\n${field.name} = [int(x) for x in input_list[:size_${field.name}]]`;
+          return `size_${field.name} = int(input_list.pop(0))\n    ${field.name} = [int(x) for x in input_list[:size_${field.name}]]`;
         } else {
           return `${field.name} = int(input_list.pop(0))`;
         }

@@ -7,7 +7,7 @@ def main():
     input_list = [int(x) for x in ' '.join(input_data).split()]
       
     size_arr = int(input_list.pop(0))
-arr = [int(x) for x in input_list[:size_arr]]
+    arr = [int(x) for x in input_list[:size_arr]]
       
     result = maxElement(arr)
       

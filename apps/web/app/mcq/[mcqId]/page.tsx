@@ -4,7 +4,16 @@ import { Tabs, TabsList, TabsTrigger } from "@repo/ui/tabs";
 import { Button } from "@repo/ui/button";
 import { CardDescription } from "@repo/ui/card";
 import axios from "axios";
-import { ArrowLeftFromLine, ArrowRightFromLine, Lightbulb, LightbulbOff } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@repo/ui/accordion";
+import {
+  ArrowLeftFromLine,
+  ArrowRightFromLine,
+} from "lucide-react";
 import { McqISubmission } from "../../types/types";
 import { McqSubmissionTable } from "../../../components/SubmissionTable";
 import { ProblemSkeleton } from "../../../components/skeletons/problems";
@@ -13,20 +22,18 @@ type MCQOption = {
   id: string;
   optionText: string;
 };
-
 type MCQProblem = {
   id: string;
   question: string;
   description: string;
   options: MCQOption[];
   explanation: string;
-  correctAnswer: string; 
+  correctAnswer: string;
 };
-
 interface User {
   id: string;
   name?: string;
-  email?: string; 
+  email?: string;
 }
 
 export default function MCQ({
@@ -69,10 +76,10 @@ export default function MCQ({
       });
 
       const result = await res.json();
-
+      console.log(result);
       if (res.ok) {
         setSubmissionResult(result.message); // Update the result state
-        setIsCorrect(result.correct);
+        setIsCorrect(result.isCorrect); // Update the isCorrect state
         if (result.correct) {
           setShowExplanation(true); // Show explanation if the answer is correct
         }
@@ -92,12 +99,12 @@ export default function MCQ({
   };
 
   const handleNextQuestion = () => {
-    const nextMcqId = getNextMcqId(mcqId); 
+    const nextMcqId = getNextMcqId(mcqId);
     window.location.href = `/mcq/${nextMcqId}`;
   };
 
   const handlePreviousQuestion = () => {
-    const previousMcqId = getPreviousMcqId(mcqId); 
+    const previousMcqId = getPreviousMcqId(mcqId);
     window.location.href = `/mcq/${previousMcqId}`;
   };
 
@@ -109,7 +116,7 @@ export default function MCQ({
     );
 
   return (
-    <div className="relative min-h-screen w-full bg-white flex flex-col items-center py-10 dark:bg-gray-800">
+    <div className="text-white relative min-h-screen w-full bg-darkgray flex flex-col items-center py-10 dark:bg-gray-800">
       <Button
         className="absolute top-4 left-4 text-lg p-2"
         onClick={handlePreviousQuestion}
@@ -122,15 +129,15 @@ export default function MCQ({
       >
         <ArrowRightFromLine></ArrowRightFromLine>
       </Button>
-      <div className="bg-white dark:bg-gray-900 max-h-[1000px] p-6 rounded-lg w-full max-w-[1300px] shadow-lg flex flex-col justify-center">
-        <div className="w-full">
+      <div className="bg-lightgray dark:bg-gray-900 max-h-[1000px] p-6 rounded-lg w-full max-w-[1300px] shadow-lg flex flex-col justify-center">
+        <div className="w-full ">
           <Tabs
             defaultValue="mcq"
-            className="rounded-md p-1 text-lg"
+            className="rounded-md p-1 text-lg bg-darkgray"
             value={activeTab}
             onValueChange={setActiveTab}
           >
-            <TabsList className="grid grid-cols-2 w-full">
+            <TabsList className="grid grid-cols-2 w-full bg-darkgray">
               <TabsTrigger className="" value="mcq">
                 MCQ
               </TabsTrigger>
@@ -141,21 +148,46 @@ export default function MCQ({
           </Tabs>
         </div>
         {activeTab === "mcq" && (
-          <div className="flex flex-row w-full mt-5">
+          // Left Side
+          <div className="flex flex-row w-full mt-5 ">
             <div className="w-1/2 p-4 border-r border-gray-300">
               <p className="mb-3 text-xl">{mcq.question}</p>
               <CardDescription className="mb-3 text-xl">
                 {mcq.description}
               </CardDescription>
+              <div>
+                {submissionResult && (
+                  <div className="text-lg mt-4 text-center flex flex-col">
+                    {/* <p>{submissionResult}</p> */}
+                    {isCorrect === false && (
+                      <Accordion type="single" collapsible>
+                        <AccordionItem value="item-1">
+                          <AccordionTrigger>Explanation</AccordionTrigger>
+                          <AccordionContent className="text-center">
+                            {mcq.explanation}
+                          </AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
+            {/* Right Side */}
             <div className="w-1/2 p-4 flex flex-col items-center">
-              <p className="mb-4 text-lg font-bold">Choose options from the following:</p>
-              <ul className="space-y-4 w-full">
+              <p className="mb-4 text-lg font-bold">
+                Choose from the following options
+              </p>
+              <ul className="space-y-4 w-full ">
                 {mcq.options.map((option) => (
-                  <li key={option.id} className="w-full">
-                    <label className="hover:cursor-pointer text-md flex items-center w-full border p-4 rounded-lg shadow-md">
+                  <li key={option.id} className="w-full ">
+                    <label
+                      className={`hover:cursor-pointer text-md flex items-center w-full border-gray-700 border p-4 rounded-lg shadow-md hover:bg-mediumgray
+                    ${selectedOption === option.id ? "bg-mediumgray" : "hover:bg-mediumgray"}
+                      `}
+                    >
                       <input
-                        className="mr-2"
+                        className="mr-2 bg-slate-800"
                         type="radio"
                         name="option"
                         value={option.id}
@@ -166,49 +198,24 @@ export default function MCQ({
                   </li>
                 ))}
               </ul>
-              <div className="mt-10 w-full flex justify-center">
+              <div className="mt-10 w-full flex justify-center ">
                 <Button
-                  className={`p-3 ${isCorrect === true ? "bg-green-500" : isCorrect === false ? "bg-red-500" : ""
-                    }`}
+                  className={`p-3 bg-white text-black hover:bg-white${
+                    isCorrect === true
+                      ? "bg-green-500"
+                      : isCorrect === false
+                        ? "bg-red-500"
+                        : ""
+                  }`}
                   onClick={handleSubmit}
                 >
                   Submit
                 </Button>
               </div>
-              {submissionResult && (
-                <div className="text-lg mt-4 text-center">
-                  <p>{submissionResult}</p>
-                  {isCorrect === false && (
-                    <Button
-                      className="mt-2"
-                      onClick={handleShowExplanation}
-                    >
-                      {showExplanation ? (
-                        <>
-                          <LightbulbOff className="mr-2" />
-                          Hide Solution
-                        </>
-                      ) : (
-                        <>
-                          <Lightbulb className="mr-2" />
-                          Show Solution
-                        </>
-                      )}
-                    </Button>
-                  )}
-                  {showExplanation && (
-                    <div className="border p-4 rounded-lg shadow-md mt-4">
-                      <p className="text-md font-bold">Correct Answer:</p>
-                      <p className="text-md">{mcq.correctAnswer}</p>
-                      <p className="text-md font-bold mt-2">Explanation:</p>
-                      <p className="text-md">{mcq.explanation}</p>
-                    </div>
-                  )}
-                </div>
-              )}
             </div>
           </div>
         )}
+
         {activeTab === "submissions" && (
           <div className="flex justify-center w-full">
             <Submissions mcqId={mcqId} />
@@ -239,10 +246,3 @@ function Submissions({ mcqId }: { mcqId: string }) {
   );
 }
 
-// function getNextMcqId(currentMcqId) {
-//   // Logic to get the next question ID
-// }
-
-// function getPreviousMcqId(currentMcqId) {
-//   // Logic to get the previous question ID
-// }

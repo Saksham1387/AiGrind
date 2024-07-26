@@ -37,8 +37,10 @@ export async function POST(request: Request, res: NextApiResponse) {
         },
         where: {
           userId,
+          result:"true"
         },
       });
+      console.log(data);
 
       const categoryCounts: CategoryCount[] = await Promise.all(
         data.map(async (entry) => {
@@ -51,24 +53,27 @@ export async function POST(request: Request, res: NextApiResponse) {
           };
         })
       );
+      console.log("something:   ",categoryCounts);
 
       const result = categoryCounts.reduce<Record<string, number>>(
         (acc, curr) => {
-          if (acc[curr.category]) {
-            //@ts-ignore
-            acc[curr.category] += curr.count;
-          } else {
+          // If the category is not in the accumulator or current count is higher
+          //@ts-ignore
+          if (!acc[curr.category] || curr.count > acc[curr.category] ) {
             acc[curr.category] = curr.count;
           }
           return acc;
         },
         {}
       );
-
+      
+      // Convert the result object to an array for chart data
       const chartData = Object.keys(result).map((key) => ({
         category: key,
         count: result[key],
       }));
+      
+      console.log('Chart data:', chartData);
 
       return NextResponse.json(chartData);
     } else if (type === "solvedUnsolvedCounts") {

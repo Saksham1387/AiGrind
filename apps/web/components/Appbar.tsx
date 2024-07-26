@@ -3,7 +3,6 @@ import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { signIn } from "next-auth/react";
 import { Button } from "@repo/ui/button";
-import { ModeToggle } from "./ModeToggle";
 import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/avatar";
 import {
@@ -18,25 +17,34 @@ import { usePathname } from "next/navigation";
 export function Appbar() {
   const { data: session, status: sessionStatus } = useSession();
   const isLoading = sessionStatus === "loading";
-  const userImage = session?.user?.image;
+  const userImage = session?.user?.image; 
 
   return (
-    <header className="bg-black text-white px-4 md:px-6 py-3 flex items-center justify-between">
+    <header className="sticky top-0 left-0 right-0 bg-mediumgray text-white px-4 md:px-6 py-3 flex items-center justify-between border-b-1 z-50">
       <Link href="/" className="flex items-center gap-2" prefetch={false}>
-        <img src="/Main-logo.png" alt="das" className="h-9 w-10" />
+        <img src="/Main-logo.png" alt="das" className="h-9 w-10" /> 
         <span className="text-lg font-bold">DataDex</span>
       </Link>
       <nav className="hidden md:flex items-center gap-6">
-        {/* <Link href="/contests" className="hover:underline" prefetch={false}>
-          Contests
-        </Link> */}
-        <Link href="/problems" className="hover:underline" prefetch={false}>
+        <Link
+          href="/problems"
+          className="hover:bg-lightgray p-3 rounded-lg "
+          prefetch={false}
+        >
           Problems
         </Link>
-        <Link href="/mcqs" className="hover:underline" prefetch={false}>
+        <Link
+          href="/mcqs"
+          className="hover:bg-lightgray p-3 rounded-lg "
+          prefetch={false}
+        >
           MCQs
         </Link>
-        <Link href="/mentors" className="hover:underline" prefetch={false}>
+        <Link
+          href="/mentors"
+          className=""
+          prefetch={false}
+        >
           <Button className="bg-white text-black hover:bg-slate-200">
             1:1 Mentorship
           </Button>
@@ -44,30 +52,27 @@ export function Appbar() {
       </nav>
 
       {!isLoading && session?.user && (
-        <div className="flex items-center gap-4">
-          <Streak></Streak>
-          <ModeToggle />
+        <div className="flex items-center gap-4 ">
+          <Streak />
           <DropdownMenu>
-            <DropdownMenuTrigger className="px-3">
+            <DropdownMenuTrigger>
               <Avatar>
                 <AvatarImage
-                  className="h-10 w-10"
                   src={userImage ? userImage : "https://github.com/shadcn.png"}
-                ></AvatarImage>
-
+                />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent className="bg-lightgray text-white border-none">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <div className="py-3 px-2">
+              <div className="py-3 px-2 ">
                 <p>Email: {session?.user?.email}</p>
                 <p>Name: {session?.user?.name}</p>
               </div>
               <DropdownMenuLabel
                 onClick={() => signOut()}
-                className="hover:cursor-pointer hover:bg-slate-600"
+                className="hover:cursor-pointer hover:bg-darkgray"
               >
                 Log Out
               </DropdownMenuLabel>
@@ -78,7 +83,6 @@ export function Appbar() {
 
       {!isLoading && !session?.user && (
         <div className="flex items-center gap-4">
-          <ModeToggle />
           <Button onClick={() => signIn()}>Sign in</Button>
         </div>
       )}
@@ -116,7 +120,7 @@ function Streak() {
   }, [router]);
   return (
     <div className="flex flex-row mr-5 ">
-      <Button className="bg-black hover:bg-transparent">
+      <Button className="bg-lightgray hover:bg-transparent">
         <div>
           <p className="text-xl mt-1 mr-1 text-white">{count}</p>
         </div>
