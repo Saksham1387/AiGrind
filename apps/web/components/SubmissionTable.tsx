@@ -110,7 +110,7 @@ export function McqSubmissionTable({ submissions }: { submissions: McqISubmissio
     <div className="overflow-x-auto">
       <Table>
         <TableHeader>
-          <TableRow>
+          <TableRow className="hover:bg-transparent">
             <TableHead>Submission ID</TableHead>
             <TableHead>User Email</TableHead>
             <TableHead>Selected Option</TableHead>

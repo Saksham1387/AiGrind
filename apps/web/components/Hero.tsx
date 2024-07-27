@@ -3,6 +3,7 @@ import { Piechart } from "./charts/PieChart";
 import { Radarchart } from "./charts/RadarChart";
 import Calender from "./charts/calender";
 import Calendarh from "./charts/calender";
+import { getRadarChartData } from "../app/db/fetches";
 
 export function Hero() {
   return (

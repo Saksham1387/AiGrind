@@ -1,9 +1,11 @@
 import  Problems  from "../../components/Problems";
+import { getProblems } from "../db/problem";
 
-export default function Problem() {
+export default async function Problem() {
+  const problems:any = await getProblems();
   return (
     <main>
-      <Problems />
+      <Problems  problems={problems}/>
     </main>
   );
 }

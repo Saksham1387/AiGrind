@@ -6,16 +6,22 @@ export interface MCQOption {
     mcqProblemId: string;
   }
   
-export interface MCQProblem {
+  export interface MCQProblem {
     id: string;
     question: string;
-    title: string;
-    explanation: string;
     category: string | null;
-    solved: string;
-    difficulty: string;
-    options: MCQOption[];
-  }
+    solved: number,
+    difficulty: string;    // Update to allow null
+    options: {
+      id: string;
+      optionText: string;
+      isCorrect: boolean;
+      description: string;
+      mcqProblemId: string;
+    }[];
+  };
+
+  
 export interface Problem {
     id: string;
     title: string;
@@ -50,3 +56,8 @@ export interface CategoryCount {
       index: number;
     }[];
   }
+
+
+
+
+  

@@ -1,5 +1,7 @@
+"use client"
 import React from 'react';
 import { BriefcaseBusiness } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const mentors = [
   {
@@ -52,6 +54,7 @@ const MentorCard: React.FC<any> = ({
   satisfaction,
   experience
 }) => {
+  const router = useRouter();
   return (
     <div className="rounded-lg border:gray-700 text-white bg-mediumgray shadow-sm md:p-1 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
       <div className="flex flex-row gap-6">   
@@ -118,8 +121,10 @@ const MentorCard: React.FC<any> = ({
           <div className="grid gap-4 bg-lightgray p-4 rounded-lg">
             <div className="flex items-center justify-between">
               <div className="text-lg font-bold">{price}</div>
-              <button className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-8 rounded-md px-3">
-                Book Now
+              <button 
+                onClick={()=>{router.push('https://cal.com/parth-thirwani')}}
+              className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-8 rounded-md px-3">
+                Get a free session
               </button>
             </div>
             <div className="grid gap-2">

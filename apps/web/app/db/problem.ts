@@ -1,4 +1,9 @@
+
+import { getServerSession } from "next-auth";
 import { db } from ".";
+import { Difficulty, MCQProblem } from "../types/Finaltypes";
+import { authOptions } from "../lib/auth";
+import { NextResponse } from "next/server";
 
 export const getProblem = async (problemId: string, contestId?: string) => {
   if (contestId) {
@@ -87,32 +92,3 @@ export function getColor(status: string) {
       return "text-gray-500";
   }
 }
-
-
-interface MCQProblem {
-  id: string;
-  question: string;
-  description: string;
-  category: string | null;
-  solved: number,
-  difficulty: string;    // Update to allow null
-  options: {
-    id: string;
-    optionText: string;
-    isCorrect: boolean;
-    description: string;
-    mcqProblemId: string;
-  }[];
-};
-
-export const getMCQProblems = async () :Promise<MCQProblem[]>=> {
-  const problems = await db.mCQProblem.findMany({
-    where: {
-      hidden: false,
-    },
-    include: {
-      options: true,
-    },
-  });
-  return problems;
-};

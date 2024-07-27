@@ -188,22 +188,22 @@ export interface Problem {
 
 const ITEMS_PER_PAGE = 10;
 
-const Problems = () => {
+const Problems = ({problems}:any) => {
   const router = useRouter();
-  const [problems, setProblems] = useState<Problem[]>([]);
-  const [loading, setLoading] = useState(true);
+  // const [problems, setProblems] = useState<Problem[]>([]);
+  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
-  useEffect(() => {
-    const fetchProblems = async () => {
-      const problems = await fetch("/api/submission/all").then((res) =>
-        res.json()
-      );
-      setProblems(problems);
-      setLoading(false);
-    };
-    fetchProblems();
-  }, []);
+  // useEffect(() => {
+  //   const fetchProblems = async () => {
+  //     const problems = await fetch("/api/submission/all").then((res) =>
+  //       res.json()
+  //     );
+  //     setProblems(problems);
+  //     setLoading(false);
+  //   };
+  //   fetchProblems();
+  // }, []);
 
   // Calculate the index of the first and last problem for the current page
   const indexOfLastProblem = currentPage * ITEMS_PER_PAGE;
