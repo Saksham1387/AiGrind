@@ -1,0 +1,78 @@
+import random
+
+def svm_train(X, y, C, tol, max_passes):
+    random.seed(42)  # Set seed for reproducibility
+    m, n = len(X), len(X[0])
+    alpha = [0.0] * m
+    b = 0.0
+    passes = 0
+    eps = 1e-5
+
+    def kernel(x1, x2):
+        return sum(x1[i] * x2[i] for i in range(n))
+    
+    def f(i):
+        return sum(alpha[j] * y[j] * kernel(X[i], X[j]) for j in range(m)) + b
+
+    def compute_L_H(alpha_i, alpha_j, yi, yj, C):
+        if yi != yj:
+            return max(0, alpha_j - alpha_i), min(C, C + alpha_j - alpha_i)
+        else:
+            return max(0, alpha_i + alpha_j - C), min(C, alpha_i + alpha_j)
+
+    while passes < max_passes:
+        num_changed_alphas = 0
+        for i in range(m):
+            Ei = f(i) - y[i]
+            if (y[i] * Ei < -tol and alpha[i] < C) or (y[i] * Ei > tol and alpha[i] > 0):
+                valid_js = [x for x in range(m) if x != i]
+                if not valid_js:
+                    continue
+                
+                j = random.choice(valid_js)
+                Ej = f(j) - y[j]
+                
+                alpha_i_old = alpha[i]
+                alpha_j_old = alpha[j]
+                
+                L, H = compute_L_H(alpha[i], alpha[j], y[i], y[j], C)
+                
+                if L == H:
+                    continue
+
+                eta = 2 * kernel(X[i], X[j]) - kernel(X[i], X[i]) - kernel(X[j], X[j])
+                if eta >= 0:
+                    continue
+                
+                alpha[j] -= y[j] * (Ei - Ej) / eta
+                alpha[j] = max(L, min(H, alpha[j]))
+
+                if abs(alpha[j] - alpha_j_old) < eps:
+                    continue
+                
+                alpha[i] += y[i] * y[j] * (alpha_j_old - alpha[j])
+                
+                b1 = b - Ei - y[i] * (alpha[i] - alpha_i_old) * kernel(X[i], X[i]) - y[j] * (alpha[j] - alpha_j_old) * kernel(X[i], X[j])
+                b2 = b - Ej - y[i] * (alpha[i] - alpha_i_old) * kernel(X[i], X[j]) - y[j] * (alpha[j] - alpha_j_old) * kernel(X[j], X[j])
+                
+                if 0 < alpha[i] < C:
+                    b = b1
+                elif 0 < alpha[j] < C:
+                    b = b2
+                else:
+                    b = (b1 + b2) / 2
+                
+                num_changed_alphas += 1
+              
+        if num_changed_alphas == 0:
+            passes += 1
+        else:
+            passes = 0
+
+    w = [sum(alpha[j] * y[j] * X[j][i] for j in range(m)) for i in range(n)]
+        
+    # Round results to 4 decimal places
+    w = [round(weight, 4) for weight in w]
+    b = round(b, 4)
+    
+    return w, b

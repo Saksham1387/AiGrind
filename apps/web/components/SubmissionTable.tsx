@@ -69,7 +69,7 @@ export function SubmissionTable({
     <div className="overflow-x-auto">
       <Table>
         <TableHeader>
-          <TableRow>
+          <TableRow className="hover:bg-transparent">
             <TableHead>Submission ID</TableHead>
             <TableHead>Result</TableHead>
             <TableHead>Tests Passed</TableHead>

@@ -1,0 +1,1 @@
+Error: Number of columns in matrix1 must be equal to number of rows in matrix2

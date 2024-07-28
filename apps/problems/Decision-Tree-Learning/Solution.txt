@@ -1,0 +1,60 @@
+from collections import Counter
+from math import log2
+
+def entropy(examples, target_attr):
+    """Calculate the entropy of the given data set for the target attribute."""
+    value_counts = Counter(example[target_attr] for example in examples)
+    total = len(examples)
+    return -sum((count/total) * log2(count/total) for count in value_counts.values())
+
+def information_gain(examples, attribute, target_attr):
+    """Calculate the information gain of splitting on a specific attribute."""
+    total_entropy = entropy(examples, target_attr)
+    subsets = {}
+    for example in examples:
+        value = example.get(attribute)  # Use .get() to handle missing values
+        if value is not None:  # Skip if the value is None
+            if value not in subsets:
+                subsets[value] = []
+            subsets[value].append(example)
+    
+    subset_entropy = 0.0
+    total = len(examples)
+    for subset in subsets.values():
+        subset_entropy += (len(subset) / total) * entropy(subset, target_attr)
+    return total_entropy - subset_entropy
+
+def majority_vote(examples, target_attr):
+    """Return the most common target attribute value in the given examples."""
+    return Counter(example[target_attr] for example in examples).most_common(1)[0][0]
+
+def decision_tree_learning(examples, attributes, target_attr):
+    # Base case 1: All examples have the same label
+    unique_targets = set(example[target_attr] for example in examples)
+    if len(unique_targets) == 1:
+        return next(iter(unique_targets))
+    
+    # Base case 2: No more attributes to split on
+    if not attributes:
+        return majority_vote(examples, target_attr)
+
+    # Find the best attribute to split on
+    best_attr = max(attributes, key=lambda attr: information_gain(examples, attr, target_attr))
+    tree = {best_attr: {}}
+    
+    # Get the unique values of the best attribute
+    best_attr_values = set(example[best_attr] for example in examples if best_attr in example)
+    
+    for value in best_attr_values:
+        # Split the dataset
+        subset = [example for example in examples if example.get(best_attr) == value]
+        if not subset:
+            # No examples with this attribute value, assign the majority vote
+            tree[best_attr][value] = majority_vote(examples, target_attr)
+        else:
+            # Recursive call to build the subtree
+            remaining_attrs = [attr for attr in attributes if attr != best_attr]
+            subtree = decision_tree_learning(subset, remaining_attrs, target_attr)
+            tree[best_attr][value] = subtree
+    
+    return tree

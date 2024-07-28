@@ -1,35 +1,39 @@
-## Problem Name: "Calculating Precision and Recall"
+## Computing Information Gain
 
-Implement a function to compute the precision and recall of a binary classifier given the counts of true positives, false positives, true negatives, and false negatives.
+Implement a function to calculate the information gain of a split in a dataset. Given the entropy before and after a split, compute the information gain.
 
-Input
-tp (int): True positives
-fp (int): False positives
-tn (int): True negatives
-fn (int): False negatives
+### Input
 
-Output
-result (tuple): A tuple containing the precision and recall.
+- **before_entropy** (float): The entropy before the split.
+- **after_entropies** (list of float): A list of entropies after the split.
+- **proportions** (list of float): The proportions of each subset after the split.
 
-Examples
-Example 1
-Input:
-tp = 50
-fp = 10
-tn = 30
-fn = 10
+### Output
 
-Output:
-(0.833, 0.833)
+- **result** (float): The information gain from the split.
 
-Example 2
-Input:
-tp = 70
-fp = 20
-tn = 50
-fn = 10
+### Examples
 
-Output:
-(0.778, 0.875)
+### Example 1
 
+*Input:*
 
+before_entropy = 0.971
+after_entropies = [0.918, 0.985]
+proportions = [0.4, 0.6]
+
+*Output:*
+
+0.069
+
+### Example 2
+
+*Input:*
+
+before_entropy = 1.0
+after_entropies = [0.0, 1.0]
+proportions = [0.5, 0.5]
+
+*Output:*
+
+0.5

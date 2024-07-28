@@ -58,8 +58,8 @@ export const ProblemSubmitBar = ({
               className="rounded-md p-1"
               value={activeTab}
               onValueChange={setActiveTab}>
-              <TabsList className="grid grid-cols-2 w-full">
-                <TabsTrigger value="problem">Submit</TabsTrigger>
+              <TabsList className="grid grid-cols-2 w-full bg-darkgray">
+                <TabsTrigger value="problem" className="">Submit</TabsTrigger>
                 <TabsTrigger value="submissions">Submissions</TabsTrigger>
               </TabsList>
             </Tabs>
@@ -170,12 +170,14 @@ function SubmitProblem({
 
   return (
     <div>
-      <Label htmlFor="language">Language</Label>
+      <Label htmlFor="language" className="mb-5">Language</Label>
+      
       <Select
         value={language}
         defaultValue="cpp"
         onValueChange={(value) => setLanguage(value)}>
-        <SelectTrigger>
+        
+        <SelectTrigger className="bg-lightgray border-darkgray">
           <SelectValue placeholder="Select language" />
         </SelectTrigger>
         <SelectContent>

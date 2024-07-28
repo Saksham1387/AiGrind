@@ -1,0 +1,8 @@
+{
+    'Color': {
+        'Red': 'Yes',
+        'Blue': 'No',
+        'Green': 'Yes',
+        'Yellow': 'No'
+    }
+}

@@ -1,0 +1,10 @@
+4
+{'Outlook': 'Sunny', 'Temperature': 'Hot', 'Humidity': 'High', 'PlayTennis': 'No'}
+{'Outlook': 'Sunny', 'Temperature': 'Hot', 'Humidity': 'High', 'PlayTennis': 'No'}
+{'Outlook': 'Overcast', 'Temperature': 'Hot', 'PlayTennis': 'Yes'}
+{'Outlook': 'Rain', 'Humidity': 'High', 'PlayTennis': 'Yes'}
+3
+Outlook
+Temperature
+Humidity
+PlayTennis

@@ -1,7 +1,7 @@
 ##USER_CODE_HERE##
 
 def main():
-    input_file_path = '/dev/problems/Understanding-Feature-Scaling-2/Tests/inputs/##INPUT_FILE_INDEX##.txt'
+    input_file_path = '/dev/problems/Understanding-Feature-Scaling/Tests/inputs/##INPUT_FILE_INDEX##.txt'
     with open(input_file_path, 'r') as file:
         input_data = file.read().strip().split('\n')
     input_list = input_data

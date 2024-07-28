@@ -1,0 +1,6 @@
+3
+{'PlayTennis': 'Yes'}
+{'PlayTennis': 'Yes'}
+{'PlayTennis': 'No'}
+0
+PlayTennis

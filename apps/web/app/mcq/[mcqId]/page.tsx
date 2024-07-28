@@ -10,10 +10,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@repo/ui/accordion";
-import {
-  ArrowLeftFromLine,
-  ArrowRightFromLine,
-} from "lucide-react";
+import { ArrowLeftFromLine, ArrowRightFromLine } from "lucide-react";
 import { McqISubmission } from "../../types/types";
 import { McqSubmissionTable } from "../../../components/SubmissionTable";
 import { ProblemSkeleton } from "../../../components/skeletons/problems";
@@ -47,6 +44,19 @@ export default function MCQ({
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [showExplanation, setShowExplanation] = useState(false);
   const [activeTab, setActiveTab] = useState("mcq");
+  const [mcqIds, setMcqIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    async function fetchAllMcqs() {
+      const res = await fetch(`/api/mcqs/all`);
+      const data = await res.json();
+      console.log(data);
+      const ids = data.map((mcq: MCQProblem) => mcq.id);
+      console.log(ids);
+      setMcqIds(ids);
+    }
+    fetchAllMcqs();
+  }, []);
 
   useEffect(() => {
     if (mcqId) {
@@ -92,6 +102,18 @@ export default function MCQ({
       setSubmissionResult("An error occurred.");
       setIsCorrect(false);
     }
+  };
+
+  const getNextMcqId = (currentMcqId: any) => {
+    const currentIndex = mcqIds.indexOf(currentMcqId);
+    const nextIndex = (currentIndex + 1) % mcqIds.length; // Loop back to the start
+    return mcqIds[nextIndex];
+  };
+
+  const getPreviousMcqId = (currentMcqId: any) => {
+    const currentIndex = mcqIds.indexOf(currentMcqId);
+    const previousIndex = (currentIndex - 1 + mcqIds.length) % mcqIds.length; // Loop back to the end
+    return mcqIds[previousIndex];
   };
 
   const handleShowExplanation = () => {
@@ -245,4 +267,3 @@ function Submissions({ mcqId }: { mcqId: string }) {
     </div>
   );
 }
-
