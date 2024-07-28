@@ -233,38 +233,73 @@ fn main() -> io::Result<()> {
   }
 
 
-  generatePython(): string {
-    const inputs = this.inputFields.map((field) => field.name).join(", ");
-    const inputReads = this.inputFields
-      .map((field) => {
-        if (field.type.startsWith("list<")) {
-          return `size_${field.name} = int(input_list.pop(0))\n    ${field.name} = [int(x) for x in input_list[:size_${field.name}]]`;
-        } else {
-          return `${field.name} = int(input_list.pop(0))`;
-        }
-      })
-      .join("\n    ");
-    const functionCall = `result = ${this.functionName}(${this.inputFields.map((field) => field.name).join(", ")})`;
-    const outputWrite = `print(result)`;
+//   generatePython(): string {
+//     const inputs = this.inputFields.map((field) => field.name).join(", ");
+//     const inputReads = this.inputFields
+//       .map((field) => {
+//         if (field.type.startsWith("list<")) {
+//           return `size_${field.name} = int(input_list.pop(0))\n    ${field.name} = [int(x) for x in input_list[:size_${field.name}]]`;
+//         } else {
+//           return `${field.name} = int(input_list.pop(0))`;
+//         }
+//       })
+//       .join("\n    ");
+//     const functionCall = `result = ${this.functionName}(${this.inputFields.map((field) => field.name).join(", ")})`;
+//     const outputWrite = `print(result)`;
   
-    return `##USER_CODE_HERE##
+//     return `##USER_CODE_HERE##
   
+// def main():
+//     input_file_path = '/dev/problems/two-sum/tests/inputs/##INPUT_FILE_INDEX##.txt'
+//     with open(input_file_path, 'r') as file:
+//         input_data = file.read().strip().split('\\n')
+//     input_list = [int(x) for x in ' '.join(input_data).split()]
+      
+//     ${inputReads}
+      
+//     ${functionCall}
+      
+//     ${outputWrite}
+  
+// if __name__ == "__main__":
+//     main()
+//     `;
+//   }
+
+generatePython(): string {
+  const inputs = this.inputFields.map((field) => field.name).join(", ");
+  const inputReads = this.inputFields
+    .map((field) => {
+      if (field.type.startsWith("list<list<")) {
+        return `size_${field.name} = int(input_list.pop(0))\n    ${field.name} = [[float(x) for x in input_list.pop(0).split()] for _ in range(size_${field.name})]`;
+      } else if (field.type.startsWith("list<")) {
+        return `size_${field.name} = int(input_list.pop(0))\n    ${field.name} = [float(x) for x in input_list.pop(0).split()]`;
+      } else {
+        return `${field.name} = float(input_list.pop(0))`;
+      }
+    })
+    .join("\n    ");
+  const functionCall = `result = ${this.functionName}(${this.inputFields.map((field) => field.name).join(", ")})`;
+  const outputWrite = `print(result)`;
+
+  return `##USER_CODE_HERE##
+
 def main():
-    input_file_path = '/dev/problems/two-sum/tests/inputs/##INPUT_FILE_INDEX##.txt'
+    input_file_path = '/dev/problems/${this.problemName}/tests/inputs/##INPUT_FILE_INDEX##.txt'
     with open(input_file_path, 'r') as file:
         input_data = file.read().strip().split('\\n')
-    input_list = [int(x) for x in ' '.join(input_data).split()]
-      
+    input_list = input_data
+
     ${inputReads}
-      
+
     ${functionCall}
-      
+
     ${outputWrite}
-  
+
 if __name__ == "__main__":
     main()
     `;
-  }
+}
 
   mapTypeToPython(type: string): string {
     switch (type) {

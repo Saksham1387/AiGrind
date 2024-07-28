@@ -20,10 +20,10 @@ function generatePartialBoilerplate(generatorFilePath: string) {
   parser.parse(input);
 
   // Generate the boilerplate code
-  const cppCode = parser.generateCpp();
-  const jsCode = parser.generateJs();
-  const rustCode = parser.generateRust();
-  const javaCode = parser.generateJava();
+  // const cppCode = parser.generateCpp();
+  // const jsCode = parser.generateJs();
+  // const rustCode = parser.generateRust();
+  // const javaCode = parser.generateJava();
   const pythonCode = parser.generatePython();
 
   // Ensure the boilerplate directory exists
@@ -32,10 +32,10 @@ function generatePartialBoilerplate(generatorFilePath: string) {
   }
 
   // Write the boilerplate code to respective files
-  fs.writeFileSync(path.join(boilerplatePath, "function.cpp"), cppCode);
-  fs.writeFileSync(path.join(boilerplatePath, "function.js"), jsCode);
-  fs.writeFileSync(path.join(boilerplatePath, "function.rs"), rustCode);
-  fs.writeFileSync(path.join(boilerplatePath, "function.java"), javaCode);
+  // fs.writeFileSync(path.join(boilerplatePath, "function.cpp"), cppCode);
+  // fs.writeFileSync(path.join(boilerplatePath, "function.js"), jsCode);
+  // fs.writeFileSync(path.join(boilerplatePath, "function.rs"), rustCode);
+  // fs.writeFileSync(path.join(boilerplatePath, "function.java"), javaCode);
   fs.writeFileSync(path.join(boilerplatePath, "function.py"), pythonCode);
 
   console.log("Boilerplate code generated successfully!");
@@ -56,10 +56,10 @@ function generateFullBoilerPLate(generatorFilePath: string) {
   parser.parse(input);
 
   // Generate the boilerplate code
-  const cppCode = parser.generateCpp();
-  const jsCode = parser.generateJs();
-  const rustCode = parser.generateRust();
-  const javaCode = parser.generateJava();
+  // const cppCode = parser.generateCpp();
+  // const jsCode = parser.generateJs();
+  // const rustCode = parser.generateRust();
+  // const javaCode = parser.generateJava();
   const pythonCode = parser.generatePython();
 
   // Ensure the boilerplate directory exists
@@ -68,10 +68,10 @@ function generateFullBoilerPLate(generatorFilePath: string) {
   }
 
   // Write the boilerplate code to respective files
-  fs.writeFileSync(path.join(boilerplatePath, "function.cpp"), cppCode);
-  fs.writeFileSync(path.join(boilerplatePath, "function.js"), jsCode);
-  fs.writeFileSync(path.join(boilerplatePath, "function.rs"), rustCode);
-  fs.writeFileSync(path.join(boilerplatePath, "function.java"), javaCode);
+  // fs.writeFileSync(path.join(boilerplatePath, "function.cpp"), cppCode);
+  // fs.writeFileSync(path.join(boilerplatePath, "function.js"), jsCode);
+  // fs.writeFileSync(path.join(boilerplatePath, "function.rs"), rustCode);
+  // fs.writeFileSync(path.join(boilerplatePath, "function.java"), javaCode);
   fs.writeFileSync(path.join(boilerplatePath, "function.py"), pythonCode);
 
   console.log("Boilerplate code generated successfully!");

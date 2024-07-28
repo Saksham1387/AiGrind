@@ -2,6 +2,10 @@
   @tailwind components;
   @tailwind utilities;
 
+  .markdown-content {
+    color: white !important;
+  }
+  
   @layer base {
     @font-face {
       font-family: 'Roboto';

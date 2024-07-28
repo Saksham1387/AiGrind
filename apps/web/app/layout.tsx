@@ -4,7 +4,7 @@ import { Rubik } from "next/font/google";
 import "./globals.css";
 import { Appbar } from "../components/Appbar";
 import { Footer } from "../components/Footer";
-import { Providers, ThemeProvider } from "../providers";
+import { Providers } from "../providers";
 import { usePathname } from 'next/navigation';
 const chivo = Chivo({
   subsets: ["latin"],
@@ -30,13 +30,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${chivo.variable} ${rubik.variable} min-h-screen flex flex-col`}>
-        {/* <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange> */}
+       
           <Providers>
           {!hideAppBar && <Appbar />}
             <main className="flex-grow ">{children}</main>
             {!hideFooter && <Footer />}
           </Providers>
-        {/* </ThemeProvider> */}
+       
       </body>
     </html>
   );
