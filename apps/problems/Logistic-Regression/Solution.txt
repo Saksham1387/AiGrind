@@ -1,0 +1,25 @@
+import numpy as np
+
+def sigmoid(z):
+    return 1 / (1 + np.exp(-z))
+
+def logistic_regression(X, y, alpha, num_iters):
+    m, n = len(X), len(X[0])
+    X = np.array(X)
+    y = np.array(y)
+    
+    # Initialize weights
+    theta = np.zeros(n)
+    
+    for _ in range(num_iters):
+        # Compute the hypothesis
+        z = np.dot(X, theta)
+        h = sigmoid(z)
+        
+        # Compute the gradient
+        gradient = np.dot(X.T, (h - y)) / m
+        
+        # Update the weights
+        theta -= alpha * gradient
+    
+    return theta.tolist()
