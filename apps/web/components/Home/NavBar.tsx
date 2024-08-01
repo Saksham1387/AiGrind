@@ -17,18 +17,13 @@ const Navbar = () => {
   const router = useRouter();
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
-  const handleMailClick = (email: any) => {
-    const mailtoLink = `mailto:${email}`;
-    window.location.href = mailtoLink;
-  };
-
   const toggleNavbar = () => {
     setMobileDrawerOpen(!mobileDrawerOpen);
   };
 
   return (
     <nav className="sticky top-0 z-50 py-3 backdrop-blur-lg border-b border-neutral-700/80">
-      <div className="container px-4 mx-auto relative lg:text-sm">
+      <div className="container px-4 mx-auto relative">
         <div className="flex justify-between items-center">
           <div className="flex items-center flex-shrink-0">
             <img className="h-12 w-13 mr-2" src="./Main-logo.png" alt="Logo" />
@@ -51,7 +46,7 @@ const Navbar = () => {
           </ul>
           <div className="hidden lg:flex justify-center space-x-12 items-center ml-10">
             <Button
-              className="py-2  border rounded-md bg-lightgray hover:bg-darkgray"
+              className="py-2 px-4 border rounded-md bg-lightgray hover:bg-darkgray"
               onClick={() => {
                 router.push("/signin");
               }}
@@ -59,7 +54,7 @@ const Navbar = () => {
               Sign In
             </Button>
             <Button
-              className="py-2 border rounded-md bg-lightgray"
+              className="py-2 px-4 border rounded-md bg-lightgray hover:bg-darkgray"
               onClick={() => {
                 router.push("/signup");
               }}
@@ -67,33 +62,49 @@ const Navbar = () => {
               Create an account
             </Button>
           </div>
-          <div className="lg:hidden md:flex flex-col justify-end">
+          <div className="lg:hidden flex flex-col justify-end">
             <button onClick={toggleNavbar}>
               {mobileDrawerOpen ? <X /> : <Menu />}
             </button>
           </div>
         </div>
         {mobileDrawerOpen && (
-          <div className="fixed right-0 z-20 bg-neutral-900 w-full p-12 flex flex-col justify-center items-center lg:hidden">
-            <ul>
+          <nav className="fixed top-0 left-0 w-full h-screen bg-mediumgray flex flex-col items-center justify-center z-40">
+            <button className="absolute top-4 right-4" onClick={toggleNavbar}>
+              <X size={24} />
+            </button>
+            <ul className="flex flex-col items-center justify-center space-y-6 w-full h-full">
               {navItems.map((item, index) => (
-                <li key={index} className="py-4">
-                  <a href={item.href}>{item.label}</a>
+                <li key={index}>
+                  <a href={item.href}>
+                    <button
+                      onClick={(e) => {
+                        scrollToComponent(item.id, e);
+                      }}
+                    >
+                      {item.label}
+                    </button>
+                  </a>
                 </li>
               ))}
-            </ul>
-            <div className="flex space-x-6">
-              <a href="#" className="py-2 px-3 border rounded-md bg-white">
+              <Button
+                className="px-4 bg-transparent"
+                onClick={() => {
+                  router.push("/signin");
+                }}
+              >
                 Sign In
-              </a>
-              <a
-                href="#"
-                className="py-2 px-3 rounded-md bg-gradient-to-r from-orange-500 to-orange-800"
+              </Button>
+              <Button
+                className="pb-10 px-4 bg-transparent"
+                onClick={() => {
+                  router.push("/signup");
+                }}
               >
                 Create an account
-              </a>
-            </div>
-          </div>
+              </Button>
+            </ul>
+          </nav>
         )}
       </div>
     </nav>

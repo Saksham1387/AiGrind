@@ -2,8 +2,12 @@ import DashboardProblems from "../../components/DashboardProb";
 import { Hero } from "../../components/Hero";
 import { getMCQProblems } from "../db/fetches";
 
+export const revalidate = 0;
+
 export default async function dashboard() {
+
   const problems = await getMCQProblems();
+  
   return (
     <div className="flex flex-col min-h-screen bg-darkgray">
       <main>
