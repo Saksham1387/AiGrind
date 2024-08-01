@@ -13,7 +13,6 @@ import {
 import { useEffect, useState } from "react";
 import { LANGUAGE_MAPPING } from "@repo/common/language";
 import axios from "axios";
-
 import { CheckIcon, CircleX, ClockIcon } from "lucide-react";
 import { toast } from "react-toastify";
 import { signIn, useSession } from "next-auth/react";
@@ -57,9 +56,12 @@ export const ProblemSubmitBar = ({
               defaultValue="problem"
               className="rounded-md p-1"
               value={activeTab}
-              onValueChange={setActiveTab}>
+              onValueChange={setActiveTab}
+            >
               <TabsList className="grid grid-cols-2 w-full bg-darkgray">
-                <TabsTrigger value="problem" className="">Submit</TabsTrigger>
+                <TabsTrigger value="problem" className="">
+                  Submit
+                </TabsTrigger>
                 <TabsTrigger value="submissions">Submissions</TabsTrigger>
               </TabsList>
             </Tabs>
@@ -86,7 +88,6 @@ function Submissions({ problem }: { problem: IProblem }) {
     };
     fetchData();
   }, [problem.id]);
-
   return (
     <div>
       <SubmissionTable submissions={submissions} />
@@ -127,7 +128,6 @@ function SubmitProblem({
       toast.error("Not able to get status ");
       return;
     }
-
     const response = await axios.get(`/api/submission/?id=${id}`);
     console.log(response.data);
     if (response.data.submission.status === "PENDING") {
@@ -170,58 +170,63 @@ function SubmitProblem({
 
   return (
     <div>
-      <Label htmlFor="language" className="mb-5">Language</Label>
-      
-      <Select
-        value={language}
-        defaultValue="cpp"
-        onValueChange={(value) => setLanguage(value)}>
-        
-        <SelectTrigger className="bg-lightgray border-darkgray">
-          <SelectValue placeholder="Select language" />
-        </SelectTrigger>
-        <SelectContent>
-          {Object.keys(LANGUAGE_MAPPING).map((language) => (
-            <SelectItem key={language} value={language}>
-              {LANGUAGE_MAPPING[language]?.name}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-
-      <div className="pt-4 rounded-md">
-        <Editor
-          height={"60vh"}
-          value={code[language]}
-          theme="vs-dark"
-          onMount={() => { }}
-          options={{
-            fontSize: 14,
-            scrollBeyondLastLine: false,
-          }}
-          language={LANGUAGE_MAPPING[language]?.monaco}
-          onChange={(value) => {
-            //@ts-ignore
-            setCode({ ...code, [language]: value });
-          }}
-          defaultLanguage="python"
-        />
-      </div>
-      <div className="flex justify-end">
-        <Button
-          disabled={status === SubmitStatus.PENDING}
-          type="submit"
-          className="mt-4 align-right"
-          onClick={session.data?.user ? submit : () => signIn()}>
-          {session.data?.user
-            ? status === SubmitStatus.PENDING
-              ? "Submitting"
-              : "Submit"
-            : "Login to submit"}
-        </Button>
-      </div>
-      <RenderTestcase testcases={testcases} />
-    </div>
+  <Label htmlFor="language" className="mb-5">
+    Language
+  </Label>
+  <Select
+    value={language}
+    defaultValue="cpp"
+    onValueChange={(value) => setLanguage(value)}
+  >
+    <SelectTrigger className="bg-lightgray border-darkgray">
+      <SelectValue placeholder="Select language" />
+    </SelectTrigger>
+    <SelectContent>
+      {Object.keys(LANGUAGE_MAPPING).map((lang) => (
+        <SelectItem key={lang} value={lang}>
+          {LANGUAGE_MAPPING[lang]?.name}
+        </SelectItem>
+      ))}
+      {/* Non-clickable item with a placeholder value */}
+      <SelectItem value="disabled-r" disabled className="bg-gray-200 text-gray-500">
+        R (Coming Soon)
+      </SelectItem>
+    </SelectContent>
+  </Select>
+  <div className="pt-4 rounded-md">
+    <Editor
+      height={"60vh"}
+      value={code[language]}
+      theme="vs-dark"
+      onMount={() => {}}
+      options={{
+        fontSize: 14,
+        scrollBeyondLastLine: false,
+      }}
+      language={LANGUAGE_MAPPING[language]?.monaco}
+      onChange={(value) => {
+        //@ts-ignore
+        setCode({ ...code, [language]: value });
+      }}
+      defaultLanguage="python"
+    />
+  </div>
+  <div className="flex justify-end">
+    <Button
+      disabled={status === SubmitStatus.PENDING}
+      type="submit"
+      className="mt-4 align-right"
+      onClick={session.data?.user ? submit : () => signIn()}
+    >
+      {session.data?.user
+        ? status === SubmitStatus.PENDING
+          ? "Submitting"
+          : "Submit"
+        : "Login to submit"}
+    </Button>
+  </div>
+  <RenderTestcase testcases={testcases} />
+</div>
   );
 }
 

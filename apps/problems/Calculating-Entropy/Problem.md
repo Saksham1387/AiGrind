@@ -14,20 +14,20 @@ Implement a function to calculate the entropy of a dataset based on class labels
 ### Example 1
 
 *Input:*
-
+```
 labels = ['Yes', 'No', 'Yes', 'Yes', 'No']
-
+```
 *Output:*
-
+```
 0.971
-
+```
 ### Example 2
 
 *Input:*
-
+```
 labels = ['Yes', 'No', 'No', 'Yes', 'Yes', 'No', 'No']
-
+```
 *Output:*
-
+```
 0.985
-
+```

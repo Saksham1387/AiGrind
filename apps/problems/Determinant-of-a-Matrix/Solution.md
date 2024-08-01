@@ -1,3 +1,4 @@
+```python
 def determinant(matrix):
     # Base case: if the matrix is 2x2, calculate the determinant directly
     if len(matrix) == 2 and len(matrix[0]) == 2:

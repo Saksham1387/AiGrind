@@ -35,6 +35,7 @@ export const getProblem = async (problemId: string, contestId?: string) => {
     },
     include: {
       defaultCode: true,
+      
     },
   });
   return problem;

@@ -1,3 +1,4 @@
+```python
 def solve_linear_system(coefficients, constants):
     n = len(coefficients)
     

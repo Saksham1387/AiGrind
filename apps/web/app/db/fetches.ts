@@ -3,6 +3,7 @@ import { authOptions } from "../lib/auth";
 import { db } from ".";
 import { CategoryCount } from "../types/types";
 
+
 export const getMCQProblems = async ()=> {
     try {
       const session = await getServerSession(authOptions);
@@ -95,4 +96,4 @@ export const getRadarChartData = async () => {
         return [];
     }
 }
-  
+

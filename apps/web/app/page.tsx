@@ -1,6 +1,5 @@
 "use client"
 import { useSession } from "next-auth/react";
-import { Landing } from "../components/Landing";
 import HomePage from "../components/Home/HomePage";
 import { useRouter } from "next/navigation";
 

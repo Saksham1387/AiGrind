@@ -16,22 +16,22 @@ Implement a function to compute the Euclidean distance between two points in a m
 #### Example 1
 
 *Input:*
-
+```
 point1 = [1.0, 2.0, 3.0]
 point2 = [4.0, 5.0, 6.0]
-
+```
 *Output:*
-
+```
 5.196
-
+```
 #### Example 2
 
 *Input:*
-
+```
 point1 = [0.0, 0.0]
 point2 = [3.0, 4.0]
-
+```
 *Output:*
-
+```
 5.0
-
+```

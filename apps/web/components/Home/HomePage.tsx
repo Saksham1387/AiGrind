@@ -1,8 +1,7 @@
 import HeroSection from './HeroSection';
 import FeatureSection from './FeatureSection';
 import Workflow from './Workflow';
-import Testimonials from './Testimonials';
-import Navbar from './Navbar';
+import Navbar from './NavBar';
 
 
 export default function HomePage() {

@@ -1,3 +1,4 @@
+```python
 def svm_decision_function(support_vectors, labels, weights, bias, input_vector):
     result = 0.0
     for sv, label, weight in zip(support_vectors, labels, weights):

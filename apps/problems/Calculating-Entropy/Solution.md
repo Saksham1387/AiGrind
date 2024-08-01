@@ -1,5 +1,5 @@
-
-def calculate_entropy(labels: list[str]) -> float:
+```python
+def calculate_entropy(labels):
     import math
 
     # Initialize a dictionary to count the frequency of each label

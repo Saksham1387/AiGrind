@@ -1,4 +1,5 @@
-def matrix_multiply(matrix1: list[list[float]], matrix2: list[list[float]]) -> list[list[float]]:
+```python
+def matrix_multiply(matrix1, matrix2):
     # Number of rows and columns in the input matrices
     rows_matrix1 = len(matrix1)
     cols_matrix1 = len(matrix1[0])

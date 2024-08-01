@@ -15,18 +15,20 @@ Implement a function to normalize features using min-max scaling. Given a list o
 #### Example 1
 
 *Input:*
-
+```
 features = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-
+```
 *Output:*
-
+```
 [[0.0, 0.0, 0.0], [0.5, 0.5, 0.5], [1.0, 1.0, 1.0]]
-
+```
 #### Example 2
 
 *Input:*
-
+```
 features = [[10, 20], [30, 40], [50, 60]]
-
+```
 *Output:*
+```
 [[0.0, 0.0], [0.5, 0.5], [1.0, 1.0]]
+```

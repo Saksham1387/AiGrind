@@ -1,4 +1,4 @@
-import { scrollToComponent } from "./Navbar";
+import { scrollToComponent } from "./NavBar";
 
 const Footer = () => {
   return (

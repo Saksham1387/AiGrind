@@ -91,7 +91,7 @@ export const features = [
     icon: <Code />,
     text: "Dual Language Support",
     description:
-      "Practice coding in both R and Python, the leading languages in AI and ML. Flexible language support to cater to your preferred coding environment.",
+      "Practice coding in Python with R Coming soon, the leading languages in AI and ML. Flexible language support to cater to your preferred coding environment.",
   },
 ];
 
@@ -117,39 +117,6 @@ export const checklistItems = [
       "Our platform checks the correctness of your answers and provides a detailed performance analysis. This includes time complexity and memory usage, ensuring your code is not only correct but also optimal.",
   },
 ];
-
-// export const pricingOptions = [
-//   {
-//     title: "Free",
-//     price: "$0",
-//     features: [
-//       "Private board sharing",
-//       "5 Gb Storage",
-//       "Web Analytics",
-//       "Private Mode",
-//     ],
-//   },
-//   {
-//     title: "Pro",
-//     price: "$10",
-//     features: [
-//       "Private board sharing",
-//       "10 Gb Storage",
-//       "Web Analytics (Advance)",
-//       "Private Mode",
-//     ],
-//   },
-//   {
-//     title: "Enterprise",
-//     price: "$200",
-//     features: [
-//       "Private board sharing",
-//       "Unlimited Storage",
-//       "High Performance Network",
-//       "Private Mode",
-//     ],
-//   },
-// ];
 
 export const resourcesLinks = [
   { href: "#", text: "Getting Started" },

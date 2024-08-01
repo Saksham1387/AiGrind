@@ -16,8 +16,6 @@ import { McqSubmissionTable } from "../../../components/SubmissionTable";
 import { ProblemSkeleton } from "../../../components/skeletons/problems";
 import { toast } from "react-toastify";
 
-
-
 type MCQOption = {
   id: string;
   optionText: string;
@@ -56,18 +54,6 @@ export default function MCQ({
   };
 
   useEffect(() => {
-    async function fetchAllMcqs() {
-      const res = await fetch(`/api/mcqs/all`);
-      const data = await res.json();
-      console.log(data);
-      const ids = data.map((mcq: MCQProblem) => mcq.id);
-      console.log(ids);
-      setMcqIds(ids);
-    }
-    fetchAllMcqs();
-  }, []);
-
-  useEffect(() => {
     if (mcqId) {
       async function fetchMcq() {
         const res = await fetch(`/api/mcqs/${mcqId}`);
@@ -98,18 +84,17 @@ export default function MCQ({
       console.log(result);
       if (res.ok) {
         setSubmissionResult(result.message); // Update the result state
-        setIsCorrect(result.isCorrect); 
+        setIsCorrect(result.isCorrect);
         // Update the isCorrect state
         if (result.isCorrect) {
           setShowExplanation(true);
           toast.success("Correct!"); // Show explanation if the answer is correct
-        }
-        else{
+        } else {
           toast.error("Incorrect :(");
         }
       } else {
         setSubmissionResult(result.error || "Submission failed.");
-        
+
         setIsCorrect(false);
       }
     } catch (error) {
@@ -151,7 +136,7 @@ export default function MCQ({
         <ProblemSkeleton></ProblemSkeleton>
       </div>
     );
-  
+
   return (
     <div className="text-white relative min-h-screen w-full bg-darkgray flex flex-col items-center py-10 dark:bg-gray-800">
       <Button
@@ -195,17 +180,16 @@ export default function MCQ({
               <div>
                 {submissionResult && (
                   <div className="text-lg mt-4 text-center flex flex-col">
-                   
                     {isCorrect !== null && (
-  <Accordion type="single" collapsible>
-    <AccordionItem value="item-1">
-      <AccordionTrigger>Explanation</AccordionTrigger>
-      <AccordionContent className="text-center">
-        {mcq.explanation}
-      </AccordionContent>
-    </AccordionItem>
-  </Accordion>
-)}
+                      <Accordion type="single" collapsible>
+                        <AccordionItem value="item-1">
+                          <AccordionTrigger>Explanation</AccordionTrigger>
+                          <AccordionContent className="text-center">
+                            {mcq.explanation}
+                          </AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
+                    )}
                   </div>
                 )}
               </div>
@@ -225,10 +209,10 @@ export default function MCQ({
             ? isCorrect === null
               ? "bg-mediumgray"
               : isCorrect && option.id === mcq.correctAnswer
-              ? "border-green-500"
-              : !isCorrect && selectedOption === option.id
-              ? "border-red-400"
-              : "border-green-400"
+                ? "border-green-500"
+                : !isCorrect && selectedOption === option.id
+                  ? "border-red-400"
+                  : "border-green-400"
             : "hover:bg-mediumgray"
         }`}
                     >
@@ -255,7 +239,7 @@ export default function MCQ({
             </div>
           </div>
         )}
-  
+
         {activeTab === "submissions" && (
           <div className="flex justify-center w-full">
             <Submissions mcqId={mcqId} />

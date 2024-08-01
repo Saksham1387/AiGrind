@@ -82,9 +82,11 @@ model Problem {
   title              String
   description        String
   hidden             Boolean             @default(true)
+  category           String?             
   slug               String              @unique
   solved             Int                 @default(0)
   createdAt          DateTime            @default(now())
+  solution          String?
   updatedAt          DateTime            @updatedAt
   difficulty         Difficulty          @default(MEDIUM)
   contestSubmissions ContestSubmission[]
@@ -203,11 +205,6 @@ model UserMCQProblem {
 
   @@unique([userId, mcqProblemId])
 }
-
-
-
-
-
 
 model MCQOption {
   id            String    @id @default(cuid())

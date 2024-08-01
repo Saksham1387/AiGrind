@@ -37,11 +37,11 @@ export async function POST(request: Request, res: NextApiResponse) {
         },
         where: {
           userId,
-          result:"true"
+          result: "true"
         },
       });
       console.log(data);
-
+      
       const categoryCounts: CategoryCount[] = await Promise.all(
         data.map(async (entry) => {
           const problem = await db.mCQProblem.findUnique({
@@ -53,29 +53,28 @@ export async function POST(request: Request, res: NextApiResponse) {
           };
         })
       );
-      console.log("something:   ",categoryCounts);
-
+      console.log("something:   ", categoryCounts);
+      
       const result = categoryCounts.reduce<Record<string, number>>(
         (acc, curr) => {
-          // If the category is not in the accumulator or current count is higher
-          //@ts-ignore
-          if (!acc[curr.category] || curr.count > acc[curr.category] ) {
-            acc[curr.category] = curr.count;
+          if (!acc[curr.category]) {
+            acc[curr.category] = 0;
           }
+          //@ts-ignore
+          acc[curr.category] += curr.count;
           return acc;
         },
         {}
       );
       
-      // Convert the result object to an array for chart data
       const chartData = Object.keys(result).map((key) => ({
         category: key,
         count: result[key],
       }));
       
       console.log('Chart data:', chartData);
-
       return NextResponse.json(chartData);
+
     } else if (type === "solvedUnsolvedCounts") {
       const solvedCount = await db.mCQProblem.count({
         where: {
@@ -99,7 +98,6 @@ export async function POST(request: Request, res: NextApiResponse) {
       });
 
       console.log("Unsolved count: ", unsolvedCount);
-
       console.log("Solved count: ", solvedCount);
 
       return NextResponse.json({

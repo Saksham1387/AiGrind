@@ -33,7 +33,7 @@ async function main(problemSlug: string, problemTitle: string) {
     );
     const difficultyText = await readFileContent(`${MOUNT_PATH}/${problemSlug}/dif.txt`);
     const difficulty = difficultyText.trim().toUpperCase() as 'EASY' | 'MEDIUM' | 'HARD';
-    
+    const solution = await readFileContent(`${MOUNT_PATH}/${problemSlug}/Solution.md`);
     const problem = await prismaClient.problem.upsert({
       where: {
         slug: problemSlug,
@@ -44,6 +44,8 @@ async function main(problemSlug: string, problemTitle: string) {
         description: problemStatement,
         hidden: false,
         difficulty: difficulty,
+        solution: solution,
+        
       },
       update: {
         description: problemStatement,

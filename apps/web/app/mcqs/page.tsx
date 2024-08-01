@@ -1,11 +1,8 @@
-
-import  McqProblems  from "../../components/McqProblems";
+import McqProblems from "../../components/McqProblems";
 import { getMCQProblems } from "../db/fetches";
 
-
 export default async function McqProblem() {
-
-  const Mcqproblems:any = await getMCQProblems();
+  const Mcqproblems: any = await getMCQProblems();
   console.log(Mcqproblems);
 
   return (
@@ -15,4 +12,4 @@ export default async function McqProblem() {
   );
 }
 
-export const dynamic = "force-dynamic"
+export const dynamic = "force-dynamic";

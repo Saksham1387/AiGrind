@@ -1,3 +1,4 @@
+```python
 import numpy as np
 
 def mean(values):
@@ -35,7 +36,7 @@ def eigen_decomposition(matrix):
     eigenvalues, eigenvectors = np.linalg.eig(matrix_np)
     return eigenvalues.tolist(), eigenvectors.T.tolist()
 
-def pca(data: list[list[float]], n_components: int) -> list[list[float]]:
+def pca(data, n_components):
     data_mean = [mean(column) for column in transpose(data)]
     centered_data = [[data[i][j] - data_mean[j] for j in range(len(data[0]))] for i in range(len(data))]
     

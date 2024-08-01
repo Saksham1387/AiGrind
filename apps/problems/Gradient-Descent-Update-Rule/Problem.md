@@ -16,24 +16,24 @@ Implement the gradient descent update rule for a single variable linear regressi
 #### Example 1
 
 *Input:*
-
+```
 weight = 0.5
 gradients = [0.2, 0.3, 0.4]
 alpha = 0.01
-
+```
 *Output:*
-
+```
 0.491
-
+```
 #### Example 2
 
 *Input:*
-
+```
 weight = 1.0
 gradients = [0.1, -0.2, 0.3]
 alpha = 0.1
-
+```
 *Output:*
-
+```
 0.98
-
+```

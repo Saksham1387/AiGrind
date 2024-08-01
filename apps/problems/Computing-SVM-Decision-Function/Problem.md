@@ -19,27 +19,30 @@ Implement a function to compute the decision function value for a given input us
 #### Example 1
 
 *Input:*
-
+```
 support_vectors = [[1.0, 2.0], [2.0, 3.0]]
 labels = [1, -1]
 weights = [0.5, -0.5]
 bias = -1.0
 input_vector = [1.5, 2.5]
-
+```
 *Output:*
+```
 7.5
+```
 
 #### Example 2
 
 *Input:*
-
+```
 support_vectors = [[1.0, 1.0], [2.0, 2.0]]
 labels = [1, -1]
 weights = [1.0, -1.0]
 bias = 0.0
 input_vector = [1.5, 1.5]
-
+```
 
 *Output:*
-
+```
 9.0
+```

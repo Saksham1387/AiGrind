@@ -7,9 +7,9 @@ import { JWTPayload, SignJWT, importJWK } from "jose";
 import { Session } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
-import { generate } from 'random-username-generator';
+import { generateFromEmail, generateUsername } from "unique-username-generator";
 
-const randomName = generate();
+const randomName = generateUsername();
 
 interface token extends JWT {
   uid: string;

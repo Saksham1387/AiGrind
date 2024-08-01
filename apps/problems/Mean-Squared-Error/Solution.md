@@ -1,4 +1,5 @@
-def mean_squared_error(y_true: list[float], y_pred: list[float]) -> float:
+```python
+def mean_squared_error(y_true, y_pred):
     # Verify if both lists are of the same length
     if len(y_true) != len(y_pred):
         raise ValueError("The length of y_true and y_pred must be the same.")

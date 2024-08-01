@@ -16,19 +16,22 @@ Implement a function to solve a system of linear equations using Gaussian elimin
 #### Example 1
 
 *Input:*
+```
 coefficients = [[2, 1], [1, 3]]
 constants = [5, 6]
-
+```
 *Output:*
-
+```
 [1.0, 2.0]
-
+```
 #### Example 2
 
 *Input:*
-
+```
 coefficients = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 constants = [6, 15, 24]
-
+```
 *Output:*
+```
 [0.0, 0.0, 0.0]
+```

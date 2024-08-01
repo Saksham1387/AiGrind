@@ -2,6 +2,25 @@
   @tailwind components;
   @tailwind utilities;
 
+  .prose-invert pre {
+    padding: 1em;
+    margin: 1em 0;
+    overflow: auto;
+    border-radius: 0.5em;
+    background: #2d2d2d; /* Background color for the code block */
+  }
+  
+  .prose-invert code {
+    background: #f5f2f0; /* Background color for inline code */
+    padding: 0.2em 0.4em;
+    border-radius: 0.3em;
+  }
+  
+  .prose-invert pre code {
+    background: transparent;
+    padding: 0;
+  }
+  
   @layer base {
     @font-face {
       font-family: 'Roboto';

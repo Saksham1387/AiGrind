@@ -1,3 +1,4 @@
+```python
 def calculate_precision_recall(tp: int, fp: int, tn: int, fn: int) -> tuple:
     if tp + fp == 0:
         precision = 0.0

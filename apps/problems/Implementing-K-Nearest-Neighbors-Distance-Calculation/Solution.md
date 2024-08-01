@@ -1,3 +1,4 @@
+```python
 import math
 
 def euclidean_distance(point1, point2):

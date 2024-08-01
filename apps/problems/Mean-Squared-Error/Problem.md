@@ -15,21 +15,23 @@ Calculate the mean squared error between two lists of numbers.
 #### Example 1
 
 *Input:*
-
+```
 [1, 2, 3], [1, 2, 3]
-
+```
 *Output:*
-
+```
 0.0
-
+```
 #### Example 2
 
 *Input:*
-
+```
 [1, 2, 3], [4, 5, 6]
-
+```
 *Output:*
+```
 9.0
+```
 
 
 

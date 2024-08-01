@@ -13,9 +13,9 @@ export enum SubmissionResult {
   }
   
   export enum Difficulty {
-    EASY = "EASY",
-    MEDIUM = "MEDIUM",
-    HARD = "HARD"
+    EASY = 'EASY',
+    MEDIUM = 'MEDIUM',
+    HARD = 'HARD'
   }
   
   // Define Types for Models
@@ -200,6 +200,7 @@ export enum SubmissionResult {
     difficulty: Difficulty;
     comments: Comment[];
     userMCQProblems: UserMCQProblem[];
+    
   };
   
   // UserMCQProblem model

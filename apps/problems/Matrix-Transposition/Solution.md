@@ -1,4 +1,5 @@
-def transpose(matrix: list[list[float]]) -> list[list[float]]:
+```python
+def transpose(matrix):
     # Get the number of rows and columns in the input matrix
     rows = len(matrix)
     cols = len(matrix[0])

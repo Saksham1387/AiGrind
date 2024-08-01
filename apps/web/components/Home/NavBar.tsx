@@ -1,15 +1,11 @@
-"use client"
+"use client";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { navItems } from "./constants";
 import { useRouter } from "next/navigation";
 import { Button } from "@repo/ui/button";
 
-
-export const scrollToComponent = (
-  id:any,
-  event:any
-) => {
+export const scrollToComponent = (id: any, event: any) => {
   event.preventDefault();
   const element = document.getElementById(id);
   if (element) {
@@ -21,7 +17,7 @@ const Navbar = () => {
   const router = useRouter();
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
-  const handleMailClick = (email:any) => {
+  const handleMailClick = (email: any) => {
     const mailtoLink = `mailto:${email}`;
     window.location.href = mailtoLink;
   };
@@ -41,30 +37,33 @@ const Navbar = () => {
           <ul className="hidden lg:flex ml-14 space-x-12">
             {navItems.map((item, index) => (
               <li key={index}>
-                <button href={item.href} 
-                onClick={(e)=>{
-                  scrollToComponent(item.id,e)
-                  
-                }}>{item.label} </button>
+                <a href={item.href}>
+                  <button
+                    onClick={(e) => {
+                      scrollToComponent(item.id, e);
+                    }}
+                  >
+                    {item.label}
+                  </button>
+                </a>
               </li>
             ))}
-          </ul> 
+          </ul>
           <div className="hidden lg:flex justify-center space-x-12 items-center ml-10">
-            <Button className="py-2  border rounded-md bg-lightgray"
-            onClick={()=>{
-              router.push("/signin")
-            }}
+            <Button
+              className="py-2  border rounded-md bg-lightgray hover:bg-darkgray"
+              onClick={() => {
+                router.push("/signin");
+              }}
             >
               Sign In
             </Button>
             <Button
-              
               className="py-2 border rounded-md bg-lightgray"
-              onClick={()=>{
-                router.push("/signup")
+              onClick={() => {
+                router.push("/signup");
               }}
             >
-
               Create an account
             </Button>
           </div>

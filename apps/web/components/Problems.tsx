@@ -10,7 +10,6 @@ import {
 import { getColor } from "../app/db/problem";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
 import { Button } from "@repo/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { SkeletonTable } from "./skeletons/problems";
@@ -28,19 +27,14 @@ const Problems = ({ problems }: any) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-
-  // Calculate the index of the first and last problem for the current page
   const indexOfLastProblem = currentPage * ITEMS_PER_PAGE;
   const indexOfFirstProblem = indexOfLastProblem - ITEMS_PER_PAGE;
   const currentProblems = problems.slice(indexOfFirstProblem, indexOfLastProblem);
 
-  // Calculate total pages
   const totalPages = Math.ceil(problems.length / ITEMS_PER_PAGE);
-
   const handleRoute = (id: string) => {
     router.push(`/problem/${id}`);
   };
-
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
@@ -126,7 +120,6 @@ function Pagination({
       onPageChange(currentPage - 1);
     }
   };
-
   const handleNext = () => {
     if (currentPage < totalPages) {
       onPageChange(currentPage + 1);
