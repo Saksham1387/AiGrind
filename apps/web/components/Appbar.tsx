@@ -84,7 +84,7 @@ export function Appbar() {
             </DropdownMenuContent>
           </DropdownMenu>
         ) : !isLoading && (
-          <Button onClick={() => signIn()}>Sign in</Button>
+          <Button className="bg-darkgray hover:bg-darkgray" onClick={() => signIn()}>Sign in</Button>
         )}
       </div>
 
