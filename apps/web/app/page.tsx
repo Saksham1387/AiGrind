@@ -18,3 +18,4 @@ export default function Page(): JSX.Element {
 }
 
 export const dynamic = "force-dynamic"
+

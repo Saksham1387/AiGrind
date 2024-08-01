@@ -1,3 +1,5 @@
+
+
 "use client"
 import * as React from "react"
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
@@ -22,7 +24,7 @@ const AccordionTrigger = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
 >(({ className, children, ...props }, ref) => (
-  <AccordionPrimitive.Header className="flex">
+  <AccordionPrimitive.Header className="flex w-full items-center">
     <AccordionPrimitive.Trigger
       ref={ref}
       className={cn(
@@ -31,10 +33,10 @@ const AccordionTrigger = React.forwardRef<
       )}
       {...props}
     >
+      <Lightbulb className="h-6 w-6 mr-2 transition-transform duration-200 [&[data-state=open]]:text-yellow-500 [&[data-state=closed]]:text-gray-400" />
       {children}
       <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
     </AccordionPrimitive.Trigger>
-    {/* <Lightbulb></Lightbulb> */}
   </AccordionPrimitive.Header>
 ))
 AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName

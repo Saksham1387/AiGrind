@@ -1,4 +1,4 @@
-Problem Name: "Eigenvalues of a Matrix"
+Problem Name: "Eigenvalues-of-a-Matrix"
 Function Name: eigenvalues
 Input Structure:
 Input Field: list<list<float>> matrix

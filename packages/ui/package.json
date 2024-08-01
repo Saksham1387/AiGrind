@@ -17,7 +17,8 @@
     "./calendar": "./src/@/components/ui/calendar.tsx",
     "./pagination": "./src/@/components/ui/pagination.tsx",
     "./accordion": "./src/@/components/ui/accordion.tsx",
-    "./TracingBeam": "./src/@/components/ui/tracing-beam.tsx"
+    "./TracingBeam": "./src/@/components/ui/tracing-beam.tsx",
+    "./container-scroll-animation": "./src/@/components/ui/container-scroll-animation.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",

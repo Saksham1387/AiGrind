@@ -43,9 +43,7 @@ const DashboardProblems = () => {
 
   useEffect(() => {
     const fetchProblems = async () => {
-      const problems = await fetch("/api/submission/all").then((res) =>
-        res.json()
-      );
+      const problems = ""
       const mcqProblems = await fetch("/api/mcqs").then((res) => res.json());
       const combinedProblems = [...problems, ...mcqProblems];
       const randomProblems = selectRandomProblems(combinedProblems, 20);
@@ -130,7 +128,7 @@ const ProblemCard = ({
   const router = useRouter();
 
   const handleRoute = (id: string) => {
-    router.push(`/problem/${id}`);
+    router.push(`/mcq/${id}`);
   };
 
   const handleSort = () => {

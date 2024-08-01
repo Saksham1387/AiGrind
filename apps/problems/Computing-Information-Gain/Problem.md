@@ -1,4 +1,4 @@
-## Problem Name: "Computing Information Gain"
+## Computing Information Gain
 
 Implement a function to calculate the information gain of a split in a dataset. Given the entropy before and after a split, compute the information gain.
 

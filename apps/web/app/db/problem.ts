@@ -1,9 +1,4 @@
-
-import { getServerSession } from "next-auth";
 import { db } from ".";
-import { Difficulty, MCQProblem } from "../types/Finaltypes";
-import { authOptions } from "../lib/auth";
-import { NextResponse } from "next/server";
 
 export const getProblem = async (problemId: string, contestId?: string) => {
   if (contestId) {

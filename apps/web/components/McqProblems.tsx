@@ -1,5 +1,4 @@
 "use client";
-
 import {
   Table,
   TableHeader,
@@ -8,6 +7,7 @@ import {
   TableBody,
   TableCell,
 } from "@repo/ui/table";
+import { toast } from "react-toastify";
 import { getColor } from "../app/db/problem";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -24,6 +24,7 @@ const categories = [
   "Machine Learning",
   "Linear Algebra",
   "Generative AI",
+  "Prompt Engineering",
 ];
 
 interface McqProblemsProps {
@@ -32,9 +33,18 @@ interface McqProblemsProps {
 
 const ITEMS_PER_PAGE = 20;
 
+// Function to shuffle an array
+const shuffleArray = (array: any[]) => {
+  const shuffledArray = [...array];
+  for (let i = shuffledArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+  }
+  return shuffledArray;
+};
+
 //@ts-ignore
-const McqProblems = ({mcqProblems}) => {
-  // const [mcqProblems, setMcqProblems] = useState<MCQProblem[]>([]);
+const McqProblems = ({ mcqProblems }) => {
   const [loading, setLoading] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -43,35 +53,19 @@ const McqProblems = ({mcqProblems}) => {
     useState(false);
   const [isDifficultyDropdownVisible, setIsDifficultyDropdownVisible] =
     useState(false);
-  const [selectedDifficulty, setSelectedDifficulty] = useState<string | null>(
-    null
+  const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>(
+    []
   );
   const [currentPage, setCurrentPage] = useState(1);
 
-  // useEffect(() => {
-  //   const fetchProblems = async () => {
-  //     try {
-  //       const response = await fetch("/api/mcqs");
-  //       const problems = await response.json();
-  //       if (Array.isArray(problems)) {
-  //         setMcqProblems(problems);
-  //       } else {
-  //         console.error("API response is not an array:", problems);
-  //       }
-  //     } catch (error) {
-  //       console.error("Failed to fetch MCQ problems:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   fetchProblems();
-  // }, []);
   useEffect(() => {
     console.log(mcqProblems);
-  }
-  , []);
+  }, []);
+
+  const difficultyOrder = { easy: 1, medium: 2, hard: 3 };
+
   const filteredProblems = useMemo(() => {
-    return mcqProblems.filter((problem:any) => {
+    const filtered = mcqProblems.filter((problem: any) => {
       if (selectedStatus && problem.solved !== selectedStatus) return false;
       if (
         selectedCategories.length > 0 &&
@@ -79,13 +73,29 @@ const McqProblems = ({mcqProblems}) => {
       )
         return false;
       if (
-        selectedDifficulty &&
-        problem.difficulty.toLowerCase() !== selectedDifficulty.toLowerCase()
+        selectedDifficulties.length > 0 &&
+        !selectedDifficulties.includes(problem.difficulty.toLowerCase())
       )
         return false;
       return true;
     });
-  }, [mcqProblems, selectedStatus, selectedCategories, selectedDifficulty]);
+
+    const easyProblems = filtered.filter(
+      (problem:any) => problem.difficulty.toLowerCase() === "easy"
+    );
+    const mediumProblems = filtered.filter(
+      (problem:any) => problem.difficulty.toLowerCase() === "medium"
+    );
+    const hardProblems = filtered.filter(
+      (problem:any) => problem.difficulty.toLowerCase() === "hard"
+    );
+
+    return [
+      ...shuffleArray(easyProblems),
+      ...shuffleArray(mediumProblems),
+      ...shuffleArray(hardProblems),
+    ];
+  }, [mcqProblems, selectedStatus, selectedCategories, selectedDifficulties]);
 
   const paginatedProblems = useMemo(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -110,12 +120,16 @@ const McqProblems = ({mcqProblems}) => {
         ? prevCategories.filter((c) => c !== category)
         : [...prevCategories, category]
     );
-    setCurrentPage(1); // Reset to first page on filter change
+    console.log(selectedCategories)
+    setCurrentPage(1); 
   };
 
-  const handleDifficultyFilter = (difficulty: string | null) => {
-    setSelectedDifficulty(difficulty);
-    setIsDifficultyDropdownVisible(false);
+  const handleDifficultyFilter = (difficulty: string) => {
+    setSelectedDifficulties((prevDifficulties) =>
+      prevDifficulties.includes(difficulty.toLowerCase())
+        ? prevDifficulties.filter((d) => d !== difficulty.toLowerCase())
+        : [...prevDifficulties, difficulty.toLowerCase()]
+    );
     setCurrentPage(1); // Reset to first page on filter change
   };
 
@@ -159,22 +173,22 @@ const McqProblems = ({mcqProblems}) => {
                 <ChevronDownIcon className="ml-2" />
               </button>
               {isStatusDropdownVisible && (
-                <div className="absolute mt-2 w-48 bg-lightgray dark:bg-mediumgray border border-darkgray rounded shadow-lg z-10">
+                <div className="absolute mt-2 w-48 bg-neutral-200 dark:bg-mediumgray border-none rounded shadow-lg z-10">
                   <button
                     onClick={() => handleStatusFilter(null)}
-                    className="block w-full text-left px-4 py-2 border-b border-darkgray hover:bg-darkgray"
+                    className="block w-full text-left px-4 py-2 border-b border-darkgray hover:bg-slate-200 "
                   >
                     All
                   </button>
                   <button
                     onClick={() => handleStatusFilter("solved")}
-                    className="block w-full text-left px-4 py-2 border-b border-darkgray hover:bg-darkgray"
+                    className="block w-full text-left px-4 py-2 border-b border-darkgray hover:bg-slate-200"
                   >
                     Solved
                   </button>
                   <button
                     onClick={() => handleStatusFilter("unsolved")}
-                    className="block w-full text-left px-4 py-2 hover:bg-darkgray"
+                    className="block w-full text-left px-4 py-2 hover:bg-slate-200"
                   >
                     Unsolved
                   </button>
@@ -190,7 +204,7 @@ const McqProblems = ({mcqProblems}) => {
                 <ChevronDownIcon className="ml-2" />
               </button>
               {isCategoryDropdownVisible && (
-                <div className="absolute mt-2 w-[450px] bg-lightgray dark:bg-mediumgray border border-darkgray rounded shadow-lg z-10 p-4 grid grid-cols-3 gap-4">
+                <div className="absolute mt-2 w-[450px] bg-white dark:bg-mediumgray border border-darkgray rounded shadow-lg z-10 p-4 grid grid-cols-3 gap-4">
                   {categories.map((category) => (
                     <label
                       key={category}
@@ -217,23 +231,20 @@ const McqProblems = ({mcqProblems}) => {
                 <ChevronDownIcon className="ml-2" />
               </button>
               {isDifficultyDropdownVisible && (
-                <div className="absolute mt-2 w-48 bg-lightgray dark:bg-mediumgray border border-darkgray rounded shadow-lg z-10">
+                <div className="absolute mt-2 w-48 bg-neutral-200 dark:bg-mediumgray border border-darkgray rounded-lg shadow-lg z-10">
                   {["Easy", "Medium", "Hard"].map((difficulty) => (
-                    <button
+                    <label
                       key={difficulty}
-                      onClick={() =>
-                        handleDifficultyFilter(
-                          selectedDifficulty === difficulty ? null : difficulty
-                        )
-                      }
-                      className={`block w-full text-left px-4 py-2 border-b border-darkgray hover:bg-darkgray ${
-                        selectedDifficulty === difficulty
-                          ? "bg-gray-200 dark:bg-darkgray"
-                          : ""
-                      }`}
+                      className="block w-full text-left px-4 py-2 border-b border-darkgray border-none  hover:bg-slate-300  rounded-lg items-center"
                     >
+                      <input
+                        type="checkbox"
+                        checked={selectedDifficulties.includes(difficulty.toLowerCase())}
+                        onChange={() => handleDifficultyFilter(difficulty)}
+                        className="mr-2 accent-green-500"
+                      />
                       {difficulty}
-                    </button>
+                    </label>
                   ))}
                 </div>
               )}

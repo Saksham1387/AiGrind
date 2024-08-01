@@ -1,13 +1,13 @@
-import  Problems  from "../../components/Problems";
+import Problems from "../../components/Problems";
 import { getProblems } from "../db/problem";
 
 export default async function Problem() {
-  const problems:any = await getProblems();
+  const problems: any = await getProblems();
   return (
     <main>
-      <Problems  problems={problems}/>
+      <Problems problems={problems} />
     </main>
   );
 }
 
-export const dynamic = "force-dynamic"
+export const dynamic = "force-dynamic";

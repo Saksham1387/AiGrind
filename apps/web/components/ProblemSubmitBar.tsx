@@ -188,6 +188,7 @@ function SubmitProblem({
           ))}
         </SelectContent>
       </Select>
+
       <div className="pt-4 rounded-md">
         <Editor
           height={"60vh"}
@@ -203,7 +204,7 @@ function SubmitProblem({
             //@ts-ignore
             setCode({ ...code, [language]: value });
           }}
-          defaultLanguage="javascript"
+          defaultLanguage="python"
         />
       </div>
       <div className="flex justify-end">

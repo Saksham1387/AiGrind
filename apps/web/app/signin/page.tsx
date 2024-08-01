@@ -61,7 +61,7 @@ const SigninPage = () => {
 
   return (
     <>
-      <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 ">
+      <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 bg-lightgray text-white">
       <div className="h-full w-[900px] overflow-hidden">
           <div className="relative h-screen w-full">
             <video
@@ -72,15 +72,7 @@ const SigninPage = () => {
               muted
             />
             <div className=" flex-col absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center">
-              <div className="mr-[650px]">
-                <Image
-                  src="/Main-logo.png"
-                  alt="Logo"
-                  width={100}
-                  height={100}
-                  className="object-contain"
-                />
-              </div>
+              
               <div className="mt-[350px] mr-[250px]">
                 <h1 className="text-slate-300 text-2xl mb-3">Welcome to</h1>
                 <h1 className="text-white text-6xl">AiGrind Community </h1>
@@ -98,8 +90,18 @@ const SigninPage = () => {
           </div>
         </div>
         <div className="flex items-center justify-center">
-          <div className="mx-auto grid w-[350px] gap-6">
+          <div className="mx-auto grid w-[350px] gap-6 mb-20 ">
+          <div className="">
+                <Image
+                  src="/Main-logo.png"
+                  alt="Logo"
+                  width={100}
+                  height={100}
+                  className="object-contain"
+                />
+              </div>
           <div className="grid gap-2 mb-5">
+            
               <h1 className="text-3xl font-bold">Welcome Back!</h1>
               <p className="text-3xl font-bold">Login to your account</p>
               <p className="text-sm text-muted-foreground font-light">
@@ -157,13 +159,13 @@ const SigninPage = () => {
                     )}
                   </div>
                 </div>
-                <Button type="submit" className="w-full" disabled={loading}>
+                <Button type="submit" className="w-full bg-white text-black" disabled={loading}>
                   Login
                 </Button>
                 <div className="flex space-x-2">
                   <Button
                     variant="outline"
-                    className="w-full flex items-center justify-center"
+                    className="w-full flex items-center justify-center text-black"
                     onClick={()=>{handleProviderLogin("google")}}
                   >
                     <div className="bg-white p-2 rounded-full">
@@ -190,7 +192,7 @@ const SigninPage = () => {
                   </Button>
                   <Button
                     variant="outline"
-                    className="w-full flex items-center justify-center"
+                    className="w-full flex items-center justify-center text-black"
                     onClick={()=>{
                       handleProviderLogin("github")
                     }}

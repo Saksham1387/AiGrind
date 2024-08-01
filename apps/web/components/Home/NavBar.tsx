@@ -36,7 +36,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center">
           <div className="flex items-center flex-shrink-0">
             <img className="h-12 w-13 mr-2" src="./Main-logo.png" alt="Logo" />
-            <span className="text-xl tracking-tight">DataDex</span>
+            <span className="text-xl tracking-tight">AIgrind</span>
           </div>
           <ul className="hidden lg:flex ml-14 space-x-12">
             {navItems.map((item, index) => (
@@ -48,9 +48,9 @@ const Navbar = () => {
                 }}>{item.label} </button>
               </li>
             ))}
-          </ul>
-          <div className="hidden lg:flex justify-center space-x-12 items-center">
-            <Button className="py-2 px-3 border rounded-md"
+          </ul> 
+          <div className="hidden lg:flex justify-center space-x-12 items-center ml-10">
+            <Button className="py-2  border rounded-md bg-lightgray"
             onClick={()=>{
               router.push("/signin")
             }}
@@ -59,7 +59,7 @@ const Navbar = () => {
             </Button>
             <Button
               
-              className="py-2 px-3 border rounded-md"
+              className="py-2 border rounded-md bg-lightgray"
               onClick={()=>{
                 router.push("/signup")
               }}

@@ -1,7 +1,0 @@
-{
-    'Outlook': {
-        'Sunny': 'No',
-        'Overcast': 'Yes',
-        'Rain': 'Yes'  
-    }
-}

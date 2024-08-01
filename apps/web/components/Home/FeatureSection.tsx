@@ -9,7 +9,7 @@ export const FeatureSection = () => {
         </span>
         <h2 className="text-3xl sm:text-5xl lg:text-6xl mt-10 lg:mt-20 tracking-wide">
         Unlock your {" "}
-          <span className="bg-gradient-to-r from-gray-700 to-gray-900 text-transparent bg-clip-text">
+          <span className="bg-gradient-to-r from-gray-500 to-gray-800 text-transparent bg-clip-text">
           AI and ML Potential
           </span>
         </h2>

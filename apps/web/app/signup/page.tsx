@@ -104,7 +104,7 @@ const SignupPage = () => {
 
   return (
     <>
-      <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 h-full">
+      <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 h-full bg-lightgray text-white">
         <div className="h-full w-[900px] overflow-hidden">
           <div className="relative h-screen w-full">
             <video
@@ -115,15 +115,7 @@ const SignupPage = () => {
               muted
             />
             <div className=" flex-col absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center">
-              <div className="mr-[650px]">
-                <Image
-                  src="/Main-logo.png"
-                  alt="Logo"
-                  width={100}
-                  height={100}
-                  className="object-contain"
-                />
-              </div>
+              
               <div className="mt-[350px] mr-[250px]">
                 <h1 className="text-slate-300 text-2xl mb-3">Welcome to</h1>
                 <h1 className=" text-6xl text-white font-roboto">AiGrind Community </h1>
@@ -142,8 +134,20 @@ const SignupPage = () => {
 
         <div className="flex items-center justify-center">
           <div className="mx-auto grid w-[350px] gap-6">
-            <div className="grid gap-2">
-              <h1 className="text-3xl font-bold">Join Us</h1>
+            <div className=" gap-2 flex-col">
+              <div className="flex flex-row">
+              <h1 className="text-3xl font-bold mt-1">Join Us </h1>
+              <div className="ml-3">
+                <Image
+                  src="/Main-logo.png"
+                  alt="Logo"
+                  width={50}
+                  height={50}
+                  className="object-contain mb-3"
+                />
+              </div>
+
+              </div>
               <p className="text-3xl font-bold">Create a Account on AiGrind</p>
               <p className="text-balance text-muted-foreground font-light">
                 To get your first ML interview
@@ -155,6 +159,7 @@ const SignupPage = () => {
                 <Input
                   id="fullName"
                   type="text"
+                  className="text-black"
                   placeholder="John Doe"
                   required
                   onChange={(e) => setFullName(e.target.value)}
@@ -164,6 +169,7 @@ const SignupPage = () => {
                 <Label htmlFor="userName">Username</Label>
                 <Input
                   id="userName"
+                   className="text-black"
                   type="text"
                   placeholder="johndoe123"
                   required
@@ -175,6 +181,7 @@ const SignupPage = () => {
                 <Input
                   id="email"
                   type="email"
+                   className="text-black"
                   placeholder="m@example.com"
                   required
                   onChange={(e) => setEmail(e.target.value)}
@@ -185,13 +192,14 @@ const SignupPage = () => {
                 <div className="relative">
                   <Input
                     id="password"
+                    
                     type={showPassword ? "text" : "password"}
                     required
                     value={passwordValue}
                     onChange={(e) => {
                       setPasswordValue(e.target.value);
                     }}
-                    className="pr-10"
+                    className="pr-10 text-black"
                   />
                   {passwordValue && (
                     <button
@@ -230,13 +238,14 @@ const SignupPage = () => {
                 <div className="relative">
                   <Input
                     id="confirmPassword"
+                    
                     type={showPassword ? "text" : "password"}
                     required
                     value={confirmPasswordValue}
                     onChange={(e) => {
                       setConfirmPasswordValue(e.target.value);
                     }}
-                    className="pr-10"
+                    className="pr-10 text-black"
                   />
                   {confirmPasswordValue && (
                     <button
@@ -249,7 +258,7 @@ const SignupPage = () => {
                   )}
                 </div>
               </div>
-              <Button type="submit" className="w-full" onClick={handleSubmit}>
+              <Button type="submit" className="w-full bg-white text-black hover:bg-slate-100 mt-5" onClick={handleSubmit}>
                 Sign Up
               </Button>
 
@@ -277,12 +286,12 @@ const SignupPage = () => {
               <div className="flex space-x-2">
                 <Button
                   variant="outline"
-                  className="w-full flex items-center justify-center"
+                  className="w-full flex items-center justify-center text-black"
                   onClick={() => {
                     handleProviderLogin("google");
                   }}
                 >
-                  <div className="bg-white p-2 rounded-full">
+                  <div className="bg-white p-2 rounded-full ">
                     <svg className="w-4" viewBox="0 0 533.5 544.3">
                       <path
                         d="M533.5 278.4c0-18.5-1.5-37.1-4.7-55.3H272.1v104.8h147c-6.1 33.8-25.7 63.7-54.4 82.7v68h87.7c51.5-47.4 81.1-117.4 81.1-200.2z"
@@ -306,7 +315,7 @@ const SignupPage = () => {
                 </Button>
                 <Button
                   variant="outline"
-                  className="w-full flex items-center justify-center"
+                  className="w-full flex items-center justify-center text-black"
                   onClick={() => {
                     handleProviderLogin("github");
                   }}
@@ -327,7 +336,7 @@ const SignupPage = () => {
                   Already have an account?{" "}
                   <Link
                     href="/signin"
-                    className="underline underline-offset-4 hover:text-primary"
+                    className="underline underline-offset-4 hover:text-white"
                   >
                     Sign In
                   </Link>

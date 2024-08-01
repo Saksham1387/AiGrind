@@ -19,28 +19,29 @@ const mentors = [
     sessionDuration: '1 hour session',
     flexibleScheduling: 'Flexible scheduling',
     satisfaction: '2 Free Sessions',
-    experience: '0-1 experience'
+    experience: '0-1 experience',
+    cal: 'https://cal.com/parth-thirwani'
   },
   {
-    mentorName: 'John Doe',
-    mentorImage: '/john-doe.jpg',
-    linkedInUrl: 'https://www.linkedin.com/in/john-doe/',
-    githubUrl: 'https://github.com/johndoe',
-    skills: ['Web Development', 'JavaScript', 'React'],
-    description: 'John Doe is an experienced web developer with a focus on JavaScript and React. He has worked on several high-profile projects and is passionate about mentoring the next generation of developers.',
+    mentorName: 'Saksham Chaudhary',
+    mentorImage: '/saksham-img.png',
+    linkedInUrl: 'https://www.linkedin.com/in/saksham-chaudhary-21564722a/',
+    githubUrl: 'https://github.com/saksham1387',
+    skills: ['Web Development', 'DevOps', 'Generative AI'],
+    description: 'I\'m Saksham Chaudhary, a dedicated mentor in generative AI, web development, and DevOps. With extensive experience, I guide individuals to master AI creativity, build robust web applications, and streamline development operations. Let\'s transform your skills into success together!',
     companyLogos: [
-      { src: '/company1-logo.jpg', name: 'Company1' },
-      { src: '/company2-logo.jpg', name: 'Company2' },
+      { src: '/cncf-logo.png', name: 'CNCF NewDelhi' },
     ],
     price: 'Rs 600',
     sessionDuration: '1.5 hour session',
     flexibleScheduling: 'Flexible scheduling',
     satisfaction: 'Guaranteed satisfaction',
-    experience: '2-3 years experience'
+    experience: '2-3 years experience',
+    cal: 'https://cal.com/saksham34'
   }
 ];
 
-const MentorCard: React.FC<any> = ({
+const MentorCard = ({
   mentorName,
   mentorImage,
   linkedInUrl,
@@ -52,17 +53,18 @@ const MentorCard: React.FC<any> = ({
   sessionDuration,
   flexibleScheduling,
   satisfaction,
-  experience
+  experience,
+  cal
 }) => {
   const router = useRouter();
   return (
-    <div className="rounded-lg border:gray-700 text-white bg-mediumgray shadow-sm md:p-1 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
-      <div className="flex flex-row gap-6">   
+    <div className="rounded-lg border-gray-700 text-white bg-mediumgray shadow-sm md:p-4 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+      <div className="flex flex-col md:flex-row gap-6">   
         <div className='p-3'>
           <img
             src={mentorImage}
             alt={`${mentorName} Image`}
-            className="object-cover rounded-lg aspect-square w-[900px] h-[370px]"
+            className="object-cover rounded-lg w-full h-auto"
           />
         </div>
 
@@ -122,8 +124,9 @@ const MentorCard: React.FC<any> = ({
             <div className="flex items-center justify-between">
               <div className="text-lg font-bold">{price}</div>
               <button 
-                onClick={()=>{router.push('https://cal.com/parth-thirwani')}}
-              className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-8 rounded-md px-3">
+                onClick={() => { router.push(`${cal}`); }}
+                className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-8 rounded-md px-3"
+              >
                 Get a free session
               </button>
             </div>
@@ -199,13 +202,13 @@ const MentorCard: React.FC<any> = ({
   );
 };
 
-const MentorshipPage: React.FC = () => {
+const MentorshipPage = () => {
   return (
     <div className="bg-darkgray min-h-screen">
-      <div className="container mx-auto py-6">
+      <div className="container mx-auto py-6 px-4">
         <h1 className="text-3xl font-bold mb-4 text-center text-white">Mentorship Page</h1>
         <p className="text-xl mb-6 text-center text-white">Welcome to the 1:1 Mentorship page. Here you can find mentors to help you with your coding journey.</p>
-        <div className="grid gap-6">
+        <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
           {mentors.map((mentor, index) => (
             <MentorCard key={index} {...mentor} />
           ))}

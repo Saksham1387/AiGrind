@@ -11,9 +11,11 @@ const categoryDBs = {
     medium: '3bd3eea9785f4b92818ced1e71b36cf1',
     hard: '65fe6c35d2e84a75bce70f42c22537a2'
   },
+  
   "Deep Learning": {
     easy: 'efa1a6ab350d4280841726e286e60c7a',
     medium: '337790514b654ed591869ad534a2764d',
+    
     hard: 'b4bb23f0f8bf471089addf5ff4299800'
   },
   "Generative AI": {
@@ -30,13 +32,19 @@ const categoryDBs = {
     easy: '9c0ffe69e12343d7859b3b8fb232c42c',
     medium: '8cea16e77ea04c739645241d24e5f53f',
     hard: '40b7cf1fd9a64f68b3976f03a7e1ba97'
+    
   },
   "NLP": {
     easy: 'fa76149b8c6d480ca98c71d5c93a2c5c',
     medium: 'e10ec4ab50d94ed08c2b664a74130b05',
     hard: '9604fd8e776d4a098e003218be2f7498'
+  },
+  "Prompt Engineering":{
+    easy: '8aae43f13f9048f0931aa8be07f463c1',
+    medium: '91ff9c0b90c54d4c9e9a98aa711411dd',
+    hard: '911077ee5e8649488e4db0cfb771dfc7'
   }
-};
+}
 
 // Helper function to fetch data from Notion
 //@ts-ignore

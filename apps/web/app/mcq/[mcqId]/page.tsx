@@ -14,6 +14,9 @@ import { ArrowLeftFromLine, ArrowRightFromLine } from "lucide-react";
 import { McqISubmission } from "../../types/types";
 import { McqSubmissionTable } from "../../../components/SubmissionTable";
 import { ProblemSkeleton } from "../../../components/skeletons/problems";
+import { toast } from "react-toastify";
+
+
 
 type MCQOption = {
   id: string;
@@ -45,6 +48,12 @@ export default function MCQ({
   const [showExplanation, setShowExplanation] = useState(false);
   const [activeTab, setActiveTab] = useState("mcq");
   const [mcqIds, setMcqIds] = useState<string[]>([]);
+
+  const handleOptionChange = (optionId: string) => {
+    setSelectedOption(optionId);
+    setSubmissionResult(null);
+    setIsCorrect(null);
+  };
 
   useEffect(() => {
     async function fetchAllMcqs() {
@@ -89,12 +98,18 @@ export default function MCQ({
       console.log(result);
       if (res.ok) {
         setSubmissionResult(result.message); // Update the result state
-        setIsCorrect(result.isCorrect); // Update the isCorrect state
-        if (result.correct) {
-          setShowExplanation(true); // Show explanation if the answer is correct
+        setIsCorrect(result.isCorrect); 
+        // Update the isCorrect state
+        if (result.isCorrect) {
+          setShowExplanation(true);
+          toast.success("Correct!"); // Show explanation if the answer is correct
+        }
+        else{
+          toast.error("Incorrect :(");
         }
       } else {
         setSubmissionResult(result.error || "Submission failed.");
+        
         setIsCorrect(false);
       }
     } catch (error) {
@@ -136,17 +151,17 @@ export default function MCQ({
         <ProblemSkeleton></ProblemSkeleton>
       </div>
     );
-
+  
   return (
     <div className="text-white relative min-h-screen w-full bg-darkgray flex flex-col items-center py-10 dark:bg-gray-800">
       <Button
-        className="absolute top-4 left-4 text-lg p-2"
+        className="absolute top-4 left-4 text-lg p-2 bg-lightgray hover:bg-lightgray"
         onClick={handlePreviousQuestion}
       >
         <ArrowLeftFromLine></ArrowLeftFromLine>
       </Button>
       <Button
-        className="absolute top-4 right-4 text-lg p-2"
+        className="absolute top-4 right-4 text-lg p-2 bg-lightgray hover:bg-lightgray"
         onClick={handleNextQuestion}
       >
         <ArrowRightFromLine></ArrowRightFromLine>
@@ -180,17 +195,17 @@ export default function MCQ({
               <div>
                 {submissionResult && (
                   <div className="text-lg mt-4 text-center flex flex-col">
-                    {/* <p>{submissionResult}</p> */}
-                    {isCorrect === false && (
-                      <Accordion type="single" collapsible>
-                        <AccordionItem value="item-1">
-                          <AccordionTrigger>Explanation</AccordionTrigger>
-                          <AccordionContent className="text-center">
-                            {mcq.explanation}
-                          </AccordionContent>
-                        </AccordionItem>
-                      </Accordion>
-                    )}
+                   
+                    {isCorrect !== null && (
+  <Accordion type="single" collapsible>
+    <AccordionItem value="item-1">
+      <AccordionTrigger>Explanation</AccordionTrigger>
+      <AccordionContent className="text-center">
+        {mcq.explanation}
+      </AccordionContent>
+    </AccordionItem>
+  </Accordion>
+)}
                   </div>
                 )}
               </div>
@@ -204,16 +219,25 @@ export default function MCQ({
                 {mcq.options.map((option) => (
                   <li key={option.id} className="w-full ">
                     <label
-                      className={`hover:cursor-pointer text-md flex items-center w-full border-gray-700 border p-4 rounded-lg shadow-md hover:bg-mediumgray
-                    ${selectedOption === option.id ? "bg-mediumgray" : "hover:bg-mediumgray"}
-                      `}
+                      className={`hover:cursor-pointer text-md flex items-center w-full border p-4 rounded-lg shadow-md
+        ${
+          selectedOption === option.id
+            ? isCorrect === null
+              ? "bg-mediumgray"
+              : isCorrect && option.id === mcq.correctAnswer
+              ? "border-green-500"
+              : !isCorrect && selectedOption === option.id
+              ? "border-red-400"
+              : "border-green-400"
+            : "hover:bg-mediumgray"
+        }`}
                     >
                       <input
                         className="mr-2 bg-slate-800"
                         type="radio"
                         name="option"
                         value={option.id}
-                        onChange={() => setSelectedOption(option.id)}
+                        onChange={() => handleOptionChange(option.id)}
                       />
                       {option.optionText}
                     </label>
@@ -222,13 +246,7 @@ export default function MCQ({
               </ul>
               <div className="mt-10 w-full flex justify-center ">
                 <Button
-                  className={`p-3 bg-white text-black hover:bg-white${
-                    isCorrect === true
-                      ? "bg-green-500"
-                      : isCorrect === false
-                        ? "bg-red-500"
-                        : ""
-                  }`}
+                  className={`p-3 bg-white text-black hover:bg-white`}
                   onClick={handleSubmit}
                 >
                   Submit
@@ -237,7 +255,7 @@ export default function MCQ({
             </div>
           </div>
         )}
-
+  
         {activeTab === "submissions" && (
           <div className="flex justify-center w-full">
             <Submissions mcqId={mcqId} />

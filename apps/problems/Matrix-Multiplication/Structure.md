@@ -1,4 +1,4 @@
-Problem Name: "Matrix Multiplication"
+Problem Name: "Matrix-Multiplication"
 Function Name: matrix_multiply
 Input Structure:
 Input Field: list<list<float>> matrix1

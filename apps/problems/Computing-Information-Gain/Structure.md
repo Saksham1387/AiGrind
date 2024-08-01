@@ -1,4 +1,4 @@
-Problem Name: "Computing Information Gain"
+Problem Name: "Computing-Information-Gain"
 Function Name: calculate_information_gain
 
 Input Structure:

@@ -13,29 +13,33 @@ import {
   DropdownMenuTrigger,
 } from "../../../packages/ui/src/@/components/ui/dropdown-menu";
 import { usePathname } from "next/navigation";
+import { Menu, X } from "lucide-react";
 
 export function Appbar() {
   const { data: session, status: sessionStatus } = useSession();
   const isLoading = sessionStatus === "loading";
-  const userImage = session?.user?.image; 
+  const userImage = session?.user?.image;
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <header className="sticky top-0 left-0 right-0 bg-mediumgray text-white px-4 md:px-6 py-3 flex items-center justify-between border-b-1 z-50">
       <Link href="/" className="flex items-center gap-2" prefetch={false}>
-        <img src="/Main-logo.png" alt="das" className="h-9 w-10" /> 
-        <span className="text-lg font-bold">DataDex</span>
+        <img src="/Main-logo.png" alt="AIgrind" className="h-9 w-10" />
+        <span className="text-lg font-bold">AIgrind</span>
       </Link>
-      <nav className="hidden md:flex items-center gap-6">
+
+      {/* Navigation links for normal screens */}
+      <nav className="hidden md:flex flex-1 justify-center items-center">
         <Link
           href="/problems"
-          className="hover:bg-lightgray p-3 rounded-lg "
+          className="hover:bg-lightgray p-3 rounded-lg mx-3"
           prefetch={false}
         >
           Problems
         </Link>
         <Link
           href="/mcqs"
-          className="hover:bg-lightgray p-3 rounded-lg "
+          className="hover:bg-lightgray p-3 rounded-lg mx-3"
           prefetch={false}
         >
           MCQs
@@ -51,9 +55,10 @@ export function Appbar() {
         </Link>
       </nav>
 
-      {!isLoading && session?.user && (
-        <div className="flex items-center gap-4 ">
-          <Streak />
+      {/* Streak and profile picture for normal screens */}
+      <div className="hidden md:flex items-center gap-4">
+        <Streak />
+        {!isLoading && session?.user ? (
           <DropdownMenu>
             <DropdownMenuTrigger>
               <Avatar>
@@ -66,7 +71,7 @@ export function Appbar() {
             <DropdownMenuContent className="bg-lightgray text-white border-none">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <div className="py-3 px-2 ">
+              <div className="py-3 px-2">
                 <p>Email: {session?.user?.email}</p>
                 <p>Name: {session?.user?.name}</p>
               </div>
@@ -78,16 +83,56 @@ export function Appbar() {
               </DropdownMenuLabel>
             </DropdownMenuContent>
           </DropdownMenu>
-        </div>
-      )}
-
-      {!isLoading && !session?.user && (
-        <div className="flex items-center gap-4">
+        ) : !isLoading && (
           <Button onClick={() => signIn()}>Sign in</Button>
-        </div>
-      )}
+        )}
+      </div>
 
-      {isLoading && <div className="flex items-center gap-4"></div>}
+      {/* Mobile menu button */}
+      <div className="md:hidden flex items-center gap-4">
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="focus:outline-none"
+        >
+          {menuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
+
+      {/* Mobile menu */}
+      {menuOpen && (
+        <nav className="fixed top-0 left-0 w-full h-full bg-mediumgray flex flex-col items-center justify-center space-y-6 z-40">
+          <button
+            onClick={() => setMenuOpen(false)}
+            className="absolute top-4 right-4 focus:outline-none"
+          >
+            <X size={24} />
+          </button>
+          <Link
+            href="/problems"
+            className="hover:bg-lightgray p-3 rounded-lg "
+            onClick={() => setMenuOpen(false)}
+            prefetch={false}
+          >
+            Problems
+          </Link>
+          <Link
+            href="/mcqs"
+            className="hover:bg-lightgray p-3 rounded-lg "
+            onClick={() => setMenuOpen(false)}
+            prefetch={false}
+          >
+            MCQs
+          </Link>
+          <Link
+            href="/mentors"
+            className="hover:bg-lightgray p-3 rounded-lg "
+            onClick={() => setMenuOpen(false)}
+            prefetch={false}
+          >
+            1:1 Mentorship
+          </Link>
+        </nav>
+      )}
     </header>
   );
 }
@@ -119,7 +164,7 @@ function Streak() {
     fetchStreak();
   }, [router]);
   return (
-    <div className="flex flex-row mr-5 ">
+    <div className="flex flex-row mr-5">
       <Button className="bg-lightgray hover:bg-transparent">
         <div>
           <p className="text-xl mt-1 mr-1 text-white">{count}</p>

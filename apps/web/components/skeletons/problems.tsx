@@ -78,19 +78,19 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@r
         </div>
         <div className="flex flex-row w-full mt-5">
           <div className="w-1/2 p-4 border-r border-gray-300">
-            <div className="mb-3 text-xl bg-gray-500 rounded-md h-8 w-3/4 animate-pulse"></div>
-            <CardDescription className="mb-3 text-xl bg-gray-500 rounded-md h-6 w-3/4 animate-pulse"></CardDescription>
+            <div className="mb-3 text-xl bg-darkgray rounded-md h-8 w-3/4 animate-pulse"></div>
+            <CardDescription className="mb-3 text-xl bg-darkgray rounded-md h-6 w-3/4 animate-pulse"></CardDescription>
            
           </div>
           <div className="w-1/2 p-4 flex flex-col items-center">
-            <p className="mb-4 text-lg font-bold bg-gray-500 rounded-md h-6 w-3/4 animate-pulse"></p>
+            <p className="mb-4 text-lg font-bold bg-darkgray rounded-md h-6 w-3/4 animate-pulse"></p>
             <ul className="space-y-4 w-full">
               {[1, 2, 3, 4].map((_, index) => (
-                <li key={index} className="w-full bg-gray-500 rounded-lg h-12 animate-pulse"></li>
+                <li key={index} className="w-full bg-darkgrayrounded-lg h-12 animate-pulse"></li>
               ))}
             </ul>
             <div className="mt-10 w-full flex justify-center">
-              <Button className="p-3 bg-gray-500 rounded-md w-32 h-12 animate-pulse" disabled>
+              <Button className="p-3 bg-darkgray rounded-md w-32 h-12 animate-pulse" disabled>
                 Submit
               </Button>
             </div>
