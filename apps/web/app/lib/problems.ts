@@ -54,7 +54,7 @@ async function getProblemFullBoilerplateCode(
 async function getProblemInputs(problemId: string): Promise<string[]> {
   return new Promise((resolve, reject) => {
     fs.readdir(
-      `${MOUNT_PATH}/${problemId}/tests/inputs`,
+      `${MOUNT_PATH}/${problemId}/Tests/inputs`,
       async (err, files) => {
         if (err) {
           console.log(err);
@@ -63,7 +63,7 @@ async function getProblemInputs(problemId: string): Promise<string[]> {
             files.map((file) => {
               return new Promise<string>((resolve, reject) => {
                 fs.readFile(
-                  `${MOUNT_PATH}/${problemId}/tests/inputs/${file}`,
+                  `${MOUNT_PATH}/${problemId}/Tests/inputs/${file}`,
                   { encoding: "utf-8" },
                   (err, data) => {
                     if (err) {
