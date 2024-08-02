@@ -113,11 +113,12 @@ const SigninPage = () => {
                   onChange={(e) => {
                     email.current = e.target.value;
                   }}
+                  className="text-black"
                 />
               </div>
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password"> Password</Label>
                   <Link
                     href="/forgot-password"
                     className="inline-block text-sm underline"
@@ -134,7 +135,7 @@ const SigninPage = () => {
                       setPasswordValue(e.target.value);
                       password.current = e.target.value;
                     }}
-                    className="pr-10"
+                    className="pr-10 text-black"
                   />
                   {passwordValue && (
                     <button
@@ -143,15 +144,15 @@ const SigninPage = () => {
                       onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? (
-                        <EyeOff size={20} />
+                        <EyeOff className="text-black"  size={20} />
                       ) : (
-                        <Eye size={20} />
+                        <Eye className="text-black"  size={20} />
                       )}
                     </button>
                   )}
                 </div>
               </div>
-              <Button type="submit" className="w-full bg-white text-black" disabled={loading}>
+              <Button type="submit" className="w-full bg-white text-black hover:bg-gray-300" disabled={loading}>
                 Login
               </Button>
               <div className="flex space-x-2">

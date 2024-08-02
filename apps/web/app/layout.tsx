@@ -6,6 +6,8 @@ import { Appbar } from "../components/Appbar";
 import { Footer } from "../components/Footer";
 import { Providers } from "../providers";
 import { usePathname } from 'next/navigation';
+import Head from 'next/head';
+
 const chivo = Chivo({
   subsets: ["latin"],
   display: "swap",
@@ -29,14 +31,15 @@ export default function RootLayout({
   const hideFooter = noFooterRoutes.includes(pathname);
   return (
     <html lang="en">
+       <Head>
+        <link rel="icon" href="/favicon.ico"/>
+      </Head>
       <body className={`${chivo.variable} ${rubik.variable} min-h-screen flex flex-col`}>
-       
           <Providers>
           {!hideAppBar && <Appbar />}
             <main className="flex-grow ">{children}</main>
             {!hideFooter && <Footer />}
           </Providers>
-       
       </body>
     </html>
   );

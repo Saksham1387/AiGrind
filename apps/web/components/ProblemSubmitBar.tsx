@@ -215,7 +215,7 @@ function SubmitProblem({
     <Button
       disabled={status === SubmitStatus.PENDING}
       type="submit"
-      className="mt-4 align-right"
+      className="mt-4 align-right bg-darkgray hover:bg-darkgray"
       onClick={session.data?.user ? submit : () => signIn()}
     >
       {session.data?.user

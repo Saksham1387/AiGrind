@@ -44,11 +44,7 @@ export function Appbar() {
         >
           MCQs
         </Link>
-        <Link
-          href="/mentors"
-          className=""
-          prefetch={false}
-        >
+        <Link href="/mentors" className="" prefetch={false}>
           <Button className="bg-white text-black hover:bg-slate-200">
             1:1 Mentorship
           </Button>
@@ -83,13 +79,58 @@ export function Appbar() {
               </DropdownMenuLabel>
             </DropdownMenuContent>
           </DropdownMenu>
-        ) : !isLoading && (
-          <Button className="bg-darkgray hover:bg-darkgray" onClick={() => signIn()}>Sign in</Button>
+        ) : (
+          !isLoading && (
+            <Button
+              className="bg-darkgray hover:bg-darkgray"
+              onClick={() => signIn()}
+            >
+              Sign in
+            </Button>
+          )
         )}
       </div>
 
       {/* Mobile menu button */}
       <div className="md:hidden flex items-center gap-4">
+        <Streak />
+
+        {!isLoading && session?.user ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Avatar>
+                <AvatarImage
+                  src={userImage ? userImage : "https://github.com/shadcn.png"}
+                />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="bg-lightgray text-white border-none">
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <div className="py-3 px-2">
+                <p>Email: {session?.user?.email}</p>
+                <p>Name: {session?.user?.name}</p>
+              </div>
+              <DropdownMenuLabel
+                onClick={() => signOut()}
+                className="hover:cursor-pointer hover:bg-darkgray"
+              >
+                Log Out
+              </DropdownMenuLabel>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          !isLoading && (
+            <Button
+              className="bg-darkgray hover:bg-darkgray"
+              onClick={() => signIn()}
+            >
+              Sign in
+            </Button>
+          )
+        )}
+
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           className="focus:outline-none"
@@ -163,9 +204,10 @@ function Streak() {
     };
     fetchStreak();
   }, [router]);
+
   return (
     <div className="flex flex-row mr-5">
-      <Button className="bg-lightgray hover:bg-transparent">
+      <Button className="bg-lightgray hover:bg-lightgray">
         <div>
           <p className="text-xl mt-1 mr-1 text-white">{count}</p>
         </div>

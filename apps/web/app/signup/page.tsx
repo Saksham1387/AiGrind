@@ -8,6 +8,7 @@
 // import { Button } from "@repo/ui/button";
 // import { Input } from "@repo/ui/input";
 // import { Label } from "@repo/ui/label";
+// import { match } from "assert";
 
 // const SignupPage = () => {
 //   const router = useRouter();
@@ -20,7 +21,7 @@
 //   const [email, setEmail] = useState("");
 //   const [error, setError] = useState(false);
 //   const [passerror, setPassError] = useState(false);
-
+//   const [matchEroor, setMatchError] = useState(false);
 //   const handleProviderLogin = async (provider: string) => {
 //     if (provider === "google") {
 //       const result = await signIn("google", { redirect: false });
@@ -50,7 +51,7 @@
 //     setLoading(true);
 //     const PASSWORD_MIN_LENGTH = 8;
 //     const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
-    
+
 //     if (
 //       passwordValue.length < PASSWORD_MIN_LENGTH ||
 //       !PASSWORD_REGEX.test(passwordValue)
@@ -62,7 +63,7 @@
 //     if (passwordValue !== confirmPasswordValue) {
 //       console.error("Passwords do not match.");
 //       setLoading(false);
-//       setError(true);
+//       setMatchError(true);
 //       return;
 //     }
 
@@ -105,8 +106,8 @@
 //   return (
 //     <>
 //       <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 h-full bg-lightgray text-white">
-//         <div className="h-full w-[900px] overflow-hidden">
-//           <div className="relative h-screen w-full">
+//         <div className="hidden lg:block h-full overflow-hidden">
+//           <div className="relative h-full w-full">
 //             <video
 //               src="/SignupVid.mp4"
 //               className="absolute h-full w-full object-cover z-0"
@@ -114,17 +115,19 @@
 //               loop
 //               muted
 //             />
-//             <div className=" flex-col absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center">
-              
-//               <div className="mt-[350px] mr-[250px]">
+//             <div className="absolute inset-0 flex items-center justify-center">
+//               <div className="text-center">
 //                 <h1 className="text-slate-300 text-2xl mb-3">Welcome to</h1>
-//                 <h1 className=" text-6xl text-white font-roboto">AiGrind Community </h1>
-//                 <h1 className="text-white text-md mt-4">
-//                 Join a growing community of AI enthusiasts.
+//                 <h1 className="text-6xl text-white font-roboto">
+//                   AiGrind Community
 //                 </h1>
-//                 <button 
-//                 onClick={()=>router.push("/")}
-//                 className="font-light text-green-300 text-xs hover:underline">
+//                 <h1 className="text-white text-md mt-4">
+//                   Join a growing community of AI enthusiasts.
+//                 </h1>
+//                 <button
+//                   onClick={() => router.push("/")}
+//                   className="font-light text-green-300 text-xs hover:underline"
+//                 >
 //                   Know more{" "}
 //                 </button>
 //               </div>
@@ -132,12 +135,11 @@
 //           </div>
 //         </div>
 
-//         <div className="flex items-center justify-center">
-//           <div className="mx-auto grid w-[350px] gap-6">
-//             <div className=" gap-2 flex-col">
-//               <div className="flex flex-row">
-//               <h1 className="text-3xl font-bold mt-1">Join Us </h1>
-//               <div className="ml-3">
+//         <div className="flex items-center justify-center p-4 lg:p-8 h-screen">
+//           <div className="max-w-md w-full space-y-6">
+//             <div className="text-center space-y-4">
+//               <div className="flex items-center justify-center space-x-2">
+//                 <h1 className="text-3xl font-bold mt-1">Join Us</h1>
 //                 <Image
 //                   src="/Main-logo.png"
 //                   alt="Logo"
@@ -146,14 +148,12 @@
 //                   className="object-contain mb-3"
 //                 />
 //               </div>
-
-//               </div>
-//               <p className="text-3xl font-bold">Create a Account on AiGrind</p>
+//               <p className="text-3xl font-bold">Create an Account on AiGrind</p>
 //               <p className="text-balance text-muted-foreground font-light">
 //                 To get your first ML interview
 //               </p>
 //             </div>
-//             <div className="grid gap-4">
+//             <form onSubmit={handleSubmit} className="space-y-4">
 //               <div className="grid gap-2">
 //                 <Label htmlFor="fullName">Full Name</Label>
 //                 <Input
@@ -169,7 +169,7 @@
 //                 <Label htmlFor="userName">Username</Label>
 //                 <Input
 //                   id="userName"
-//                    className="text-black"
+//                   className="text-black"
 //                   type="text"
 //                   placeholder="johndoe123"
 //                   required
@@ -181,7 +181,7 @@
 //                 <Input
 //                   id="email"
 //                   type="email"
-//                    className="text-black"
+//                   className="text-black"
 //                   placeholder="m@example.com"
 //                   required
 //                   onChange={(e) => setEmail(e.target.value)}
@@ -192,13 +192,10 @@
 //                 <div className="relative">
 //                   <Input
 //                     id="password"
-                    
 //                     type={showPassword ? "text" : "password"}
 //                     required
 //                     value={passwordValue}
-//                     onChange={(e) => {
-//                       setPasswordValue(e.target.value);
-//                     }}
+//                     onChange={(e) => setPasswordValue(e.target.value)}
 //                     className="pr-10 text-black"
 //                   />
 //                   {passwordValue && (
@@ -207,44 +204,41 @@
 //                       className="absolute inset-y-0 right-0 flex items-center pr-3"
 //                       onClick={() => setShowPassword(!showPassword)}
 //                     >
-//                       {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+//                       {showPassword ? (
+//                         <EyeOff className="text-black" size={20} />
+//                       ) : (
+//                         <Eye className="text-black" size={20} />
+//                       )}
 //                     </button>
 //                   )}
 //                 </div>
 //               </div>
-//               <div>
-//                 {passerror && (
-//                   <p className="text-red-500 text-sm text-center">
-//                     Password must contain at least 8 characters, one uppercase
-//                     letter, one lowercase letter, and one number
-//                     <button
-//                       className="ml-3 text-decoration-line: underline text-red-500 text-sm text-center"
-//                       onClick={() => {
-//                         setPasswordValue("");
-//                         setConfirmPasswordValue("");
-//                         setError(false);
-
-//                         setPassError(false);
-//                       }}
-//                     >
-//                       Try Again
-//                     </button>
-//                   </p>
-//                 )}
-//               </div>
-
+//               {passerror && (
+//                 <p className="text-red-500 text-sm text-center">
+//                   Password must contain at least 8 characters, one uppercase
+//                   letter, one lowercase letter, and one number
+//                   <button
+//                     className="ml-3 underline"
+//                     onClick={() => {
+//                       setPasswordValue("");
+//                       setConfirmPasswordValue("");
+//                       setError(false);
+//                       setPassError(false);
+//                     }}
+//                   >
+//                     Try Again
+//                   </button>
+//                 </p>
+//               )}
 //               <div className="grid gap-2">
 //                 <Label htmlFor="confirmPassword">Confirm Password</Label>
 //                 <div className="relative">
 //                   <Input
 //                     id="confirmPassword"
-                    
 //                     type={showPassword ? "text" : "password"}
 //                     required
 //                     value={confirmPasswordValue}
-//                     onChange={(e) => {
-//                       setConfirmPasswordValue(e.target.value);
-//                     }}
+//                     onChange={(e) => setConfirmPasswordValue(e.target.value)}
 //                     className="pr-10 text-black"
 //                   />
 //                   {confirmPasswordValue && (
@@ -253,37 +247,62 @@
 //                       className="absolute inset-y-0 right-0 flex items-center pr-3"
 //                       onClick={() => setShowPassword(!showPassword)}
 //                     >
-//                       {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+//                       {showPassword ? (
+//                         <EyeOff className="text-black" size={20} />
+//                       ) : (
+//                         <Eye className="text-black" size={20} />
+//                       )}
 //                     </button>
 //                   )}
 //                 </div>
 //               </div>
-//               <Button type="submit" className="w-full bg-white text-black hover:bg-slate-100 mt-5" onClick={handleSubmit}>
+//               <Button
+//                 type="submit"
+//                 className="w-full bg-white text-black hover:bg-slate-100 mt-5"
+//               >
 //                 Sign Up
 //               </Button>
+//               {error && (
+//                 <div className="text-red-500 text-center">
+//                   An account with this email already exists.{" "}
+//                   <button
+//                     className="underline"
+//                     onClick={() => {
+//                       setPasswordValue("");
+//                       setConfirmPasswordValue("");
+//                       setError(false);
+//                     }}
+//                   >
+//                     Try Again
+//                   </button>
+//                 </div>
+//               )}
 
-//               <div>
-//                 {error && (
-//                   <div className="flex flex-col">
-//                     <p className="text-red-500 text-sm text-center">
-//                       User already exists
-//                     </p>
-//                     <button
-//                       className="ml-3 text-decoration-line: underline text-red-500 text-sm text-center"
-//                       onClick={() => {
-//                         setPasswordValue("");
-//                         setConfirmPasswordValue("");
-//                         setError(false);
-//                         setLoading(false);
-//                       }}
-//                     >
-//                       Try Again
-//                     </button>
-//                   </div>
-//                 )}
-//               </div>
-
-//               <div className="flex space-x-2">
+//               {matchEroor && (
+//                 <div className="text-red-500 text-center">
+//                   The Password should match{" "}
+//                   <button
+//                     className="underline"
+//                     onClick={() => {
+//                       setPasswordValue("");
+//                       setConfirmPasswordValue("");
+//                       setMatchError(false);
+//                     }}
+//                   >
+//                     Try Again
+//                   </button>
+//                 </div>
+//               )}
+//               <p className="text-center text-sm text-muted-foreground font-light">
+//                 Already have an account?{" "}
+//                 <Link
+//                   href="/signin"
+//                   className="hover:text-brand underline underline-offset-4"
+//                 >
+//                   Sign In
+//                 </Link>
+//               </p>
+//               <div className="flex flex-col items-center justify-center w-full mt-6 gap-y-3">
 //                 <Button
 //                   variant="outline"
 //                   className="w-full flex items-center justify-center text-black"
@@ -331,18 +350,7 @@
 //                   <span className="ml-4">Sign Up with GitHub</span>
 //                 </Button>
 //               </div>
-//               <div className="text-center mt-4 text-sm">
-//                 <p>
-//                   Already have an account?{" "}
-//                   <Link
-//                     href="/signin"
-//                     className="underline underline-offset-4 hover:text-white"
-//                   >
-//                     Sign In
-//                   </Link>
-//                 </p>
-//               </div>
-//             </div>
+//             </form>
 //           </div>
 //         </div>
 //       </div>
@@ -351,7 +359,6 @@
 // };
 
 // export default SignupPage;
-
 
 "use client";
 import React, { useRef, useState } from "react";
@@ -375,28 +382,16 @@ const SignupPage = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState(false);
   const [passerror, setPassError] = useState(false);
+  const [matchEroor, setMatchError] = useState(false);
 
   const handleProviderLogin = async (provider: string) => {
-    if (provider === "google") {
-      const result = await signIn("google", { redirect: false });
-      if (result?.ok) {
-        router.push("/dashboard");
-      } else if (result?.error) {
-        console.error(result.error);
-      } else {
-        console.error("Sign-in function returned undefined.");
-      }
-    } else if (provider === "github") {
-      const result = await signIn("github", { redirect: false });
-      if (result?.ok) {
-        router.push("/dashboard");
-      } else if (result?.error) {
-        console.error(result.error);
-      } else {
-        console.error("Sign-in function returned undefined.");
-      }
+    const result = await signIn(provider, { redirect: false });
+    if (result?.ok) {
+      router.push("/dashboard");
+    } else if (result?.error) {
+      console.error(result.error);
     } else {
-      console.error("Invalid provider");
+      console.error("Sign-in function returned undefined.");
     }
   };
 
@@ -405,19 +400,17 @@ const SignupPage = () => {
     setLoading(true);
     const PASSWORD_MIN_LENGTH = 8;
     const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
-    
-    if (
-      passwordValue.length < PASSWORD_MIN_LENGTH ||
-      !PASSWORD_REGEX.test(passwordValue)
-    ) {
+
+    if (passwordValue.length < PASSWORD_MIN_LENGTH || !PASSWORD_REGEX.test(passwordValue)) {
       setPassError(true);
-      return null;
+      setLoading(false);
+      return;
     }
 
     if (passwordValue !== confirmPasswordValue) {
       console.error("Passwords do not match.");
+      setMatchError(true);
       setLoading(false);
-      setError(true);
       return;
     }
 
@@ -435,8 +428,6 @@ const SignupPage = () => {
     });
 
     const resultJson = await result.json();
-    console.log(resultJson);
-
     if (!resultJson.error) {
       console.log("Sign-up successful.");
       const signInResult = await signIn("credentials", {
@@ -444,200 +435,223 @@ const SignupPage = () => {
         email: email,
         password: passwordValue,
       });
-      console.log(signInResult);
       if (signInResult?.ok) {
         router.push("/dashboard");
       } else if (signInResult?.error) {
         console.error(signInResult.error);
         setError(true);
       }
-    } else if (result.status === 400) {
+    } else {
       console.error("Sign-up failed.");
       setError(true);
     }
+    setLoading(false);
   };
 
   return (
-    <>
-      <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 h-full bg-lightgray text-white">
-        <div className="hidden lg:block h-full overflow-hidden">
-          <div className="relative h-full w-full">
-            <video
-              src="/SignupVid.mp4"
-              className="absolute h-full w-full object-cover z-0"
-              autoPlay
-              loop
-              muted
-            />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center">
-                <h1 className="text-slate-300 text-2xl mb-3">Welcome to</h1>
-                <h1 className="text-6xl text-white font-roboto">AiGrind Community</h1>
-                <h1 className="text-white text-md mt-4">
-                  Join a growing community of AI enthusiasts.
-                </h1>
-                <button 
-                  onClick={()=>router.push("/")}
-                  className="font-light text-green-300 text-xs hover:underline">
-                  Know more{" "}
-                </button>
-              </div>
-            </div>
+    <div className="w-full min-h-screen lg:grid lg:grid-cols-2 bg-lightgray text-white">
+      <div className="hidden lg:block relative">
+      <video
+            src="/SignupVid.mp4"
+            className="absolute inset-0 h-full w-full object-cover"
+            autoPlay
+            loop
+            muted
+          />
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="text-center">
+            <h1 className="text-slate-300 text-2xl mb-3">Welcome to</h1>
+            <h1 className="text-6xl text-white font-roboto">AiGrind Community</h1>
+            <h1 className="text-white text-md mt-4">Join a growing community of AI enthusiasts.</h1>
+            <button
+              onClick={() => router.push("/")}
+              className="font-light text-green-300 text-xs hover:underline"
+            >
+              Know more
+            </button>
           </div>
         </div>
-
-        <div className="flex items-center justify-center p-4 lg:p-8 h-screen">
-          <div className="max-w-md w-full space-y-6">
-            <div className="text-center space-y-4">
-              <div className="flex items-center justify-center space-x-2">
-                <h1 className="text-3xl font-bold mt-1">Join Us</h1>
-                <Image
-                  src="/Main-logo.png"
-                  alt="Logo"
-                  width={50}
-                  height={50}
-                  className="object-contain mb-3"
-                />
-              </div>
-              <p className="text-3xl font-bold">Create an Account on AiGrind</p>
-              <p className="text-balance text-muted-foreground font-light">
-                To get your first ML interview
-              </p>
+      </div>
+      <div className="flex flex-col justify-center items-center p-4 lg:w-1/2 w-full h-full lg:ml-[300px]">
+        <div className="max-w-md w-full space-y-6">
+          <div className="text-center space-y-4">
+            <div className="flex items-center justify-center space-x-2">
+              <h1 className="text-3xl font-bold mt-1">Join Us</h1>
+              <Image src="/Main-logo.png" alt="Logo" width={50} height={50} className="object-contain mb-3" />
             </div>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid gap-2">
-                <Label htmlFor="fullName">Full Name</Label>
+            <p className="text-3xl font-bold">Create an Account on AiGrind</p>
+            <p className="text-balance text-muted-foreground font-light">To get your first ML interview</p>
+          </div>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid gap-2">
+              <Label htmlFor="fullName">Full Name</Label>
+              <Input
+                id="fullName"
+                type="text"
+                className="text-black"
+                placeholder="John Doe"
+                required
+                onChange={(e) => setFullName(e.target.value)}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="userName">Username</Label>
+              <Input
+                id="userName"
+                className="text-black"
+                type="text"
+                placeholder="johndoe123"
+                required
+                onChange={(e) => setUserName(e.target.value)}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                className="text-black"
+                placeholder="m@example.com"
+                required
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="password">Password</Label>
+              <div className="relative">
                 <Input
-                  id="fullName"
-                  type="text"
-                  className="text-black"
-                  placeholder="John Doe"
+                  id="password"
+                  type={showPassword ? "text" : "password"}
                   required
-                  onChange={(e) => setFullName(e.target.value)}
+                  value={passwordValue}
+                  onChange={(e) => setPasswordValue(e.target.value)}
+                  className="pr-10 text-black"
                 />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="userName">Username</Label>
-                <Input
-                  id="userName"
-                  className="text-black"
-                  type="text"
-                  placeholder="johndoe123"
-                  required
-                  onChange={(e) => setUserName(e.target.value)}
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  className="text-black"
-                  placeholder="m@example.com"
-                  required
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="password">Password</Label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    required
-                    value={passwordValue}
-                    onChange={(e) => setPasswordValue(e.target.value)}
-                    className="pr-10 text-black"
-                  />
-                  {passwordValue && (
-                    <button
-                      type="button"
-                      className="absolute inset-y-0 right-0 flex items-center pr-3"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                    </button>
-                  )}
-                </div>
-              </div>
-              {passerror && (
-                <p className="text-red-500 text-sm text-center">
-                  Password must contain at least 8 characters, one uppercase
-                  letter, one lowercase letter, and one number
+                {passwordValue && (
                   <button
-                    className="ml-3 underline"
-                    onClick={() => {
-                      setPasswordValue("");
-                      setConfirmPasswordValue("");
-                      setError(false);
-                      setPassError(false);
-                    }}
+                    type="button"
+                    className="absolute inset-y-0 right-0 flex items-center pr-3"
+                    onClick={() => setShowPassword(!showPassword)}
                   >
-                    Try Again
+                    {showPassword ? (
+                      <EyeOff className="text-black" size={20} />
+                    ) : (
+                      <Eye className="text-black" size={20} />
+                    )}
                   </button>
-                </p>
-              )}
-              <div className="grid gap-2">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
-                <div className="relative">
-                  <Input
-                    id="confirmPassword"
-                    type={showPassword ? "text" : "password"}
-                    required
-                    value={confirmPasswordValue}
-                    onChange={(e) => setConfirmPasswordValue(e.target.value)}
-                    className="pr-10 text-black"
-                  />
-                  {confirmPasswordValue && (
-                    <button
-                      type="button"
-                      className="absolute inset-y-0 right-0 flex items-center pr-3"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                    </button>
-                  )}
-                </div>
+                )}
               </div>
-              <Button
-                type="submit"
-                className="w-full bg-white text-black hover:bg-slate-100 mt-5"
-              >
-                Sign Up
-              </Button>
-              {error && (
-                <div className="text-red-500 text-center">
-                  An account with this email already exists.{" "}
-                  <button
-                    className="underline"
-                    onClick={() => {
-                      setPasswordValue("");
-                      setConfirmPasswordValue("");
-                      setError(false);
-                    }}
-                  >
-                    Try Again
-                  </button>
-                </div>
-              )}
-              <p className="text-center text-sm text-muted-foreground font-light">
-                Already have an account?{" "}
-                <Link
-                  href="/signin"
-                  className="hover:text-brand underline underline-offset-4"
-                >
-                  Sign In
-                </Link>
-              </p>
-              <div className="flex flex-col items-center justify-center w-full mt-6 gap-y-3">
-              <Button
-                  variant="outline"
-                  className="w-full flex items-center justify-center text-black"
+            </div>
+            {passerror && (
+              <p className="text-red-500 text-sm text-center">
+                Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one number
+                <button
+                  className="ml-3 underline"
                   onClick={() => {
-                    handleProviderLogin("google");
+                    setPasswordValue("");
+                    setConfirmPasswordValue("");
+                    setError(false);
+                    setPassError(false);
                   }}
                 >
-                  <div className="bg-white p-2 rounded-full ">
+                  Try Again
+                </button>
+              </p>
+            )}
+            <div className="grid gap-2">
+              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <div className="relative">
+                <Input
+                  id="confirmPassword"
+                  type={showPassword ? "text" : "password"}
+                  required
+                  value={confirmPasswordValue}
+                  onChange={(e) => setConfirmPasswordValue(e.target.value)}
+                  className="pr-10 text-black"
+                />
+                {confirmPasswordValue && (
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 flex items-center pr-3"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="text-black" size={20} />
+                    ) : (
+                      <Eye className="text-black" size={20} />
+                    )}
+                  </button>
+                )}
+              </div>
+            </div>
+            {matchEroor && (
+              <div className="text-red-500 text-center">
+                The Passwords should match{" "}
+                <button
+                  className="underline"
+                  onClick={() => {
+                    setPasswordValue("");
+                    setConfirmPasswordValue("");
+                    setMatchError(false);
+                  }}
+                >
+                  Try Again
+                </button>
+              </div>
+            )}
+            <Button type="submit" className="w-full bg-white text-black hover:bg-slate-100 mt-5" disabled={loading}>
+              {loading ? "Signing Up..." : "Sign Up"}
+            </Button>
+            {error && (
+              <div className="text-red-500 text-center">
+                An account with this email already exists.{" "}
+                <button
+                  className="underline"
+                  onClick={() => {
+                    setError(false);
+                    setEmail("");
+                    setPasswordValue("");
+                    setConfirmPasswordValue("");
+                  }}
+                >
+                  Try Again
+                </button>
+              </div>
+            )}
+            <div className="text-center text-xs text-muted-foreground">
+              By creating an account, you agree to our{" "}
+              <Link href="/terms" className="underline">
+                Terms of Service
+              </Link>{" "}
+              and{" "}
+              <Link href="/privacy" className="underline">
+                Privacy Policy
+              </Link>
+              .
+            </div>
+          </form>
+          <div className="space-y-2">
+            <Button
+              className="w-full border bg-white text-black hover:bg-white"
+              onClick={() => handleProviderLogin("github")}
+              disabled={loading}
+            >
+              <div className="bg-white p-1 rounded-full">
+                    <svg className="w-6" viewBox="0 0 32 32">
+                      <path
+                        fillRule="evenodd"
+                        d="M16 4C9.371 4 4 9.371 4 16c0 5.3 3.438 9.8 8.207 11.387.602.11.82-.258.82-.578 0-.286-.011-1.04-.015-2.04-3.34.723-4.043-1.609-4.043-1.609-.547-1.387-1.332-1.758-1.332-1.758-1.09-.742.082-.726.082-.726 1.203.086 1.836 1.234 1.836 1.234 1.07 1.836 2.808 1.305 3.492 1 .11-.777.422-1.305.762-1.605-2.664-.301-5.465-1.332-5.465-5.93 0-1.313.469-2.383 1.234-3.223-.121-.3-.535-1.523.117-3.175 0 0 1.008-.32 3.301 1.23A11.487 11.487 0 0116 9.805c1.02.004 2.047.136 3.004.402 2.293-1.55 3.297-1.23 3.297-1.23.656 1.652.246 2.875.12 3.175.77.84 1.231 1.91 1.231 3.223 0 4.61-2.804 5.621-5.476 5.922.43.367.812 1.101.812 2.219 0 1.605-.011 2.898-.011 3.293 0 .32.214.695.824.578C24.566 25.797 28 21.3 28 16c0-6.629-5.371-12-12-12z"
+                      />
+                    </svg>
+                  </div>
+              Sign up with GitHub
+            </Button>
+            <Button
+              className="w-full border bg-white text-black hover:bg-white"
+              onClick={() => handleProviderLogin("google")}
+              disabled={loading}
+            >
+              <div className="bg-white p-2 rounded-full">
                     <svg className="w-4" viewBox="0 0 533.5 544.3">
                       <path
                         d="M533.5 278.4c0-18.5-1.5-37.1-4.7-55.3H272.1v104.8h147c-6.1 33.8-25.7 63.7-54.4 82.7v68h87.7c51.5-47.4 81.1-117.4 81.1-200.2z"
@@ -657,31 +671,18 @@ const SignupPage = () => {
                       />
                     </svg>
                   </div>
-                  <span className="ml-4">Sign Up with Google</span>
-                </Button>
-                <Button
-                  variant="outline"
-                  className="w-full flex items-center justify-center text-black"
-                  onClick={() => {
-                    handleProviderLogin("github");
-                  }}
-                >
-                  <div className="bg-white p-1 rounded-full">
-                    <svg className="w-6" viewBox="0 0 32 32">
-                      <path
-                        fillRule="evenodd"
-                        d="M16 4C9.371 4 4 9.371 4 16c0 5.3 3.438 9.8 8.207 11.387.602.11.82-.258.82-.578 0-.286-.011-1.04-.015-2.04-3.34.723-4.043-1.609-4.043-1.609-.547-1.387-1.332-1.758-1.332-1.758-1.09-.742.082-.726.082-.726 1.203.086 1.836 1.234 1.836 1.234 1.07 1.836 2.808 1.305 3.492 1 .11-.777.422-1.305.762-1.605-2.664-.301-5.465-1.332-5.465-5.93 0-1.313.469-2.383 1.234-3.223-.121-.3-.535-1.523.117-3.175 0 0 1.008-.32 3.301 1.23A11.487 11.487 0 0116 9.805c1.02.004 2.047.136 3.004.402 2.293-1.55 3.297-1.23 3.297-1.23.656 1.652.246 2.875.12 3.175.77.84 1.231 1.91 1.231 3.223 0 4.61-2.804 5.621-5.476 5.922.43.367.812 1.101.812 2.219 0 1.605-.014 2.899-.014 3.293 0 .324.215.694.825.576C24.563 25.797 28 21.299 28 16c0-6.629-5.371-12-12-12z"
-                      />
-                    </svg>
-                  </div>
-                  <span className="ml-4">Sign Up with GitHub</span>
-                </Button>
-              </div>
-            </form>
+              Sign up with Google
+            </Button>
+          </div>
+          <div className="text-center text-sm mt-4">
+            Already have an account?{" "}
+            <Link href="/signin" className="underline">
+              Log in
+            </Link>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

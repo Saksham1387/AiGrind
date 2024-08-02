@@ -8,7 +8,8 @@ export const getMCQProblems = async ()=> {
     try {
       const session = await getServerSession(authOptions);
       if (!session?.user) {
-        return [];
+        const allProblems = await db.mCQProblem.findMany({})
+        return allProblems;
       }
       const userId = session.user.id;
       const userMCQProblems = await db.userMCQProblem.findMany({

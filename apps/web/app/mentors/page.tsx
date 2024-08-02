@@ -9,15 +9,18 @@ const mentors = [
     position: "Industry Leader",
     mentorImage: "/dutta-mkc.jpeg",
     linkedInUrl: "https://www.linkedin.com/in/prof-m-k-dutta-75337739/",
-    skills: ["AI", "Computer Vision", "Generative AI","Research"],
-    description:
-      `Prof. Malay Kishore Dutta is an AI Scientist recognized among the top 2% of influential AI scientists by Stanford University in 2023. With over 10 years of academic leadership, he is the Director of the Centre for Artificial Intelligence and Dean of Student Research at Amity University. His research focuses on signal processing, AI, and computer vision with a strong emphasis on technology for humanity. He has published 336 documents, garnered 3,950 citations, and holds an h-index of 30. Prof. Dutta is also a Visiting Professor at Brno University of Technology.For more details, visit his ORCID profile.`,
-    companyLogos: [{ src: "/amity-logo.png", name: "Amity University" },{ src: "/brno-logo.jpeg", name: "Brno University" },{ src: "/apj-logo.jpeg", name: "Dr. A.P.J University" },{ src: "/aktu-logo.jpeg", name: "Centre for Advanced Studies, AKTU" }],
+    skills: ["AI", "Computer Vision", "Generative AI", "Research"],
+    description: `Prof. Malay Kishore Dutta is an AI Scientist recognized among the top 2% of influential AI scientists by Stanford University in 2023. With over 10 years of academic leadership, he is the Director of the Centre for Artificial Intelligence and Dean of Student Research at Amity University. His research focuses on signal processing, AI, and computer vision with a strong emphasis on technology for humanity. He has published 336 documents, garnered 3,950 citations, and holds an h-index of 30. Prof. Dutta is also a Visiting Professor at Brno University of Technology.`,
+    companyLogos: [
+      { src: "/amity-logo.png", name: "Amity University" },
+      { src: "/brno-logo.jpeg", name: "Brno University" },
+      { src: "/apj-logo.jpeg", name: "Dr. A.P.J University" },
+      { src: "/aktu-logo.jpeg", name: "Centre for Advanced Studies, AKTU" },
+    ],
     price: "Rs 249",
     sessionDuration: "15 Mintues session",
     flexibleScheduling: "Wednesday 7-8 PM",
     satisfaction: "1 Free Session",
-
     experience: "13 years experience",
     cal: "https://cal.com/mkdutta",
   },
@@ -68,7 +71,7 @@ const mentors = [
     githubUrl: "https://github.com/saksham1387",
     skills: ["Web Development", "DevOps", "Generative AI"],
     description:
-      "I'm Saksham Chaudhary, a dedicated mentor in generative AI, web development, and DevOps. With extensive experience, I guide individuals to master AI creativity, build robust web applications, and streamline development operations. Let's transform your skills into success together!",
+      "Saksham Chaudhary is a dedicated mentor in generative AI, web development, and DevOps. With extensive experience, He can guide individuals to master AI creativity, build robust web applications, and streamline development operations.",
     companyLogos: [{ src: "/cncf-logo.png", name: "CNCF New Delhi" }],
     price: "Rs 99",
     sessionDuration: "15 Minutes session",
@@ -76,8 +79,6 @@ const mentors = [
     experience: "1 years experience",
     cal: "https://cal.com/saksham34",
   },
- 
- 
 ];
 interface MentorCardProps {
   mentorName: string;
@@ -145,19 +146,20 @@ const MentorCard: React.FC<MentorCardProps> = ({
                 </a>
                 {githubUrl && (
                   <a href={githubUrl} target="_blank" rel="noopener noreferrer">
-                  <img
-                    src="/github_logo.jpeg"
-                    alt="GitHub"
-                    width="24"
-                    height="24"
-                    className="inline"
-                  />
-                </a>
+                    <img
+                      src="/github_logo.jpeg"
+                      alt="GitHub"
+                      width="24"
+                      height="24"
+                      className="inline"
+                    />
+                  </a>
                 )}
-                
               </h3>
               <div>
-                <h2 className="text-pretty font-semibold text-gray-300">{position}</h2>
+                <h2 className="text-pretty font-semibold text-gray-300">
+                  {position}
+                </h2>
               </div>
               <div className="flex flex-wrap gap-2">
                 {skills &&
@@ -198,7 +200,7 @@ const MentorCard: React.FC<MentorCardProps> = ({
               <div className="text-lg font-bold">{price}</div>
               <button
                 onClick={() => {
-                  router.push(`${cal}`);
+                  window.open(`${cal}`, "_blank");
                 }}
                 className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-white text-black  h-8 rounded-md px-3"
               >
@@ -253,27 +255,25 @@ const MentorCard: React.FC<MentorCardProps> = ({
                 <span className="text-sm">{experience}</span>
               </div>
               <div className="flex items-center gap-2">
-                
-                {satisfaction &&  
-                <div className="flex flex-row">
-                <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="w-5 h-5 text-gray-400"
-              >
-                <path d="M20 6 9 17l-5-5"></path>
-              </svg>
-                 <span className="text-sm ml-2">{satisfaction}</span>
-                 </div>
-                }
-               
+                {satisfaction && (
+                  <div className="flex flex-row">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="w-5 h-5 text-gray-400"
+                    >
+                      <path d="M20 6 9 17l-5-5"></path>
+                    </svg>
+                    <span className="text-sm ml-2">{satisfaction}</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>

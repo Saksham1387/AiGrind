@@ -173,22 +173,22 @@ const McqProblems = ({ mcqProblems }) => {
                 <ChevronDownIcon className="ml-2" />
               </button>
               {isStatusDropdownVisible && (
-                <div className="absolute mt-2 w-48 bg-neutral-200 dark:bg-mediumgray border-none rounded shadow-lg z-10">
+                <div className="absolute mt-2 w-48 bg-lightgray text-white dark:bg-mediumgray border-none rounded shadow-lg z-10">
                   <button
                     onClick={() => handleStatusFilter(null)}
-                    className="block w-full text-left px-4 py-2 border-b border-darkgray hover:bg-slate-200 "
+                    className="block w-full text-left px-4 py-2 border-b border-darkgray hover:bg-mediumgray "
                   >
                     All
                   </button>
                   <button
                     onClick={() => handleStatusFilter("solved")}
-                    className="block w-full text-left px-4 py-2 border-b border-darkgray hover:bg-slate-200"
+                    className="block w-full text-left px-4 py-2 border-b border-darkgray hover:bg-mediumgray "
                   >
                     Solved
                   </button>
                   <button
                     onClick={() => handleStatusFilter("unsolved")}
-                    className="block w-full text-left px-4 py-2 hover:bg-slate-200"
+                    className="block w-full text-left px-4 py-2 hover:bg-mediumgray "
                   >
                     Unsolved
                   </button>
@@ -204,7 +204,7 @@ const McqProblems = ({ mcqProblems }) => {
                 <ChevronDownIcon className="ml-2" />
               </button>
               {isCategoryDropdownVisible && (
-                <div className="absolute mt-2 w-[450px] bg-white dark:bg-mediumgray border border-darkgray rounded shadow-lg z-10 p-4 grid grid-cols-3 gap-4">
+                <div className="absolute w-[450px] bg-lightgray text-white dark:bg-mediumgray border border-darkgray rounded shadow-lg z-10 p-2 grid grid-cols-3 gap-2 mb-10">
                   {categories.map((category) => (
                     <label
                       key={category}
@@ -231,22 +231,28 @@ const McqProblems = ({ mcqProblems }) => {
                 <ChevronDownIcon className="ml-2" />
               </button>
               {isDifficultyDropdownVisible && (
-                <div className="absolute mt-2 w-48 bg-neutral-200 dark:bg-mediumgray border border-darkgray rounded-lg shadow-lg z-10">
-                  {["Easy", "Medium", "Hard"].map((difficulty) => (
-                    <label
-                      key={difficulty}
-                      className="block w-full text-left px-4 py-2 border-b border-darkgray border-none  hover:bg-slate-300  rounded-lg items-center"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={selectedDifficulties.includes(difficulty.toLowerCase())}
-                        onChange={() => handleDifficultyFilter(difficulty)}
-                        className="mr-2 accent-green-500"
-                      />
-                      {difficulty}
-                    </label>
-                  ))}
-                </div>
+                <div className="absolute mt-2 w-48 bg-lightgray dark:bg-mediumgray border border-darkgray rounded-lg shadow-lg z-10">
+                {["Easy", "Medium", "Hard"].map((difficulty) => (
+                  <label
+                    key={difficulty}
+                    className={`block w-full text-left px-4 py-2 border-b border-darkgray hover:bg-mediumgray items-center ${
+                      difficulty === "Easy"
+                        ? "text-green-500"
+                        : difficulty === "Medium"
+                        ? "text-yellow-500"
+                        : "text-red-500"
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selectedDifficulties.includes(difficulty.toLowerCase())}
+                      onChange={() => handleDifficultyFilter(difficulty)}
+                      className="mr-2 accent-green-500"
+                    />
+                    {difficulty}
+                  </label>
+                ))}
+              </div>
               )}
             </div>
           </div>

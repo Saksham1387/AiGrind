@@ -4,6 +4,7 @@ import { Tabs, TabsList, TabsTrigger } from "@repo/ui/tabs";
 import { Button } from "@repo/ui/button";
 import { CardDescription } from "@repo/ui/card";
 import axios from "axios";
+import ReactTooltip from 'react-tooltip';
 import {
   Accordion,
   AccordionContent,
@@ -15,6 +16,14 @@ import { McqISubmission } from "../../types/types";
 import { McqSubmissionTable } from "../../../components/SubmissionTable";
 import { ProblemSkeleton } from "../../../components/skeletons/problems";
 import { toast } from "react-toastify";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeHighlight from "rehype-highlight";
+import remarkMath from "remark-Math"
+import rehypeKatex from "rehype-Katex"
+import 'katex/dist/katex.min.css';
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 type MCQOption = {
   id: string;
@@ -28,11 +37,7 @@ type MCQProblem = {
   explanation: string;
   correctAnswer: string;
 };
-interface User {
-  id: string;
-  name?: string;
-  email?: string;
-}
+
 
 export default function MCQ({
   params: { mcqId },
@@ -46,6 +51,8 @@ export default function MCQ({
   const [showExplanation, setShowExplanation] = useState(false);
   const [activeTab, setActiveTab] = useState("mcq");
   const [mcqIds, setMcqIds] = useState<string[]>([]);
+  const session = useSession();
+  const router = useRouter();
 
   const handleOptionChange = (optionId: string) => {
     setSelectedOption(optionId);
@@ -64,7 +71,25 @@ export default function MCQ({
     }
   }, [mcqId]);
 
+  useEffect(() => {
+    if (mcqId) {
+      async function fetchMcqid() {
+        const res = await fetch(`/api/mcqs/all`);
+        const data = await res.json();
+        setMcqIds(data.mcqs.map((mcq: any) => mcq.id));
+      }
+      fetchMcqid();
+    }
+  }, [mcqId]);
+
   const handleSubmit = async () => {
+
+    if (!session) {
+      toast.error("Login to submit");
+      router.push("/signin");
+      return;
+    }
+
     if (!selectedOption) {
       alert("Please select an option.");
       return;
@@ -116,10 +141,6 @@ export default function MCQ({
     return mcqIds[previousIndex];
   };
 
-  const handleShowExplanation = () => {
-    setShowExplanation(!showExplanation);
-  };
-
   const handleNextQuestion = () => {
     const nextMcqId = getNextMcqId(mcqId);
     window.location.href = `/mcq/${nextMcqId}`;
@@ -142,15 +163,19 @@ export default function MCQ({
       <Button
         className="absolute top-4 left-4 text-lg p-2 bg-lightgray hover:bg-lightgray"
         onClick={handlePreviousQuestion}
+         title="Previous Question"
       >
         <ArrowLeftFromLine></ArrowLeftFromLine>
       </Button>
       <Button
-        className="absolute top-4 right-4 text-lg p-2 bg-lightgray hover:bg-lightgray"
-        onClick={handleNextQuestion}
-      >
-        <ArrowRightFromLine></ArrowRightFromLine>
-      </Button>
+  className="absolute top-4 right-4 text-lg p-2 bg-lightgray hover:bg-lightgray"
+  onClick={handleNextQuestion}
+   
+  title="Next Question"
+>
+  <ArrowRightFromLine />
+  
+</Button>
       <div className="bg-lightgray dark:bg-gray-900 max-h-[1000px] p-6 rounded-lg w-full max-w-[1300px] shadow-lg flex flex-col justify-center">
         <div className="w-full ">
           <Tabs
@@ -173,7 +198,12 @@ export default function MCQ({
           // Left Side
           <div className="flex flex-row w-full mt-5 ">
             <div className="w-1/2 p-4 border-r border-gray-300">
-              <p className="mb-3 text-xl">{mcq.question}</p>
+            <Markdown 
+         remarkPlugins={[remarkGfm, remarkMath]} 
+         rehypePlugins={[rehypeHighlight, rehypeKatex]}
+         className="prose prose-invert"
+      >{mcq.question}</Markdown>
+              {/* <p className="mb-3 text-xl">{mcq.question}</p> */}
               <CardDescription className="mb-3 text-xl">
                 {mcq.description}
               </CardDescription>
@@ -233,7 +263,7 @@ export default function MCQ({
                   className={`p-3 bg-white text-black hover:bg-white`}
                   onClick={handleSubmit}
                 >
-                  Submit
+                  {session ? 'Submit' : 'Login to Submit'}
                 </Button>
               </div>
             </div>

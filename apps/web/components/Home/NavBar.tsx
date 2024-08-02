@@ -88,7 +88,7 @@ const Navbar = () => {
                 </li>
               ))}
               <Button
-                className="px-4 bg-transparent"
+                className="px-4 bg-transparent hover:bg-transparent"
                 onClick={() => {
                   router.push("/signin");
                 }}
@@ -96,7 +96,7 @@ const Navbar = () => {
                 Sign In
               </Button>
               <Button
-                className="pb-10 px-4 bg-transparent"
+                className="pb-10 px-4 bg-transparent  hover:bg-transparent"
                 onClick={() => {
                   router.push("/signup");
                 }}
