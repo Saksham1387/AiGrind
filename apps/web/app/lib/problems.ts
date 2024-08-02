@@ -1,7 +1,7 @@
 import fs from "fs";
 
 type SUPPORTED_LANGS = "js" | "cpp" | "rs"| "java" | "py" ;
-const MOUNT_PATH = process.env.MOUNT_PATH ?? "/home/ubuntu/algorithmic-arena/apps/problems";
+const MOUNT_PATH = process.env.MOUNT_PATH ?? "/home/ubuntu/DataDex/apps/problems";
 
 interface Problem {
   id: string;
