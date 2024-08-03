@@ -7,6 +7,7 @@ import { Footer } from "../components/Footer";
 import { Providers } from "../providers";
 import { usePathname } from 'next/navigation';
 import Head from 'next/head';
+import type { Metadata } from "next";
 
 const chivo = Chivo({
   subsets: ["latin"],
@@ -18,6 +19,8 @@ const rubik = Rubik({
   display: "swap",
   variable: "--font-rubik",
 });
+
+
 
 export default function RootLayout({
   children,
@@ -32,6 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en">
        <Head>
+       <title>AiGrind</title>
         <link rel="icon" href="/favicon.ico"/>
       </Head>
       <body className={`${chivo.variable} ${rubik.variable} min-h-screen flex flex-col`}>

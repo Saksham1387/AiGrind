@@ -14,5 +14,12 @@ module.exports = {
         cwd: "./apps/sweeper",
         watch: ".",
       },
+      {
+        namespace: "db",
+        name: "db",
+        script: "pnpm dlx prisma generate",
+        cwd: "./packages/db",
+        watch: ".",
+      },
     ],
 };
