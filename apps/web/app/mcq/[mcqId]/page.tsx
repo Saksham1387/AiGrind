@@ -18,8 +18,7 @@ import { toast } from "react-toastify";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
-import remarkMath from "remark-Math"
-import rehypeKatex from "rehype-Katex"
+
 import 'katex/dist/katex.min.css';
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -157,16 +156,6 @@ export default function MCQ({
       </div>
     );
 
-
-    const matrixQuestion = `
-    What is the determinant of a (2 × 2) matrix:
-    [ a  b
-      c  d ]?
-    
-    The determinant is calculated as:
-    det [ a  b
-           c  d ] = ad - bc`
-           ;
   return (
     <div className="text-white relative min-h-screen w-full bg-darkgray flex flex-col items-center py-10 dark:bg-gray-800">
       <Button
@@ -208,10 +197,9 @@ export default function MCQ({
           <div className="flex flex-row w-full mt-5 ">
             <div className="w-1/2 p-4 border-r border-gray-300">
             <Markdown 
-         remarkPlugins={[remarkGfm, remarkMath]} 
-         rehypePlugins={[rehypeHighlight, rehypeKatex]}
+        
          className="prose prose-invert"
-      >{matrixQuestion}</Markdown>
+      >{mcq.question}</Markdown>
               {/* <p className="mb-3 text-xl">{mcq.question}</p> */}
               <CardDescription className="mb-3 text-xl">
                 {mcq.description}
