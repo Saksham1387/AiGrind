@@ -1,5 +1,5 @@
 ```python
-def compute_information_gain(before_entropy, after_entropies, proportions):
+def calculate_information_gain(before_entropy, after_entropies, proportions):
     # Compute the weighted sum of the entropies after the split
     weighted_sum_entropy = sum(p * e for p, e in zip(proportions, after_entropies))
     

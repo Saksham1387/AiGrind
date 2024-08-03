@@ -5,8 +5,8 @@ import "./globals.css";
 import { Appbar } from "../components/Appbar";
 import { Footer } from "../components/Footer";
 import { Providers } from "../providers";
-import { usePathname } from 'next/navigation';
-import Head from 'next/head';
+import { usePathname } from "next/navigation";
+import Head from "next/head";
 import type { Metadata } from "next";
 
 const chivo = Chivo({
@@ -20,30 +20,30 @@ const rubik = Rubik({
   variable: "--font-rubik",
 });
 
-
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }): JSX.Element {
   const pathname = usePathname();
-  const noAppBarRoutes = ['/signin','/signup','/forgot-password','/'];
-  const noFooterRoutes = ['/signin','/signup','/forgot-password'];
+  const noAppBarRoutes = ["/signin", "/signup", "/forgot-password", "/"];
+  const noFooterRoutes = ["/signin", "/signup", "/forgot-password"];
   const hideAppBar = noAppBarRoutes.includes(pathname);
   const hideFooter = noFooterRoutes.includes(pathname);
   return (
     <html lang="en">
-       <Head>
-       <title>AiGrind</title>
-        <link rel="icon" href="/favicon.ico"/>
+      <Head>
+        <title>AiGrind</title>
+        <link rel="icon" href="/favicon.ico" />
       </Head>
-      <body className={`${chivo.variable} ${rubik.variable} min-h-screen flex flex-col`}>
-          <Providers>
+      <body
+        className={`${chivo.variable} ${rubik.variable} min-h-screen flex flex-col`}
+      >
+        <Providers>
           {!hideAppBar && <Appbar />}
-            <main className="flex-grow ">{children}</main>
-            {!hideFooter && <Footer />}
-          </Providers>
+          <main className="flex-grow ">{children}</main>
+          {!hideFooter && <Footer />}
+        </Providers>
       </body>
     </html>
   );
