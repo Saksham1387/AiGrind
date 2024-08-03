@@ -119,12 +119,12 @@ const SigninPage = () => {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password"> Password</Label>
-                  <Link
+                  {/* <Link
                     href="/forgot-password"
                     className="inline-block text-sm underline"
                   >
                     Forgot your password?
-                  </Link>
+                  </Link> */}
                 </div>
                 <div className="relative">
                   <Input

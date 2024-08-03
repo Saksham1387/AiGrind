@@ -23,7 +23,7 @@ export function Appbar() {
 
   return (
     <header className="sticky top-0 left-0 right-0 bg-mediumgray text-white px-4 md:px-6 py-3 flex items-center justify-between border-b-1 z-50">
-      <Link href="/" className="flex items-center gap-2" prefetch={false}>
+      <Link href="/dashboard" className="flex items-center gap-2" prefetch={false}>
         <img src="/Main-logo.png" alt="AIgrind" className="h-9 w-10" />
         <span className="text-lg font-bold">AIgrind</span>
       </Link>
