@@ -3,7 +3,6 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn, SignInResponse } from "next-auth/react";
 import Image from "next/image";
-import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react"; 
 import { Button } from "@repo/ui/button";
 import { Input } from "@repo/ui/input";
