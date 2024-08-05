@@ -1,8 +1,11 @@
-"use client"; 
+"use client";
 import React, { useState } from 'react';
 import { Eye, EyeOff, CheckCircle } from 'lucide-react';
+//@ts-ignore
 import zxcvbn from 'zxcvbn';
 import { useRouter } from 'next/navigation';
+
+type PasswordStrength = 'Very Weak' | 'Weak' | 'Fair' | 'Good' | 'Strong';
 
 const PasswordReset: React.FC = () => {
   const [newPassword, setNewPassword] = useState('');
@@ -10,7 +13,7 @@ const PasswordReset: React.FC = () => {
   const [newPasswordVisible, setNewPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [error, setError] = useState('');
-  const [passwordStrength, setPasswordStrength] = useState<string>('');
+  const [passwordStrength, setPasswordStrength] = useState<PasswordStrength>('Very Weak');
   const [strengthBarWidth, setStrengthBarWidth] = useState<string>('0%');
   const [showNotification, setShowNotification] = useState(false);
   const router = useRouter();
@@ -31,10 +34,11 @@ const PasswordReset: React.FC = () => {
       setPasswordStrength('Good');
       setStrengthBarWidth('80%');
     } else {
-      setPasswordStrength(score === 0 ? 'Very Weak' :
-                          score === 1 ? 'Weak' :
-                          score === 2 ? 'Fair' :
-                          score === 3 ? 'Good' : 'Strong');
+      const strength = score === 0 ? 'Very Weak' :
+                       score === 1 ? 'Weak' :
+                       score === 2 ? 'Fair' :
+                       score === 3 ? 'Good' : 'Strong';
+      setPasswordStrength(strength);
       setStrengthBarWidth(score === 0 ? '20%' :
                           score === 1 ? '40%' :
                           score === 2 ? '60%' :
@@ -64,7 +68,7 @@ const PasswordReset: React.FC = () => {
     }, 2000);
   };
 
-  const strengthColors = {
+  const strengthColors: Record<PasswordStrength, string> = {
     'Very Weak': 'bg-red-500',
     'Weak': 'bg-orange-500',
     'Fair': 'bg-yellow-500',
@@ -72,7 +76,7 @@ const PasswordReset: React.FC = () => {
     'Strong': 'bg-green-500',
   };
 
-  const strengthTextColors = {
+  const strengthTextColors: Record<PasswordStrength, string> = {
     'Very Weak': 'text-red-500',
     'Weak': 'text-orange-500',
     'Fair': 'text-yellow-500',
