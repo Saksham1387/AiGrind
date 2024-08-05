@@ -1,5 +1,5 @@
 "use client";
-import { Github, Linkedin, Twitter } from "lucide-react";
+import { Github, Instagram, Linkedin, Twitter } from "lucide-react";
 
 export const Footer = () => {
   return (
@@ -49,6 +49,27 @@ export const Footer = () => {
                 className="hover:underline me-4 md:me-6"
               >
                 <Twitter></Twitter>
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => {
+                  window.open("https://discord.gg/WnkACFzDdw", "_blank");
+                }}
+                className="hover:underline me-4 md:me-6"
+              >
+                <img src={"/discord-icon.png"} className="h-5 w-7"></img>
+              </button>
+            </li>
+
+            <li>
+              <button
+                onClick={() => {
+                  window.open("https://www.instagram.com/aigrindofficial/", "_blank");
+                }}
+                className="hover:underline me-4 md:me-6"
+              >
+               <Instagram></Instagram>
               </button>
             </li>
           </ul>
