@@ -1,3 +1,4 @@
+import { getSession } from "next-auth/react";
 import DashboardProblems from "../../components/DashboardProb";
 import { Hero } from "../../components/Hero";
 import { getMCQProblems } from "../db/fetches";
