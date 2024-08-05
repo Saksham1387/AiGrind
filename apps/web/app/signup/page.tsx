@@ -111,16 +111,16 @@ const SignupPage = () => {
         </div>
       </div>
       <div className="flex flex-col  p-4 lg:w-1/2 w-full h-full lg:ml-[200px]">
-        <div className="max-w-md w-full space-y-6">
-          <div className="text-center space-y-4">
-            <div className="flex items-center justify-center space-x-2">
+        <div className="max-w-md w-full space-y-3">
+          <div className="text-center space-y-2">
+            <div className="flex items-center justify-center space-x-2 mt-20">
               <h1 className="text-3xl font-bold">Join Us</h1>
               <Image src="/Main-logo.png" alt="Logo" width={50} height={50} className="object-contain" />
             </div>
             <p className="text-3xl font-bold">Create an Account on AiGrind</p>
             <p className="text-balance text-muted-foreground font-light">To get your first ML interview</p>
           </div>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3">
             <div className="grid gap-2">
               <Label htmlFor="fullName">Full Name</Label>
               <Input
@@ -258,7 +258,7 @@ const SignupPage = () => {
             )}
           </form>
           <div className="space-y-2">
-            <Button
+            {/* <Button
               className="w-full border bg-white text-black hover:bg-white"
               onClick={() => handleProviderLogin("github")}
               disabled={loading}
@@ -272,7 +272,7 @@ const SignupPage = () => {
                     </svg>
                   </div>
               Sign up with GitHub
-            </Button>
+            </Button> */}
             <Button
               className="w-full border bg-white text-black hover:bg-white"
               onClick={() => handleProviderLogin("google")}
@@ -301,7 +301,7 @@ const SignupPage = () => {
               Sign up with Google
             </Button>
           </div>
-          <div className="text-center text-sm mt-4">
+          <div className="text-center text-sm">
             Already have an account?{" "}
             <Link href="/signin" className="underline">
               Log in

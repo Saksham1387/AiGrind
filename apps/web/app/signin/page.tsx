@@ -1,12 +1,13 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn, SignInResponse } from "next-auth/react";
 import Image from "next/image";
-import { Eye, EyeOff } from "lucide-react"; 
+import { Eye, EyeOff, X } from "lucide-react";
 import { Button } from "@repo/ui/button";
 import { Input } from "@repo/ui/input";
 import { Label } from "@repo/ui/label";
+import Link from "next/link";
 
 const SigninPage = () => {
   const router = useRouter();
@@ -15,6 +16,15 @@ const SigninPage = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [passwordValue, setPasswordValue] = useState("");
+  const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
+
+  const handleForgotPasswordClick = () => {
+    setIsForgotPasswordOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsForgotPasswordOpen(false);
+  };
 
   const handleProviderLogin = async (provider: string) => {
     if (provider === "google") {
@@ -76,9 +86,10 @@ const SigninPage = () => {
               <h1 className="text-white text-md mt-4">
                 Join a growing community of AI enthusiasts.
               </h1>
-              <button 
+              <button
                 onClick={() => router.push("/")}
-                className="font-light text-green-300 text-xs hover:underline">
+                className="font-light text-green-300 text-xs hover:underline"
+              >
                 Know more{" "}
               </button>
             </div>
@@ -118,12 +129,12 @@ const SigninPage = () => {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password"> Password</Label>
-                  {/* <Link
-                    href="/forgot-password"
+                  <button
+                    onClick={handleForgotPasswordClick}
                     className="inline-block text-sm underline"
                   >
                     Forgot your password?
-                  </Link> */}
+                  </button>
                 </div>
                 <div className="relative">
                   <Input
@@ -143,22 +154,27 @@ const SigninPage = () => {
                       onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? (
-                        <EyeOff className="text-black"  size={20} />
+                        <EyeOff className="text-black" size={20} />
                       ) : (
-                        <Eye className="text-black"  size={20} />
+                        <Eye className="text-black" size={20} />
                       )}
                     </button>
                   )}
                 </div>
               </div>
-              <Button type="submit" className="w-full bg-white text-black hover:bg-gray-300" disabled={loading}>
+              <Button
+                type="submit"
+                className="w-full bg-white text-black hover:bg-gray-300"
+              >
                 Login
               </Button>
-              <div className="flex space-x-2">
+              <div className="flex  flex-col gap-y-3">
                 <Button
                   variant="outline"
                   className="w-full flex items-center justify-center text-black"
-                  onClick={() => { handleProviderLogin("google") }}
+                  onClick={() => {
+                    handleProviderLogin("google");
+                  }}
                 >
                   <div className="bg-white p-2 rounded-full">
                     <svg className="w-4" viewBox="0 0 533.5 544.3">
@@ -182,10 +198,12 @@ const SigninPage = () => {
                   </div>
                   <span className="ml-4">Login with Google</span>
                 </Button>
-                <Button
+                {/* <Button
                   variant="outline"
                   className="w-full flex items-center justify-center text-black"
-                  onClick={() => { handleProviderLogin("github") }}
+                  onClick={() => {
+                    handleProviderLogin("github");
+                  }}
                 >
                   <div className="bg-white p-1 rounded-full">
                     <svg className="w-6" viewBox="0 0 32 32">
@@ -196,7 +214,7 @@ const SigninPage = () => {
                     </svg>
                   </div>
                   <span className="ml-4">Login with GitHub</span>
-                </Button>
+                </Button> */}
               </div>
             </form>
             <div className="mt-4 text-center text-sm">
@@ -211,8 +229,74 @@ const SigninPage = () => {
           </div>
         </div>
       </div>
+      {isForgotPasswordOpen && <ForgotPassword onClose={handleCloseDialog} />}
     </>
   );
 };
 
 export default SigninPage;
+
+function ForgotPassword({ onClose }: { onClose: () => void }) {
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    const res = await fetch("/api/auth/forgot-password", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+    const data = await res.json();
+    setMessage(data.message);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dialogRef.current &&
+        !dialogRef.current.contains(event.target as Node)
+      ) {
+        onClose();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [onClose]);
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-darkgray bg-opacity-75">
+      <div
+        ref={dialogRef}
+        className="bg-darkgray p-10 flex flex-col text-white text-center rounded-lg shadow-lg relative"
+      >
+        <button onClick={onClose} className="absolute top-2 right-2">
+          <X></X>
+        </button>
+        <h1 className="">FORGOT PASSWORD</h1>
+        <p className="mb-3 text-gray-500">Enter your registered email below</p>
+        <form onSubmit={handleSubmit} className="flex flex-col">
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email address"
+            required
+            className="border border-gray-300 rounded-lg p-2 text-black mb-2"
+          />
+          <Button
+            type="submit"
+            className="bg-lightgray hover:bg-lightgray text-white mt-3"
+          >
+            Send reset link
+          </Button>
+        </form>
+        {message && <p className="mt-2 text-green-800">{message}</p>}
+      </div>
+    </div>
+  );
+}

@@ -22,10 +22,14 @@ export function Appbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 left-0 right-0 bg-mediumgray text-white px-4 md:px-6 py-3 flex items-center justify-between border-b-1 z-50">
+    <header className="sticky top-0 left-0 right-0 bg-mediumgray text-white  md:px-6 py-3 flex items-center justify-between border-b-1 z-50 ">
       <Link href="/dashboard" className="flex items-center gap-2" prefetch={false}>
-        <img src="/Main-logo.png" alt="AIgrind" className="h-9 w-10" />
-        <span className="text-lg font-bold">AIgrind</span>
+        <img src="/Main-logo.png" alt="AIgrind" className="h-9 w-10 mb-2" />
+        <div className="flex flex-row">
+        <span className="text-lg font-bold ">AIgrind</span>
+        <p className="text-[10px] mt-5">BETA</p>
+        </div>
+        {/* <img src="/beta-icon.png" alt="beta-release" className="h-6 w-6" /> */}
       </Link>
 
       {/* Navigation links for normal screens */}
@@ -92,7 +96,7 @@ export function Appbar() {
       </div>
 
       {/* Mobile menu button */}
-      <div className="md:hidden flex items-center gap-4">
+      <div className="md:hidden flex items-center gap-2">
         <Streak />
 
         {!isLoading && session?.user ? (

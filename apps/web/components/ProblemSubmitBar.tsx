@@ -51,10 +51,10 @@ export const ProblemSubmitBar = ({
     <div className="bg-lightgray rounded-lg shadow-md p-6 text-white">
       <div className="grid gap-4 bg-">
         <div className="grid grid-cols-2 gap-4">
-          <div>
+          <div className="w-full "> 
             <Tabs
               defaultValue="problem"
-              className="rounded-md p-1"
+              className="rounded-md p-1 text-lg bg-darkgray"
               value={activeTab}
               onValueChange={setActiveTab}
             >
@@ -66,6 +66,11 @@ export const ProblemSubmitBar = ({
               </TabsList>
             </Tabs>
           </div>
+
+
+
+
+         
         </div>
         <div className={`${activeTab === "problem" ? "" : "hidden"}`}>
           <SubmitProblem problem={problem} contestId={contestId} />

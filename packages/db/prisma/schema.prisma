@@ -25,7 +25,17 @@ model User {
   streaks            Streak[] 
   streakDates        StreakDate[]
   comments           Comment[]
-  userMCQProblems  UserMCQProblem[] 
+  userMCQProblems    UserMCQProblem[] 
+  resetTokens        ResetToken[]
+}
+
+model ResetToken {
+  id         String    @id @default(cuid())
+  token      String    @unique
+  userId     String
+  user       User      @relation(fields: [userId], references: [id])
+  expiration DateTime
+  createdAt  DateTime  @default(now())
 }
 
 model StreakDate {

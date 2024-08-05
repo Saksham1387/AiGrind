@@ -7,11 +7,23 @@ import {
   TableBody,
   TableCell,
 } from "@repo/ui/table";
-import { toast } from "react-toastify";
 import { getColor } from "../app/db/problem";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { CheckIcon, ChevronDownIcon, ChevronLeft, ChevronRight, ClockIcon } from "lucide-react";
+import {
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronLeft,
+  ChevronRight,
+  ClockIcon,
+} from "lucide-react";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@repo/ui/dropdown-menu";
 
 import { Button } from "@repo/ui/button";
 import { SkeletonTable } from "./skeletons/problems";
@@ -61,8 +73,7 @@ const McqProblems = ({ mcqProblems }) => {
   useEffect(() => {
     console.log(mcqProblems);
   }, []);
-
-  const difficultyOrder = { easy: 1, medium: 2, hard: 3 };
+  const difficulties = ["Easy", "Medium", "Hard"];
 
   const filteredProblems = useMemo(() => {
     const filtered = mcqProblems.filter((problem: any) => {
@@ -81,13 +92,13 @@ const McqProblems = ({ mcqProblems }) => {
     });
 
     const easyProblems = filtered.filter(
-      (problem:any) => problem.difficulty.toLowerCase() === "easy"
+      (problem: any) => problem.difficulty.toLowerCase() === "easy"
     );
     const mediumProblems = filtered.filter(
-      (problem:any) => problem.difficulty.toLowerCase() === "medium"
+      (problem: any) => problem.difficulty.toLowerCase() === "medium"
     );
     const hardProblems = filtered.filter(
-      (problem:any) => problem.difficulty.toLowerCase() === "hard"
+      (problem: any) => problem.difficulty.toLowerCase() === "hard"
     );
 
     return [
@@ -120,8 +131,8 @@ const McqProblems = ({ mcqProblems }) => {
         ? prevCategories.filter((c) => c !== category)
         : [...prevCategories, category]
     );
-    console.log(selectedCategories)
-    setCurrentPage(1); 
+    console.log(selectedCategories);
+    setCurrentPage(1);
   };
 
   const handleDifficultyFilter = (difficulty: string) => {
@@ -137,24 +148,6 @@ const McqProblems = ({ mcqProblems }) => {
     setCurrentPage(page);
   };
 
-  const toggleStatusDropdown = () => {
-    setIsStatusDropdownVisible(!isStatusDropdownVisible);
-    setIsCategoryDropdownVisible(false);
-    setIsDifficultyDropdownVisible(false);
-  };
-
-  const toggleCategoryDropdown = () => {
-    setIsCategoryDropdownVisible(!isCategoryDropdownVisible);
-    setIsStatusDropdownVisible(false);
-    setIsDifficultyDropdownVisible(false);
-  };
-
-  const toggleDifficultyDropdown = () => {
-    setIsDifficultyDropdownVisible(!isDifficultyDropdownVisible);
-    setIsStatusDropdownVisible(false);
-    setIsCategoryDropdownVisible(false);
-  };
-
   return (
     <section className="bg-darkgray py-8 md:py-12 min-h-screen">
       <div className="container mx-auto px-4 md:px-6">
@@ -163,100 +156,101 @@ const McqProblems = ({ mcqProblems }) => {
           <p className="text-white pb-5">
             Here are some of the popular problems for interview prep
           </p>
-          <div className="relative flex justify-center gap-16 mb-8">
-            <div className="relative">
-              <button
-                onClick={toggleStatusDropdown}
-                className="bg-mediumgray text-white px-4 py-2 rounded flex items-center"
-              >
-                Status
-                <ChevronDownIcon className="ml-2" />
-              </button>
-              {isStatusDropdownVisible && (
-                <div className="absolute mt-2 w-48 bg-lightgray text-white dark:bg-mediumgray border-none rounded shadow-lg z-10">
-                  <button
+          <div className="relative flex flex-col sm:flex-row justify-center gap-4 sm:gap-16 mb-8">
+            <div>
+              <DropdownMenu>
+                <DropdownMenuTrigger className="bg-mediumgray text-white px-4 py-2 rounded flex items-center">
+                  <div className="flex flex-row">
+                    Status
+                    <ChevronDownIcon className="ml-2" />
+                  </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="bg-mediumgray text-white border-none">
+                  <DropdownMenuItem
                     onClick={() => handleStatusFilter(null)}
-                    className="block w-full text-left px-4 py-2 border-b border-darkgray hover:bg-mediumgray "
+                    className="hover:bg-lightgray"
                   >
                     All
-                  </button>
-                  <button
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="hover:bg-lightgray"
                     onClick={() => handleStatusFilter("solved")}
-                    className="block w-full text-left px-4 py-2 border-b border-darkgray hover:bg-mediumgray "
                   >
                     Solved
-                  </button>
-                  <button
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="hover:bg-lightgray"
                     onClick={() => handleStatusFilter("unsolved")}
-                    className="block w-full text-left px-4 py-2 hover:bg-mediumgray "
                   >
                     Unsolved
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+
+            <div className="relative">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="bg-mediumgray text-white px-4 py-2 rounded flex items-center">
+                    Category
+                    <ChevronDownIcon className="ml-2" />
                   </button>
-                </div>
-              )}
-            </div>
-            <div className="relative">
-              <button
-                onClick={toggleCategoryDropdown}
-                className="bg-mediumgray text-white px-4 py-2 rounded flex items-center"
-              >
-                Category
-                <ChevronDownIcon className="ml-2" />
-              </button>
-              {isCategoryDropdownVisible && (
-                <div className="absolute w-[450px] bg-lightgray text-white dark:bg-mediumgray border border-darkgray rounded shadow-lg z-10 p-2 grid grid-cols-3 gap-2 mb-10">
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-[200px] sm:w-[450px] bg-lightgray text-white dark:bg-mediumgray border border-darkgray rounded shadow-lg z-10 p-2 grid grid-cols-1 sm:grid-cols-1 gap-2 mb-10">
                   {categories.map((category) => (
-                    <label
-                      key={category}
-                      className="flex items-center text-left"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={selectedCategories.includes(category)}
-                        onChange={() => handleCategoryFilter(category)}
-                        className="mr-2 accent-green-500"
-                      />
-                      <span className="ml-2">{category}</span>
-                    </label>
+                    <DropdownMenuItem asChild key={category}>
+                      <label className="flex items-center text-left">
+                        <input
+                          type="checkbox"
+                          checked={selectedCategories.includes(category)}
+                          onChange={() => handleCategoryFilter(category)}
+                          className="mr-2 accent-green-500"
+                        />
+                        <span className="ml-2">{category}</span>
+                      </label>
+                    </DropdownMenuItem>
                   ))}
-                </div>
-              )}
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
-            <div className="relative">
-              <button
-                onClick={toggleDifficultyDropdown}
-                className="bg-mediumgray text-white px-4 py-2 rounded flex items-center"
-              >
-                Difficulty
-                <ChevronDownIcon className="ml-2" />
-              </button>
-              {isDifficultyDropdownVisible && (
-                <div className="absolute mt-2 w-48 bg-lightgray dark:bg-mediumgray border border-darkgray rounded-lg shadow-lg z-10">
-                {["Easy", "Medium", "Hard"].map((difficulty) => (
-                  <label
+
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <button className="bg-mediumgray text-white px-4 py-2 rounded flex items-center">
+                  Difficulty
+                  <ChevronDownIcon className="ml-2" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-20 bg-lightgray dark:bg-mediumgray border border-darkgray rounded-lg shadow-lg z-10">
+                {difficulties.map((difficulty) => (
+                  <DropdownMenuItem
                     key={difficulty}
-                    className={`block w-full text-left px-4 py-2 border-b border-darkgray hover:bg-mediumgray items-center ${
+                    className={`block w-full text-left px-4 py-2 hover:bg-mediumgray items-center ${
                       difficulty === "Easy"
                         ? "text-green-500"
                         : difficulty === "Medium"
-                        ? "text-yellow-500"
-                        : "text-red-500"
+                          ? "text-yellow-500"
+                          : "text-red-500"
                     }`}
                   >
                     <input
                       type="checkbox"
-                      checked={selectedDifficulties.includes(difficulty.toLowerCase())}
-                      onChange={() => handleDifficultyFilter(difficulty)}
+                      checked={selectedDifficulties.includes(
+                        difficulty.toLowerCase()
+                      )}
+                      onChange={() =>
+                        handleDifficultyFilter(difficulty.toLowerCase())
+                      }
                       className="mr-2 accent-green-500"
                     />
                     {difficulty}
-                  </label>
+                  </DropdownMenuItem>
                 ))}
-              </div>
-              )}
-            </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
+
         <div
           className={`${
             isStatusDropdownVisible ||
@@ -329,17 +323,27 @@ const McqProblemCard = ({ mcqProblems }: { mcqProblems: MCQProblem[] }) => {
               <TableCell className="text-white">{index + 1}</TableCell>
               <TableCell className="text-white">{problem.title}</TableCell>
               <TableCell className="text-white">{problem.category}</TableCell>
-              <TableCell className={`text-white ${getColor(problem.difficulty)}`}>
+              <TableCell
+                className={`text-white ${getColor(problem.difficulty)}`}
+              >
                 {problem.difficulty}
               </TableCell>
               <TableCell
                 className={
-                  problem.solved === "unsolved" ? "font-bold text-white" : "text-white"
+                  problem.solved === "unsolved"
+                    ? "font-bold text-white"
+                    : "text-white"
                 }
               >
-                 {problem.solved === "unsolved" ? <ClockIcon className="h-4 w-4 text-gray-500" /> : <CheckIcon className="h-4 w-4 text-green-500" />}
+                {problem.solved === "unsolved" ? (
+                  <ClockIcon className="h-4 w-4 text-gray-500" />
+                ) : (
+                  <CheckIcon className="h-4 w-4 text-green-500" />
+                )}
               </TableCell>
-              <TableCell className="text-white">{problem.question.substring(0, 20)}...</TableCell>
+              <TableCell className="text-white">
+                {problem.question.substring(0, 20)}...
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

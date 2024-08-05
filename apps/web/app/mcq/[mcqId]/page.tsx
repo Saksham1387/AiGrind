@@ -4,12 +4,15 @@ import { Tabs, TabsList, TabsTrigger } from "@repo/ui/tabs";
 import { Button } from "@repo/ui/button";
 import { CardDescription } from "@repo/ui/card";
 import axios from "axios";
+import "katex/dist/katex.min.css";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@repo/ui/accordion";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
 import { ArrowLeftFromLine, ArrowRightFromLine } from "lucide-react";
 import { McqISubmission } from "../../types/types";
 import { McqSubmissionTable } from "../../../components/SubmissionTable";
@@ -19,7 +22,7 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
 
-import 'katex/dist/katex.min.css';
+import "katex/dist/katex.min.css";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -36,7 +39,6 @@ type MCQProblem = {
   correctAnswer: string;
 };
 
-
 export default function MCQ({
   params: { mcqId },
 }: {
@@ -46,8 +48,8 @@ export default function MCQ({
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [submissionResult, setSubmissionResult] = useState<string | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-  const [showExplanation, setShowExplanation] = useState(false);
   const [activeTab, setActiveTab] = useState("mcq");
+  const [showExplanation, setShowExplanation] = useState(false);
   const [mcqIds, setMcqIds] = useState<string[]>([]);
   const session = useSession();
   const router = useRouter();
@@ -81,7 +83,6 @@ export default function MCQ({
   }, [mcqId]);
 
   const handleSubmit = async () => {
-
     if (!session) {
       toast.error("Login to submit");
       router.push("/signin");
@@ -156,25 +157,24 @@ export default function MCQ({
       </div>
     );
 
+
   return (
     <div className="text-white relative min-h-screen w-full bg-darkgray flex flex-col items-center py-10 dark:bg-gray-800">
       <Button
         className="absolute top-4 left-4 text-lg p-2 bg-lightgray hover:bg-lightgray"
         onClick={handlePreviousQuestion}
-         title="Previous Question"
+        title="Previous Question"
       >
         <ArrowLeftFromLine></ArrowLeftFromLine>
       </Button>
       <Button
-  className="absolute top-4 right-4 text-lg p-2 bg-lightgray hover:bg-lightgray"
-  onClick={handleNextQuestion}
-   
-  title="Next Question"
->
-  <ArrowRightFromLine />
-  
-</Button>
-      <div className="bg-lightgray dark:bg-gray-900 max-h-[1000px] p-6 rounded-lg w-full max-w-[1300px] shadow-lg flex flex-col justify-center">
+        className="absolute top-4 right-4 text-lg p-2 bg-lightgray hover:bg-lightgray"
+        onClick={handleNextQuestion}
+        title="Next Question"
+      >
+        <ArrowRightFromLine />
+      </Button>
+      <div className="bg-lightgray dark:bg-gray-900 max-h-[1000px] p-6 rounded-lg w-full max-w-[1300px] shadow-lg flex flex-col justify-center mt-10 md:mt-0">
         <div className="w-full ">
           <Tabs
             defaultValue="mcq"
@@ -196,10 +196,14 @@ export default function MCQ({
           // Left Side
           <div className="flex flex-row w-full mt-5 ">
             <div className="w-1/2 p-4 border-r border-gray-300">
-            <Markdown 
-        
-         className="prose prose-invert"
-      >{mcq.question}</Markdown>
+              <Markdown
+                remarkPlugins={[remarkMath]}
+                rehypePlugins={[rehypeKatex]}
+                className="prose prose-invert"
+              >
+                {mcq.question}
+              </Markdown>
+
               {/* <p className="mb-3 text-xl">{mcq.question}</p> */}
               <CardDescription className="mb-3 text-xl">
                 {mcq.description}
@@ -260,7 +264,7 @@ export default function MCQ({
                   className={`p-3 bg-white text-black hover:bg-white`}
                   onClick={handleSubmit}
                 >
-                  {session ? 'Submit' : 'Login to Submit'}
+                  {session ? "Submit" : "Login to Submit"}
                 </Button>
               </div>
             </div>

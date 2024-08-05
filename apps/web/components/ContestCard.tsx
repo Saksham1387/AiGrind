@@ -5,7 +5,6 @@ import {
   CardContent,
   CardFooter,
 } from "@repo/ui/card";
-import Link from "next/link";
 import { parseFutureDate, parseOldDate } from "../app/lib/time";
 import { PrimaryButton } from "./LinkButton";
 
