@@ -49,7 +49,7 @@ const Navbar = () => {
           </ul>
           <div className="hidden lg:flex justify-center space-x-12 items-center ml-10">
             <Button
-              className="py-2 px-4 border rounded-md bg-lightgray hover:bg-darkgray"
+              className="py-2 px-4 rounded-md bg-lightgray hover:bg-darkgray"
               onClick={() => {
                 router.push("/signin");
               }}
@@ -57,7 +57,7 @@ const Navbar = () => {
               Sign In
             </Button>
             <Button
-              className="py-2 px-4 border rounded-md bg-lightgray hover:bg-darkgray"
+              className="py-2 px-4 rounded-md bg-lightgray hover:bg-darkgray"
               onClick={() => {
                 router.push("/signup");
               }}
@@ -77,19 +77,6 @@ const Navbar = () => {
               <X size={24} />
             </button>
             <ul className="flex flex-col items-center justify-center space-y-6 w-full h-full">
-              {navItems.map((item, index) => (
-                <li key={index}>
-                  <a href={item.href}>
-                    <button
-                      onClick={(e) => {
-                        scrollToComponent(item.id, e);
-                      }}
-                    >
-                      {item.label}
-                    </button>
-                  </a>
-                </li>
-              ))}
               <Button
                 className="px-4 bg-transparent hover:bg-transparent"
                 onClick={() => {

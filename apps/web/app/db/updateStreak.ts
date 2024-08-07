@@ -1,8 +1,9 @@
 import { db } from ".";
+import { startOfDay } from 'date-fns';
 
 export async function updateStreak(userId: string) {
-  const today = new Date();
-  const yesterday = new Date();
+  const today = startOfDay(new Date());
+  const yesterday = startOfDay(new Date(today));
   yesterday.setDate(today.getDate() - 1);
 
   const latestSubmission = await db.mCQSubmission.findFirst({
@@ -11,13 +12,14 @@ export async function updateStreak(userId: string) {
   });
 
   if (!latestSubmission) {
-    console.log('No submissions found for this user.');
     return;
   }
 
   const streak = await db.streak.findUnique({
     where: { userId },
   });
+
+  const latestSubmissionDate = startOfDay(latestSubmission.createdAt);
 
   if (!streak) {
     await db.streak.create({
@@ -39,13 +41,37 @@ export async function updateStreak(userId: string) {
       },
     });
   } else {
-    if (latestSubmission.createdAt.toISOString().slice(0, 10) === today.toISOString().slice(0, 10)) {
-      // Already updated today
-      return;
-    }
+    if (latestSubmissionDate.getTime() === today.getTime()) {
+      await db.streak.update({
+        where: { userId },
+        data: {
+          lastActivity: latestSubmission.createdAt,
+        },
+      });
 
-    if (latestSubmission.createdAt.toISOString().slice(0, 10) === yesterday.toISOString().slice(0, 10)) {
-      // Continue the streak
+      const alreadyRecordedToday = await db.streakDate.findFirst({
+        where: {
+          userId,
+          date: today,
+        },
+      });
+
+      if (!alreadyRecordedToday) {
+        await db.streakDate.create({
+          data: {
+            date: latestSubmission.createdAt,
+            user: {
+              connect: {
+                id: userId,
+              },
+            },
+          },
+        });
+        console.log('Streak updated for today');
+      } else {
+        console.log('Already updated today');
+      }
+    } else if (latestSubmissionDate.getTime() === yesterday.getTime()) {
       await db.streak.update({
         where: { userId },
         data: {
@@ -64,25 +90,36 @@ export async function updateStreak(userId: string) {
           },
         },
       });
+      console.log('Streak continued');
     } else {
       // Streak broken
       await db.streak.update({
         where: { userId },
         data: {
-          currentStreak: 0,
+          currentStreak: 1, // Reset streak
           lastActivity: latestSubmission.createdAt,
         },
       });
+
+      await db.streakDate.create({
+        data: {
+          date: latestSubmission.createdAt,
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
+        },
+      });
+      console.log('Streak broken and restarted');
     }
   }
 }
-
 
 export async function getStreak(userId: string) {
   const streak = await db.streak.findUnique({
     where: { userId },
   });
-
   return streak;
 }
 

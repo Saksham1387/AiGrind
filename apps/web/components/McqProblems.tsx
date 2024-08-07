@@ -156,7 +156,7 @@ const McqProblems = ({ mcqProblems }) => {
           <p className="text-white pb-5">
             Here are some of the popular problems for interview prep
           </p>
-          <div className="relative flex flex-col sm:flex-row justify-center gap-4 sm:gap-16 mb-8">
+          <div className="relative grid grid-cols-2 sm:grid-cols-2 gap-4 justify-items-center mb-8">
             <div>
               <DropdownMenu>
                 <DropdownMenuTrigger className="bg-mediumgray text-white px-4 py-2 rounded flex items-center">
@@ -214,6 +214,10 @@ const McqProblems = ({ mcqProblems }) => {
               </DropdownMenu>
             </div>
 
+            
+          </div>
+
+          <div className="flex items-center justify-center mb-0 sm:mb-20">
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <button className="bg-mediumgray text-white px-4 py-2 rounded flex items-center">
@@ -233,22 +237,27 @@ const McqProblems = ({ mcqProblems }) => {
                           : "text-red-500"
                     }`}
                   >
-                    <input
-                      type="checkbox"
-                      checked={selectedDifficulties.includes(
-                        difficulty.toLowerCase()
-                      )}
-                      onChange={() =>
-                        handleDifficultyFilter(difficulty.toLowerCase())
-                      }
-                      className="mr-2 accent-green-500"
-                    />
-                    {difficulty}
+                    <label className="flex items-center text-left">
+                      <input
+                        type="checkbox"
+                        checked={selectedDifficulties.includes(
+                          difficulty.toLowerCase()
+                        )}
+                        onChange={() =>
+                          handleDifficultyFilter(difficulty.toLowerCase())
+                        }
+                        className="mr-2 accent-green-500"
+                      />
+                      {difficulty}
+                    </label>
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
+
+
+
         </div>
 
         <div
