@@ -1,7 +1,8 @@
 import fs from "fs";
 
-type SUPPORTED_LANGS = "js" | "cpp" | "rs"| "java" | "py" ;
-const MOUNT_PATH = process.env.MOUNT_PATH ?? "/home/ubuntu/DataDex/apps/problems";
+type SUPPORTED_LANGS = "js" | "cpp" | "rs" | "java" | "py";
+const MOUNT_PATH =
+  process.env.MOUNT_PATH ?? "/home/ubuntu/DataDex/apps/problems";
 
 interface Problem {
   id: string;
@@ -10,14 +11,13 @@ interface Problem {
   outputs: string[];
 }
 
-
 export const getProblem = async (
   problemId: string,
-  languageId: SUPPORTED_LANGS,
+  languageId: SUPPORTED_LANGS
 ): Promise<Problem> => {
   const fullBoilderPlate = await getProblemFullBoilerplateCode(
     problemId,
-    languageId,
+    languageId
   );
 
   console.log("fullBoilderPlate", fullBoilderPlate);
@@ -33,7 +33,7 @@ export const getProblem = async (
 
 async function getProblemFullBoilerplateCode(
   problemId: string,
-  languageId: SUPPORTED_LANGS,
+  languageId: SUPPORTED_LANGS
 ): Promise<string> {
   return new Promise((resolve, reject) => {
     fs.readFile(
@@ -44,12 +44,10 @@ async function getProblemFullBoilerplateCode(
           reject(err);
         }
         resolve(data);
-      },
-
+      }
     );
   });
 }
-
 
 async function getProblemInputs(problemId: string): Promise<string[]> {
   return new Promise((resolve, reject) => {
@@ -70,17 +68,17 @@ async function getProblemInputs(problemId: string): Promise<string[]> {
                       reject(err);
                     }
                     resolve(data);
-                  },
+                  }
                 );
               });
-            }),
+            })
           )
             .then((data) => {
               resolve(data);
             })
             .catch((e) => reject(e));
         }
-      },
+      }
     );
   });
 }
@@ -104,17 +102,17 @@ async function getProblemOutputs(problemId: string): Promise<string[]> {
                       reject(err);
                     }
                     resolve(data);
-                  },
+                  }
                 );
               });
-            }),
+            })
           )
             .then((data) => {
               resolve(data);
             })
             .catch((e) => reject(e));
         }
-      },
+      }
     );
   });
 }

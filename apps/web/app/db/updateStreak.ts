@@ -67,6 +67,13 @@ export async function updateStreak(userId: string) {
             },
           },
         });
+
+        await db.streak.update({
+          where: { userId },
+          data: {
+            currentStreak: streak.currentStreak + 1,
+          },
+        })
         console.log('Streak updated for today');
       } else {
         console.log('Already updated today');

@@ -197,6 +197,7 @@ function Streak() {
           throw new Error(`HTTP error! Status: ${res.status}`);
         }
         const data = await res.json();
+        console.log(data);
         if (data && data.streak && data.streak.currentStreak !== undefined) {
           setCount(data.streak.currentStreak);
         } else {

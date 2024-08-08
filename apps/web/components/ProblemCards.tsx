@@ -1,7 +1,12 @@
-// components/ProblemCard.tsx
-
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@repo/ui/table';
-import Link from 'next/link';
+import {
+  Table,
+  TableHeader,
+  TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
+} from "@repo/ui/table";
+import Link from "next/link";
 
 export function ProblemCard({ problems }: { problems: any[] }) {
   return (
@@ -18,7 +23,10 @@ export function ProblemCard({ problems }: { problems: any[] }) {
         </TableHeader>
         <TableBody>
           {problems.map((problem, index) => (
-            <TableRow key={problem.id} className="cursor-pointer hover:bg-gray-100">
+            <TableRow
+              key={problem.id}
+              className="cursor-pointer hover:bg-gray-100"
+            >
               <TableCell>{index + 1}</TableCell>
               <TableCell>{problem.title}</TableCell>
               <TableCell>{problem.difficulty}</TableCell>
@@ -38,8 +46,6 @@ export function ProblemCard({ problems }: { problems: any[] }) {
 
 // components/McqProblemCard.tsx
 
-
-
 export function McqProblemCard({ mcqProblems }: { mcqProblems: any[] }) {
   return (
     <div>
@@ -55,7 +61,10 @@ export function McqProblemCard({ mcqProblems }: { mcqProblems: any[] }) {
         </TableHeader>
         <TableBody>
           {mcqProblems.map((problem, index) => (
-            <TableRow key={problem.id} className="cursor-pointer hover:bg-gray-100">
+            <TableRow
+              key={problem.id}
+              className="cursor-pointer hover:bg-gray-100"
+            >
               <TableCell>{index + 1}</TableCell>
               <TableCell>{problem.question}</TableCell>
               <TableCell>{problem.category}</TableCell>

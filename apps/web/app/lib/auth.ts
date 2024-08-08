@@ -7,7 +7,7 @@ import { JWTPayload, SignJWT, importJWK } from "jose";
 import { Session } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
-import { generateFromEmail, generateUsername } from "unique-username-generator";
+import { generateUsername } from "unique-username-generator";
 
 const randomName = generateUsername();
 
@@ -49,22 +49,21 @@ export const authOptions = {
   providers: [
     GitHubProvider({
       clientId: process.env.GITHUB_ID || "",
-      clientSecret: process.env.GITHUB_SECRET || ""
+      clientSecret: process.env.GITHUB_SECRET || "",
     }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || ""
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
     }),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "email", type: "text", placeholder: ""},
-        password: { label: "password", type: "password", placeholder: ""},
+        email: { label: "email", type: "text", placeholder: "" },
+        password: { label: "password", type: "password", placeholder: "" },
       },
       async authorize(credentials: any) {
-
         if (!credentials.email || !credentials.password) {
-          console.log("inside 1")
+          console.log("inside 1");
           return null;
         }
 
@@ -104,11 +103,11 @@ export const authOptions = {
         try {
           // sign up
           if (credentials.username.length < 3) {
-            return null
+            return null;
           }
 
           if (credentials.password.length < 3) {
-            return null
+            return null;
           }
 
           const user = await db.user.create({
@@ -140,7 +139,11 @@ export const authOptions = {
   callbacks: {
     async signIn({ user, account, profile }) {
       console.log("User", user);
-      if (account && (account.provider === 'google' || account.provider === 'github' ) && user.email) {
+      if (
+        account &&
+        (account.provider === "google" || account.provider === "github") &&
+        user.email
+      ) {
         console.log("User", user);
         // Check if the user already exists in the database
         let userDb = await db.user.findFirst({
@@ -164,18 +167,14 @@ export const authOptions = {
       return true;
     },
     async redirect({ url, baseUrl }) {
-      // Ensures redirect always goes to the home page
-      return baseUrl + '/dashboard';
+      return baseUrl + "/dashboard";
     },
-    session: async ({ session, token,user }) => {
+    session: async ({ session, token, user }) => {
       const newSession: session = session as session;
       if (newSession.user && token.uid) {
         newSession.user.id = token.uid as string;
         newSession.user.jwtToken = token.jwtToken as string;
       }
-      // if (session?.user) {
-      //   session.user.id = user.id;
-      // }
       return newSession!;
     },
     jwt: async ({ token, user }): Promise<JWT> => {

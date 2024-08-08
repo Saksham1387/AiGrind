@@ -9,16 +9,15 @@ import {
 } from "@repo/ui/table";
 import { getColor } from "../app/db/problem";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ClockIcon, CheckIcon } from "lucide-react";
-import { SkeletonTable } from "./skeletons/problems";
+import seedrandom from "seedrandom";
 
 interface Problem {
   id: string;
   title: string;
-  difficulty: "EASY" | "MEDIUM" | "HARD"; // Adjust as per your actual data
+  difficulty: "EASY" | "MEDIUM" | "HARD";
   solved: string | number;
-  // Add other properties as needed
 }
 
 function renderProblemStatus(problem: Problem) {
@@ -29,18 +28,30 @@ function renderProblemStatus(problem: Problem) {
   } else if (!isNaN(Number(problem.solved))) {
     return <span>{problem.solved}</span>;
   } else {
-    return null; // Optional: Handle any unexpected cases
+    return null;
   }
 }
 //@ts-ignore
 const DashboardProblems = ({ problems }) => {
-  const [loading, setLoading] = useState(false); // Start with loading as true
+  const [loading, setLoading] = useState(false);
+
   const selectRandomProblems = (array: Problem[], count: number) => {
-    const shuffled = array.sort(() => 0.5 - Math.random());
+    const today = new Date();
+    const seed = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+
+    const rng = seedrandom(seed);
+
+    const shuffled = array
+      .map((value) => ({ value, sort: rng() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ value }) => value);
+
     return shuffled.slice(0, count);
   };
 
-
+  const count = 20;
+  const selectedProblems = selectRandomProblems(problems, count);
+ 
 
   return (
     <section className="text-white py-8 md:py-12 min-h-screen border-none">
@@ -53,13 +64,9 @@ const DashboardProblems = ({ problems }) => {
           </p>
         </div>
         <div>
-          {/* {loading ? (
-            <SkeletonTable />
-          ) : ( */}
-            <div>
-              <ProblemCard problems={selectRandomProblems(problems, 20)} />
-            </div>
-          {/* )} */}
+          <div>
+            <ProblemCard problems={selectedProblems} />
+          </div>
         </div>
       </div>
     </section>

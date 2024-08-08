@@ -80,14 +80,14 @@ export default function MCQ({
   }, [mcqId]);
 
   const handleSubmit = async () => {
-    if (!session) {
+    if (!session.data?.user) {
       toast.error("Login to submit");
       router.push("/signin");
       return;
     }
 
     if (!selectedOption) {
-      alert("Please select an option.");
+      toast.error("Please select an option.");
       return;
     }
     try {
@@ -154,203 +154,82 @@ export default function MCQ({
       </div>
     );
 
-
   return (
-  //   <div className="text-white relative min-h-screen w-full bg-darkgray flex flex-col items-center py-10 dark:bg-gray-800">
-  //     <Button
-  //       className="absolute top-4 left-4 text-lg p-2 bg-lightgray hover:bg-lightgray"
-  //       onClick={handlePreviousQuestion}
-  //       title="Previous Question"
-  //     >
-  //       <ArrowLeftFromLine></ArrowLeftFromLine>
-  //     </Button>
-  //     <Button
-  //       className="absolute top-4 right-4 text-lg p-2 bg-lightgray hover:bg-lightgray"
-  //       onClick={handleNextQuestion}
-  //       title="Next Question"
-  //     >
-  //       <ArrowRightFromLine />
-  //     </Button>
-  //     <div className="bg-lightgray dark:bg-gray-900 max-h-[1000px] p-6 rounded-lg w-full max-w-[1300px] shadow-lg flex flex-col justify-center mt-10 md:mt-0">
-  //       <div className="w-full ">
-  //         <Tabs
-  //           defaultValue="mcq"
-  //           className="rounded-md p-1 text-lg bg-darkgray"
-  //           value={activeTab}
-  //           onValueChange={setActiveTab}
-  //         >
-  //           <TabsList className="grid grid-cols-2 w-full bg-darkgray">
-  //             <TabsTrigger className="" value="mcq">
-  //               MCQ
-  //             </TabsTrigger>
-  //             <TabsTrigger className="" value="submissions">
-  //               Submissions
-  //             </TabsTrigger>
-  //           </TabsList>
-  //         </Tabs>
-  //       </div>
-  //       {activeTab === "mcq" && (
-  //         // Left Side
-  //         <div className="flex flex-row w-full mt-5 ">
-  //           <div className="w-1/2 p-4 border-r border-gray-300">
-  //             <Markdown
-  //               remarkPlugins={[remarkMath]}
-  //               rehypePlugins={[rehypeKatex]}
-  //               className="prose prose-invert"
-  //             >
-  //               {mcq.question}
-  //             </Markdown>
-
-  //             {/* <p className="mb-3 text-xl">{mcq.question}</p> */}
-  //             <CardDescription className="mb-3 text-xl">
-  //               {mcq.description}
-  //             </CardDescription>
-  //             <div>
-  //               {submissionResult && (
-  //                 <div className="text-lg mt-4 text-center flex flex-col">
-  //                   {isCorrect !== null && (
-  //                     <Accordion type="single" collapsible>
-  //                       <AccordionItem value="item-1">
-  //                         <AccordionTrigger>Explanation</AccordionTrigger>
-  //                         <AccordionContent className="text-center">
-  //                           {mcq.explanation}
-  //                         </AccordionContent>
-  //                       </AccordionItem>
-  //                     </Accordion>
-  //                   )}
-  //                 </div>
-  //               )}
-  //             </div>
-  //           </div>
-  //           {/* Right Side */}
-  //           <div className="w-1/2 p-4 flex flex-col items-center">
-  //             <p className="mb-4 text-lg font-bold">
-  //               Choose from the following options
-  //             </p>
-  //             <ul className="space-y-4 w-full ">
-  //               {mcq.options.map((option) => (
-  //                 <li key={option.id} className="w-full ">
-  //                   <label
-  //                     className={`hover:cursor-pointer text-md flex items-center w-full border p-4 rounded-lg shadow-md
-  //       ${
-  //         selectedOption === option.id
-  //           ? isCorrect === null
-  //             ? "bg-mediumgray"
-  //             : isCorrect && option.id === mcq.correctAnswer
-  //               ? "border-green-500"
-  //               : !isCorrect && selectedOption === option.id
-  //                 ? "border-red-400"
-  //                 : "border-green-400"
-  //           : "hover:bg-mediumgray"
-  //       }`}
-  //                   >
-  //                     <input
-  //                       className="mr-2 bg-slate-800"
-  //                       type="radio"
-  //                       name="option"
-  //                       value={option.id}
-  //                       onChange={() => handleOptionChange(option.id)}
-  //                     />
-  //                     {option.optionText}
-  //                   </label>
-  //                 </li>
-  //               ))}
-  //             </ul>
-  //             <div className="mt-10 w-full flex justify-center ">
-  //               <Button
-  //                 className={`p-3 bg-white text-black hover:bg-white`}
-  //                 onClick={handleSubmit}
-  //               >
-  //                 {session ? "Submit" : "Login to Submit"}
-  //               </Button>
-  //             </div>
-  //           </div>
-  //         </div>
-  //       )}
-
-  //       {activeTab === "submissions" && (
-  //         <div className="flex justify-center w-full">
-  //           <Submissions mcqId={mcqId} />
-  //         </div>
-  //       )}
-  //     </div>
-  //   </div>
-  // );
-  <div className="text-white relative min-h-screen w-full bg-darkgray flex flex-col items-center py-10 dark:bg-gray-800">
-  <Button
-    className="absolute top-4 left-4 text-lg p-2 bg-lightgray hover:bg-lightgray"
-    onClick={handlePreviousQuestion}
-    title="Previous Question"
-  >
-    <ArrowLeftFromLine></ArrowLeftFromLine>
-  </Button>
-  <Button
-    className="absolute top-4 right-4 text-lg p-2 bg-lightgray hover:bg-lightgray"
-    onClick={handleNextQuestion}
-    title="Next Question"
-  >
-    <ArrowRightFromLine />
-  </Button>
-  <div className="bg-lightgray dark:bg-gray-900 max-h-[1000px] p-6 rounded-lg w-full max-w-[1300px] shadow-lg flex flex-col justify-center mt-10 md:mt-0">
-    <div className="w-full ">
-      <Tabs
-        defaultValue="mcq"
-        className="rounded-md p-1 text-lg bg-darkgray"
-        value={activeTab}
-        onValueChange={setActiveTab}
+    <div className="text-white relative min-h-screen w-full bg-darkgray flex flex-col items-center py-10 dark:bg-gray-800">
+      <Button
+        className="absolute top-4 left-4 text-lg p-2 bg-lightgray hover:bg-lightgray"
+        onClick={handlePreviousQuestion}
+        title="Previous Question"
       >
-        <TabsList className="grid grid-cols-2 w-full bg-darkgray">
-          <TabsTrigger className="" value="mcq">
-            MCQ
-          </TabsTrigger>
-          <TabsTrigger className="" value="submissions">
-            Submissions
-          </TabsTrigger>
-        </TabsList>
-      </Tabs>
-    </div>
-    {activeTab === "mcq" && (
-      // Left Side
-      <div className="flex flex-col md:flex-row w-full mt-5 ">
-        <div className="w-full md:w-1/2 p-4 border-r border-gray-300">
-          <Markdown
-            remarkPlugins={[remarkMath]}
-            rehypePlugins={[rehypeKatex]}
-            className="prose prose-invert"
+        <ArrowLeftFromLine></ArrowLeftFromLine>
+      </Button>
+      <Button
+        className="absolute top-4 right-4 text-lg p-2 bg-lightgray hover:bg-lightgray"
+        onClick={handleNextQuestion}
+        title="Next Question"
+      >
+        <ArrowRightFromLine />
+      </Button>
+      <div className="bg-lightgray dark:bg-gray-900 max-h-[1000px] p-6 rounded-lg w-full max-w-[1300px] shadow-lg flex flex-col justify-center mt-10 md:mt-0">
+        <div className="w-full ">
+          <Tabs
+            defaultValue="mcq"
+            className="rounded-md p-1 text-lg bg-darkgray"
+            value={activeTab}
+            onValueChange={setActiveTab}
           >
-            {mcq.question}
-          </Markdown>
+            <TabsList className="grid grid-cols-2 w-full bg-darkgray">
+              <TabsTrigger className="" value="mcq">
+                MCQ
+              </TabsTrigger>
+              <TabsTrigger className="" value="submissions">
+                Submissions
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </div>
+        {activeTab === "mcq" && (
+          // Left Side
+          <div className="flex flex-col md:flex-row w-full mt-5 ">
+            <div className="w-full md:w-1/2 p-4 border-r border-gray-300">
+              <Markdown
+                remarkPlugins={[remarkMath]}
+                rehypePlugins={[rehypeKatex]}
+                className="prose prose-invert"
+              >
+                {mcq.question}
+              </Markdown>
 
-          <CardDescription className="mb-3 text-xl">
-            {mcq.description}
-          </CardDescription>
-          <div>
-            {submissionResult && (
-              <div className="text-lg mt-4 text-center flex flex-col">
-                {isCorrect !== null && (
-                  <Accordion type="single" collapsible>
-                    <AccordionItem value="item-1">
-                      <AccordionTrigger>Explanation</AccordionTrigger>
-                      <AccordionContent className="text-center">
-                        {mcq.explanation}
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
+              <CardDescription className="mb-3 text-xl">
+                {mcq.description}
+              </CardDescription>
+              <div>
+                {submissionResult && (
+                  <div className="text-lg mt-4 text-center flex flex-col">
+                    {isCorrect !== null && (
+                      <Accordion type="single" collapsible>
+                        <AccordionItem value="item-1">
+                          <AccordionTrigger>Explanation</AccordionTrigger>
+                          <AccordionContent className="text-center">
+                            {mcq.explanation}
+                          </AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
+                    )}
+                  </div>
                 )}
               </div>
-            )}
-          </div>
-        </div>
-        {/* Right Side */}
-        <div className="w-full md:w-1/2 p-4 flex flex-col items-center">
-          <p className="mb-4 text-lg font-bold">
-            Choose from the following options
-          </p>
-          <ul className="space-y-4 w-full ">
-            {mcq.options.map((option) => (
-              <li key={option.id} className="w-full ">
-                <label
-                  className={`hover:cursor-pointer text-md flex items-center w-full border p-4 rounded-lg shadow-md
+            </div>
+            {/* Right Side */}
+            <div className="w-full md:w-1/2 p-4 flex flex-col items-center">
+              <p className="mb-4 text-lg font-bold">
+                Choose from the following options
+              </p>
+              <ul className="space-y-4 w-full ">
+                {mcq.options.map((option) => (
+                  <li key={option.id} className="w-full ">
+                    <label
+                      className={`hover:cursor-pointer text-md flex items-center w-full border p-4 rounded-lg shadow-md
         ${
           selectedOption === option.id
             ? isCorrect === null
@@ -362,39 +241,39 @@ export default function MCQ({
                   : "border-green-400"
             : "hover:bg-mediumgray"
         }`}
+                    >
+                      <input
+                        className="mr-2 bg-slate-800"
+                        type="radio"
+                        name="option"
+                        value={option.id}
+                        onChange={() => handleOptionChange(option.id)}
+                      />
+                      {option.optionText}
+                    </label>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-10 w-full flex justify-center">
+                <Button
+                  className="p-3 bg-white text-black hover:bg-white"
+                  onClick={handleSubmit}
                 >
-                  <input
-                    className="mr-2 bg-slate-800"
-                    type="radio"
-                    name="option"
-                    value={option.id}
-                    onChange={() => handleOptionChange(option.id)}
-                  />
-                  {option.optionText}
-                </label>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-10 w-full flex justify-center">
-            <Button
-              className="p-3 bg-white text-black hover:bg-white"
-              onClick={handleSubmit}
-            >
-              {session ? "Submit" : "Login to Submit"}
-            </Button>
+                  {session.data?.user ? "Submit" : "Login to Submit"}
+                </Button>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    )}
+        )}
 
-    {activeTab === "submissions" && (
-      <div className="flex justify-center w-full">
-        <Submissions mcqId={mcqId} />
+        {activeTab === "submissions" && (
+          <div className="flex justify-center w-full">
+            <Submissions mcqId={mcqId} />
+          </div>
+        )}
       </div>
-    )}
-  </div>
-</div>
-)
+    </div>
+  );
 }
 
 function Submissions({ mcqId }: { mcqId: string }) {

@@ -1,39 +1,20 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
-import { Calendar } from "../../../../packages/ui/src/@/components/ui/calender"
-import { useSession } from "next-auth/react";
+import { Calendar } from "../../../../packages/ui/src/@/components/ui/calender";
 
-const fetchStreakDates = async (userId: string) => {
-  const response = await fetch("/api/streak/dates", {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const data = await response.json();
-  // @ts-ignore
-  return data.streakDates.map((entry: { date: string }) => new Date(entry.date));
-};
+const Calendarh = ({ DatesData }: any) => {
+  let streakDates: Date[] = [];
 
-const Calendarh = () => {
-  const { data: session } = useSession();
-  // @ts-ignore
-  const userId = session?.user?.id;
-  const [streakDates, setStreakDates] = useState<Date[]>([]);
-
-  useEffect(() => {
-    const getStreakDates = async () => {
-      const dates = await fetchStreakDates(userId);
-      setStreakDates(dates);
-    };
-    getStreakDates();
-  }, [userId]);
+  if (DatesData && DatesData.streakDates && DatesData.streakDates.length > 0) {
+    streakDates = DatesData.streakDates.map(
+      (entry: { date: string }) => new Date(entry.date)
+    );
+  }
 
   return (
     <div>
-        <Calendar streakDates={streakDates} />
+      <Calendar streakDates={streakDates} />
     </div>
-  )
-  
+  );
 };
-
 export default Calendarh;

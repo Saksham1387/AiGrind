@@ -7,7 +7,6 @@ import { Footer } from "../components/Footer";
 import { Providers } from "../providers";
 import { usePathname } from "next/navigation";
 import Head from "next/head";
-import type { Metadata } from "next";
 
 const chivo = Chivo({
   subsets: ["latin"],

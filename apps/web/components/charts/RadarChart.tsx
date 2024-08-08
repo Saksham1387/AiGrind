@@ -1,5 +1,4 @@
 "use client";
-import { useState, useEffect } from "react";
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from "recharts";
 import {
   Card,
@@ -16,7 +15,7 @@ import {
   ChartTooltipContent,
 } from "../../../../packages/ui/src/@/components/ui/chart";
 
-interface ChartData {
+export interface ChartData {
   category: string;
   count: number;
 }
@@ -27,38 +26,7 @@ const chartConfig: ChartConfig = {
   },
 };
 
-export function Radarchart() {
-  const [chartData, setChartData] = useState<ChartData[]>([]);
-
-  useEffect(() => {
-    async function getData() {
-      async function fetchSolvedProblemsStats(): Promise<ChartData[]> {
-        const response = await fetch(`/api/stats`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            type: "categoryCounts",
-          }),
-        });
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        return await response.json();
-      }
-      try {
-        const data = await fetchSolvedProblemsStats();
-        console.log(data);
-        setChartData(data);
-      } catch (error) {
-        console.error("Error fetching chart data:", error);
-      }
-    }
-
-    getData();
-  }, []);
-
+export function Radarchart({chartData} :any) {  
   return (
     <Card className="w-[300px] bg-lightgray border-none text-white">
       <CardHeader className="items-center text-center">

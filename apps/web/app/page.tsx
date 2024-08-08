@@ -1,6 +1,6 @@
 "use client"
 import { useSession } from "next-auth/react";
-import HomePage from "../components/Home/HomePage";
+import HomePage from "../components/Home-Page/HomePage";
 import { useRouter } from "next/navigation";
 
 export default function Page(): JSX.Element {
