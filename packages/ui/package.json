@@ -19,7 +19,9 @@
     "./accordion": "./src/@/components/ui/accordion.tsx",
     "./TracingBeam": "./src/@/components/ui/tracing-beam.tsx",
     "./container-scroll-animation": "./src/@/components/ui/container-scroll-animation.tsx",
-    "./dropdown-menu": "./src/@/components/ui/dropdown-menu.tsx"
+    "./dropdown-menu": "./src/@/components/ui/dropdown-menu.tsx",
+    "./animated-tooltip": "./src/@/components/ui/animated-tooltip.tsx",
+    "./TypewriterEffect": "./src/@/components/ui/TypewriterEffect.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
