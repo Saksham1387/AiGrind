@@ -3,7 +3,7 @@ import { Twitter } from "lucide-react";
 
 export const Footer = () => {
   return (
-    <footer className="bg-darkgray w-screen text-white">
+    <footer className="bg-[#1E1E28] w-screen text-white">
       <div className="max-w-screen-xl mx-auto py-48 px-8"> {/* Increased top and bottom padding */}
         <div className="flex justify-between items-center">
           <a href="" className="flex items-center space-x-4">
