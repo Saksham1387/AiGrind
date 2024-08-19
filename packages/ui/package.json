@@ -21,7 +21,8 @@
     "./container-scroll-animation": "./src/@/components/ui/container-scroll-animation.tsx",
     "./dropdown-menu": "./src/@/components/ui/dropdown-menu.tsx",
     "./animated-tooltip": "./src/@/components/ui/animated-tooltip.tsx",
-    "./TypewriterEffect": "./src/@/components/ui/TypewriterEffect.tsx"
+    "./TypewriterEffect": "./src/@/components/ui/TypewriterEffect.tsx",
+    "./3d-card": "./src/@/components/ui/3d-card.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",

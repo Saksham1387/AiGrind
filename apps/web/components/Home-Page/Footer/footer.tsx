@@ -29,7 +29,7 @@ export const Footer = () => {
         <hr className="my-16 border-gray-600 border-2" /> {/* Increased margin to lower the bar */}
 
         <div className="flex flex-col md:flex-row md:justify-between text-white text-lg font-semibold mt-16"> {/* Added margin to lower the text */}
-          <span>© All rights reserved by Apriora Inc.</span>
+        <span className="text-blue-800">© All rights reserved by <span className="text-purple-600">AIgrind Inc.</span> </span>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="#" className="hover:underline">
               Terms of Service

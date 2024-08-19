@@ -33,7 +33,7 @@ export default function RootLayout({
     <html lang="en">
       <Head>
         <title>AiGrind</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/new-logo.png" />
       </Head>
       <body
         className={`${chivo.variable} ${rubik.variable} min-h-screen flex flex-col`}

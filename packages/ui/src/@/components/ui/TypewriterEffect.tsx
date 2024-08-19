@@ -37,7 +37,7 @@ export const TypewriterEffect = ({
           width: "fit-content",
         },
         {
-          duration: 0.1, // Reduced from 0.3 to 0.1
+          duration: 0.4, // Reduced from 0.3 to 0.1
           delay: stagger(0.05), // Reduced stagger delay for faster typing effect
           ease: "easeInOut",
         }

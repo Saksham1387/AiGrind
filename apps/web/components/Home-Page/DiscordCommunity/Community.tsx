@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export function CommunitySection() {
   return (
-    <div className="flex flex-col items-center justify-center w-full p-6 relative">
+    <div className="flex flex-col items-center justify-center w-full p-6 relative my-[150px]">
       {/* Container for the image and text */}
       <div className="relative w-full max-w-screen-xl">
         {/* Adjusted dimensions */}
