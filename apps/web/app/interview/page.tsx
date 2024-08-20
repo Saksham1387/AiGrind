@@ -10,8 +10,11 @@ import { useEffect, useState } from "react";
 import { Button } from "@repo/ui/button";
 
 function Interview() {
-  const { activeTranscript, messages, toggleCall, callStatus, audioLevel ,id} =useVapi();
-    const [videolink, setVideolink] = useState("");
+  const { messages, toggleCall, callStatus, audioLevel, id, activeTranscript } =
+    useVapi();
+  const [videolink, setVideolink] = useState("");
+  const [showTranscript, setShowTranscript] = useState(false);
+  const [videoEnabled, setVideoEnabled] = useState(false);
 
   const renderMessage = (message: Message, index: number) => {
     switch (message.type) {
@@ -49,58 +52,114 @@ function Interview() {
     if (callStatus === "inactive") {
       const response = async () => {
         const options = {
-          method: 'GET',
-          headers: { Authorization: 'Bearer 5c98fec7-7eee-4dc2-9a8d-1d0405835a50' }
+          method: "GET",
+          headers: {
+            Authorization: "Bearer 5c98fec7-7eee-4dc2-9a8d-1d0405835a50",
+          },
         };
         console.log("This is the id of the call", id);
-  
+
         const res = await fetch(`https://api.vapi.ai/call/${id}`, options);
         const data = await res.json();
         console.log(data);
         console.log("This is the link of the video", data.recordingUrl);
-        console.log("This is the link of the video", data.artifact.videoRecordingUrl);
+        console.log(
+          "This is the link of the video",
+          data.artifact.videoRecordingUrl
+        );
         setVideolink(data.recordingUrl);
       };
-  
+
       console.log("The call has ended.");
-      
+
       setTimeout(() => {
         response();
       }, 10000); // Wait for 10 seconds (10000 milliseconds)
     }
   }, [callStatus]);
 
+  const handleVideoToggle = async () => {
+    const videoElement = document.querySelector("video");
+  
+    if (!videoElement) {
+      console.error("Video element not found");
+      return;
+    }
+  
+    if (videoEnabled) {
+      // Stop the video stream
+      const stream = videoElement.srcObject as MediaStream;
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+        videoElement.srcObject = null;
+      }
+      console.log("Stopping video stream...");
+    } else {
+      try {
+        // Start the video stream
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        videoElement.srcObject = stream;
+        await videoElement.play(); // Automatically play the video
+        console.log("Starting video stream...");
+      } catch (err) {
+        console.error("Error starting video stream:", err);
+      }
+    }
+    setVideoEnabled(!videoEnabled);
+  };
+  
+
   return (
-    <div className="flex flex-col justify-center items-center h-screen p-4">
-      <div className="mb-4 w-full">
-        <h2 className="text-xl font-semibold">Active Transcript</h2>
-        {activeTranscript ? (
-          <p className="p-4 bg-gray-200 rounded-lg mt-2">
-            {activeTranscript.transcript}
-          </p>
-        ) : (
-          <p className="text-gray-500">No active transcript</p>
-        )}
+    <div className="flex flex-col h-screen">
+      {/* Main video and transcript container */}
+      <div className="flex w-full h-5/6">
+        {/* Video Container */}
+        <div className="w-2/3 flex items-center justify-center bg-gray-200">
+          <div className="p-4">
+          <video
+  src={videolink}
+  controls={false}  // Disable default controls
+  controlsList="nodownload nofullscreen noremoteplayback"
+  className="rounded-lg shadow-md"
+/> 
+          </div>
+        </div>
+
+        {/* Transcript and Messages Container */}
+        <div className="w-1/3 h-full overflow-y-auto p-4 bg-white shadow-lg">
+          {showTranscript && (
+            <div className="mb-4 p-4 bg-gray-200 rounded-lg">
+              <h3 className="text-lg font-semibold mb-2">Transcript</h3>
+              <p>{activeTranscript?.transcript || "No transcript available"}</p>
+            </div>
+          )}
+          <h2 className="text-xl font-semibold mb-4">Messages</h2>
+          <ul className="space-y-2">
+            {messages.map((message, index) => renderMessage(message, index))}
+          </ul>
+        </div>
       </div>
 
-      <div className="flex-1 w-full mb-4 overflow-y-auto">
-        <h2 className="text-xl font-semibold mb-2">Messages</h2>
-        <ul className="space-y-2">
-          {messages.map((message, index) => renderMessage(message, index))}
-        </ul>
+      {/* CC Button & Download Video Call Button */}
+      <div className="flex justify-between items-center p-4">
+        <Button onClick={() => setShowTranscript(!showTranscript)}>
+          {showTranscript ? "Hide Transcript" : "Show Transcript"}
+        </Button>
+        <Button
+          onClick={() => {
+            window.location.href = videolink;
+          }}
+        >
+          Download Video Call
+        </Button>
       </div>
-      <Button
-      onClick={()=>{
-        window.location.href = videolink;
-      }}
-      >
-        Video Call DOnwload
-      </Button>
 
       <AssistantButton
         toggleCall={toggleCall}
         callStatus={callStatus}
         audioLevel={audioLevel}
+        onVideoToggle={handleVideoToggle}
+        videoEnabled={videoEnabled}
       />
     </div>
   );
