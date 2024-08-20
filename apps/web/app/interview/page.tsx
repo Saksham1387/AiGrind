@@ -8,6 +8,7 @@ import {
 } from "../types/conversation.types";
 import { useEffect, useState } from "react";
 import { Button } from "@repo/ui/button";
+import { useSession } from "next-auth/react";
 
 function Interview() {
   const { messages, toggleCall, callStatus, audioLevel, id, activeTranscript } =
@@ -15,6 +16,7 @@ function Interview() {
   const [videolink, setVideolink] = useState("");
   const [showTranscript, setShowTranscript] = useState(false);
   const [videoEnabled, setVideoEnabled] = useState(false);
+  const {data:session} = useSession();
 
   const renderMessage = (message: Message, index: number) => {
     switch (message.type) {
@@ -49,6 +51,7 @@ function Interview() {
   };
 
   useEffect(() => {
+    console.log(session?.user?.image)
     if (callStatus === "inactive") {
       const response = async () => {
         const options = {
