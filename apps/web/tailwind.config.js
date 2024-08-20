@@ -60,6 +60,7 @@ module.exports = {
         lightgray: "#272627",
         mediumgray: "#1d1c1d",
         darkgray: "#272833",
+        
 
       },
       borderRadius: {
