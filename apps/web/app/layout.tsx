@@ -26,7 +26,7 @@ export default function RootLayout({
 }): JSX.Element {
   const pathname = usePathname();
   const noAppBarRoutes = ["/signin", "/signup", "/forgot-password", "/"];
-  const noFooterRoutes = ["/signin", "/signup", "/forgot-password"];
+  const noFooterRoutes = ["/signin", "/signup", "/forgot-password","/interview"];
   const hideAppBar = noAppBarRoutes.includes(pathname);
   const hideFooter = noFooterRoutes.includes(pathname);
   return (
