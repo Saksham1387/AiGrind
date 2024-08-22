@@ -12,6 +12,7 @@ model User {
   id                 String              @id @default(cuid())
   email              String              @unique
   username           String?
+  userImage          String?
   name               String?
   token              String?
   password           String?
@@ -27,7 +28,82 @@ model User {
   comments           Comment[]
   userMCQProblems    UserMCQProblem[] 
   resetTokens        ResetToken[]
+  aiInterviews       Interview[]       // Relation to AIInterview model
+  payments           Payment[]  
+  InterviewCall   InterviewCall[]        // Relation to Payment model
 }
+
+enum InterviewCallStatus {
+  PENDING
+  ONGOING
+  COMPLETED
+  CANCELED
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
+
+
+
+model Interview {
+  id             String    @id @default(cuid())
+  userId         String
+  user           User      @relation(fields: [userId], references: [id])
+  minutesPurchased Int      // Total minutes purchased by the user
+  minutesUsed     Int      @default(0)  // Minutes used by the user
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  paymentId      String?   // Razorpay payment ID
+  InterviewCall   InterviewCall[] // Status of the interview (e.g., pending, completed, etc.)
+}
+
+model Payment {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
+  amount         Float    // Amount paid by the user
+  currency          String   @default("INR") // Currency used for the transaction
+  razorpayOrderId   String?  // Razorpay order ID
+  razorpayPaymentId String? // Razorpay payment ID
+  status         PaymentStatus @default(PENDING) // Status of the payment
+  createdAt      DateTime @default(now())
+  receiptUrl     String?  // URL of the payment receipt
+  updatedAt      DateTime @updatedAt
+}
+
+model InterviewCall {
+  id                String           @id @default(cuid())
+  user              User             @relation(fields: [userId], references: [id])
+  userId            String
+  interview         Interview        @relation(fields: [interviewId], references: [id])
+  interviewId       String
+  callStartTime     DateTime
+  callEndTime       DateTime?
+  endedReason       String?
+  callDuration      Int              // in seconds or minutes, depending on your preference
+  status            InterviewCallStatus  @default(ONGOING)          // e.g., "completed", "failed", "in-progress"
+  callRecordingUrl String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 model ResetToken {
   id         String    @id @default(cuid())
