@@ -6,7 +6,7 @@ import { Appbar } from "../components/Appbar";
 import { Footer } from "../components/Footer";
 import { Providers } from "../providers";
 import { usePathname } from "next/navigation";
-import Head from "next/head";
+
 
 const chivo = Chivo({
   subsets: ["latin"],
@@ -18,6 +18,7 @@ const rubik = Rubik({
   display: "swap",
   variable: "--font-rubik",
 });
+
 
 export default function RootLayout({
   children,
@@ -31,10 +32,10 @@ export default function RootLayout({
   const hideFooter = noFooterRoutes.includes(pathname);
   return (
     <html lang="en">
-      <Head>
-        <title>AiGrind</title>
+      <head>
+      <title>AIgrind</title> 
         <link rel="icon" href="/new-logo.png" />
-      </Head>
+      </head>
       <body
         className={`${chivo.variable} ${rubik.variable} min-h-screen flex flex-col`}
       >

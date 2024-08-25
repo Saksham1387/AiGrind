@@ -59,7 +59,7 @@ const SuperpowersOfSuperKalam = () => {
     </p>
     <a
       href="#"
-      className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+      className="bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-600/85"
     >
       Read Today's News
     </a>

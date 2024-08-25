@@ -31,7 +31,7 @@ export function CommunitySection() {
 
         {/* Button */}
         <div className="flex justify-center w-full">
-          <button className="flex items-center bg-blue-600 text-white font-semibold py-4 px-8 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 ml-2">
+          <button className="flex items-center bg-purple-600 text-white font-semibold py-4 px-8 rounded-lg hover:bg-purple-600/90 focus:outline-none focus:ring-2 focus:ring-blue-500 ml-2">
             <Image
               src="/discord-icon.png" // Path to the Discord icon
               alt="Discord Icon"
