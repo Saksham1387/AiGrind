@@ -23,7 +23,7 @@ const HeroSection: React.FC = () => {
       <div className="text-center max-w-3xl font-medium">
         <h1 className="text-5xl font-medium text-gray-900 leading-tight">
           Welcome to{" "}
-          <span className="underline decoration-2 underline-offset-[17px] decoration-blue-500">
+          <span className="underline decoration-2 underline-offset-[17px] decoration-lightpurple">
             AIgrind
           </span>
         </h1>
@@ -41,7 +41,7 @@ const HeroSection: React.FC = () => {
               onClick={() => {
                 router.push("/signup");
               }}
-              className="bg-purple-600 text-white w-[161px] h-[56px] rounded-2xl text-lg font-medium hover:bg-blue-500 transition flex items-center justify-center mx-auto"
+              className="bg-purple text-white w-[161px] h-[56px] rounded-2xl text-lg font-medium hover:bg-lightpurple transition flex items-center justify-center mx-auto"
             >
               Get Started
             </button>

@@ -16,13 +16,13 @@ const Navbar: React.FC = () => {
         </a>
         <div className="flex items-center space-x-4 pr-[190px] ">
           <Button
-            className="bg-white border  text-purple-600 w-[139px] h-[45px] flex justify-center items-center rounded-2xl text-lg font-bold hover:bg-blue-50 transition"
+            className="bg-white border  text-purple-600 w-[139px] h-[45px] flex justify-center items-center rounded-2xl text-lg font-bold hover:bg-violet-50 transition"
             onClick={() => signIn()}
           >
             Sign In
           </Button>
           <Button
-            className="bg-purple-600 text-white w-[139px] h-[45px] flex justify-center items-center rounded-2xl text-lg  font-bold hover:bg-blue-500 transition"
+            className="bg-purple text-white w-[139px] h-[45px] flex justify-center items-center rounded-2xl text-lg  font-bold hover:bg-lightpurple transition"
             onClick={() => {
               router.push("/signup");
             }}

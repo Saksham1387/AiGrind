@@ -60,6 +60,8 @@ module.exports = {
         lightgray: "#272627",
         mediumgray: "#1d1c1d",
         darkgray: "#272833",
+        purple:"#522a90",
+        lightpurple:"#6c3cb4"
         
 
       },

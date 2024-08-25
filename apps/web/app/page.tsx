@@ -6,9 +6,11 @@ import { useRouter } from "next/navigation";
 export default function Page(): JSX.Element {
   const { data: session, status } = useSession();
   const router = useRouter();
+  
   if(session){
     router.push("/dashboard");
   }
+
   return (
     <main>
       <HomePage />
