@@ -43,13 +43,29 @@ export default function RootLayout({
         className={`${chivo.variable} ${rubik.variable} min-h-screen flex flex-col`}
       >
         <Providers>
-          <Appbar>
+    {hideAppBar ? (
+       <div className="flex flex-col flex-grow min-h-screen">
+       <main className="flex-grow ">{children}</main>
+
+       {!hideFooter && <Footer />}
+     </div>
+    ):(
+      <Appbar>
             <div className="flex flex-col flex-grow min-h-screen">
               <main className="flex-grow ">{children}</main>
 
               {!hideFooter && <Footer />}
             </div>
           </Appbar>
+    )}
+          {/* <Appbar>
+            <div className="flex flex-col flex-grow min-h-screen">
+              <main className="flex-grow ">{children}</main>
+
+              {!hideFooter && <Footer />}
+            </div>
+          </Appbar> */}
+
         </Providers>
       </body>
     </html>

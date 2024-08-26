@@ -31,7 +31,7 @@ function Interview() {
   const [isCallActive, setIsCallActive] = useState(false);
   const [, setHovered] = useState(false);
 
-  const renderMessage = (message, index) => {
+  const renderMessage = (message:any, index:any) => {
     if (message.type === "FUNCTION_CALL") {
       return null;
     }
@@ -130,171 +130,311 @@ function Interview() {
   const handlefullscreen = useFullScreenHandle();
 
   return (
+    // <FullScreen handle={handlefullscreen}>
+    //   <div
+    //     className={`flex flex-col h-screen ${isFullScreen ? "bg-black" : ""}`}
+    //     onMouseMove={handleMouseMove}
+    //   >
+    //     {/* Main video and sidebar container */}
+    //     <div
+    //       className={`flex w-full transition-all duration-300 ${
+    //         isFullScreen ? "h-screen" : "h-5/6"
+    //       }`}
+    //     >
+    //       {/* Video Container */}
+    //       <div
+    //         className={`flex items-center justify-center bg-gray-200 transition-all duration-300 ${
+    //           isSidebarOpen && !isFullScreen ? "w-2/3" : "w-full"
+    //         } ${isFullScreen ? "bg-black" : ""}`}
+    //       >
+    //         {/* First Video Component */}
+    //         <div className="p-4 w-full h-full relative">
+    //           <video
+    //             src={videolink}
+    //             controls={false}
+    //             controlsList="nodownload nofullscreen noremoteplayback"
+    //             className={`rounded-lg shadow-md ${
+    //               isFullScreen ? "h-full w-full" : ""
+    //             }`}
+    //           />
+    //         </div>
+
+    //         {/* Second Video Component */}
+    //         <div className="relative w-1/2 h-full p-2">
+    //           <div className="w-full h-full bg-[#607D8B] rounded-md flex items-center justify-center">
+    //             <div
+    //               className="rounded-full overflow-hidden w-20 h-20 flex items-center justify-center bg-blue-300" // Added classes for size and background color
+    //             >
+    //               <Image
+    //                 src="/user1.jpg" // Update with the path to the image
+    //                 alt="Suryansh Chourasia"
+    //                 layout="fill"
+    //                 objectFit="cover"
+    //                 objectPosition="center"
+    //               />
+    //             </div>
+    //             <p className="absolute bottom-2 text-white">Suryansh Chourasia</p>
+    //           </div>
+    //         </div>
+    //       </div>
+
+    //       {/* Collapsible Sidebar for Messages */}
+    //       <div
+    //         className={`${
+    //           isSidebarOpen ? "block" : "hidden"
+    //         } w-1/3 h-full overflow-y-auto bg-white shadow-lg transition-opacity duration-500 ease-in-out opacity-0 ${
+    //           isSidebarOpen && "opacity-100"
+    //         } ${isFullScreen ? "bg-black" : ""}`}
+    //       >
+    //         <h2 className="text-xl font-semibold mb-4 text-black text-center mt-4">
+    //           CHAT
+    //         </h2>
+    //         <DropdownMenuSeparator className="bg-gray-300"></DropdownMenuSeparator>
+    //         <ul className="space-y-2">
+    //           {messages.map((message, index) => renderMessage(message, index))}
+    //         </ul>
+    //         {showTranscript && (
+    //           <div className="mt-4 p-4 bg-gray-200 rounded-lg">
+    //             <h3 className="text-lg font-semibold mb-2">Transcript</h3>
+    //             <p>
+    //               {activeTranscript?.transcript || "No transcript available"}
+    //             </p>
+    //           </div>
+    //         )}
+    //       </div>
+    //     </div>
+
+    //     {/* Control Buttons */}
+    //     <div
+    //       className={`flex justify-center items-center p-4 space-x-4 transition-opacity duration-300 ${
+    //         isFullScreen ? "absolute bottom-0 w-full justify-end" : "justify-center"
+    //       } ${isFullScreen ? controlsVisible ? "opacity-100" : "opacity-0" : "opacity-100"}`} // Ensure opacity is 100 when not full screen
+    //     >
+    //       {/* Call Button */}
+    //       <div className="relative group">
+    //         <Button
+    //           className={`bg-gray-800 text-white rounded-full ${buttonSize}`}
+    //           onClick={handleCallToggle}
+    //         >
+    //           {isCallActive ? <PhoneMissed /> : <Phone />}
+    //         </Button>
+    //         <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100">
+    //           {isCallActive ? "End Call" : "Start Call"}
+    //         </span>
+    //       </div>
+
+    //       {/* Video Toggle Button */}
+    //       <div className="relative group">
+    //         <Button
+    //           className={`bg-gray-800 text-white rounded-full ${buttonSize}`}
+    //           onClick={handleVideoToggle}
+    //         >
+    //           {videoEnabled ? <VideoOff /> : <Video />}
+    //         </Button>
+    //         <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100">
+    //           {videoEnabled ? "Turn Video Off" : "Turn Video On"}
+    //         </span>
+    //       </div>
+
+    //       {/* Transcript Toggle Button */}
+    //       <div className="relative group">
+    //         <Button
+    //           className={`bg-gray-800 text-white rounded-full ${buttonSize}`}
+    //           onClick={() => setShowTranscript(!showTranscript)}
+    //         >
+    //           {showTranscript ? <CaptionsOff /> : <Captions />}
+    //         </Button>
+    //         <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100">
+    //           {showTranscript ? "Hide Transcript" : "Show Transcript"}
+    //         </span>
+    //       </div>
+
+    //       {/* Sidebar Toggle Button */}
+    //       <div className="relative group">
+    //         <Button
+    //           className={`bg-gray-800 text-white rounded-full ${buttonSize}`}
+    //           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+    //         >
+    //           <MessageCircleMore />
+    //         </Button>
+    //         <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100">
+    //           {isSidebarOpen ? "Close Sidebar" : "Open Sidebar"}
+    //         </span>
+    //       </div>
+
+    //       {/* Fullscreen Toggle Button */}
+    //       <div className="relative group">
+    //         <Button
+    //           className={`bg-gray-800 text-white rounded-full ${buttonSize}`}
+    //           onClick={() => {
+    //             handlefullscreen.active ? handlefullscreen.exit() : handlefullscreen.enter();
+    //             toggleFullScreen();
+    //           }}
+    //         >
+    //           {isFullScreen ? <Shrink /> : <Maximize />}
+    //         </Button>
+    //         <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100">
+    //           {isFullScreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+    //         </span>
+    //       </div>
+
+    //       {/* Download Video Button */}
+    //       {videolink && (
+    //         <div className="relative group">
+    //           <Button
+    //             className={`bg-gray-800 text-white rounded-full ${buttonSize}`}
+    //             onClick={() => window.open(videolink, "_blank")}
+    //           >
+    //             <ArrowDownToLine />
+    //           </Button>
+    //           <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100">
+    //             Download Video
+    //           </span>
+    //         </div>
+    //       )}
+    //     </div>
+    //   </div>
+    // </FullScreen>
+
     <FullScreen handle={handlefullscreen}>
+    <div
+      className={`flex flex-col h-screen w-screen ${isFullScreen ? "bg-black" : ""}`}
+      onMouseMove={handleMouseMove}
+    >
+      {/* Main video and sidebar container */}
       <div
-        className={`flex flex-col h-screen ${isFullScreen ? "bg-black" : ""}`}
-        onMouseMove={handleMouseMove}
+        className={`flex w-full h-full justify-center items-center transition-all duration-300 ${
+          isFullScreen ? "h-screen" : "h-5/6"
+        }`}
       >
-        {/* Main video and sidebar container */}
-        <div
-          className={`flex w-full transition-all duration-300 ${
-            isFullScreen ? "h-screen" : "h-5/6"
-          }`}
-        >
-          {/* Video Container */}
-          <div
-            className={`flex items-center justify-center bg-gray-200 transition-all duration-300 ${
-              isSidebarOpen && !isFullScreen ? "w-2/3" : "w-full"
-            } ${isFullScreen ? "bg-black" : ""}`}
-          >
-            {/* First Video Component */}
-            <div className="p-4 w-full h-full relative">
-              <video
-                src={videolink}
-                controls={false}
-                controlsList="nodownload nofullscreen noremoteplayback"
-                className={`rounded-lg shadow-md ${
-                  isFullScreen ? "h-full w-full" : ""
-                }`}
+        {/* Container for both the video feeds */}
+        <div className="flex w-full max-w-2xl h-full justify-center items-center space-x-4">
+          
+          {/* First Video Component - Camera Feed */}
+          <div className="flex flex-col items-center justify-center w-1/2 h-1/2 bg-[#7F6C50] rounded-lg p-4">
+            <div className="relative w-40 h-40 rounded-full overflow-hidden bg-gray-500">
+              <Image
+                src="/user1.jpg" // Replace with the camera feed image path
+                alt="Camera Feed"
+                layout="fill"
+                objectFit="cover"
+                objectPosition="center"
               />
             </div>
-
-            {/* Second Video Component */}
-            <div className="relative w-1/2 h-full p-2">
-              <div className="w-full h-full bg-[#607D8B] rounded-md flex items-center justify-center">
-                <div
-                  className="rounded-full overflow-hidden w-20 h-20 flex items-center justify-center bg-blue-300" // Added classes for size and background color
-                >
-                  <Image
-                    src="/user1.jpg" // Update with the path to the image
-                    alt="Suryansh Chourasia"
-                    layout="fill"
-                    objectFit="cover"
-                    objectPosition="center"
-                  />
-                </div>
-                <p className="absolute bottom-2 text-white">Suryansh Chourasia</p>
-              </div>
+          </div>
+  
+          {/* Second Video Component - Random Avatar */}
+          <div className="flex flex-col items-center justify-center w-1/2 h-1/2 bg-[#C59D92] rounded-lg p-4">
+            <div className="relative w-40 h-40 rounded-full overflow-hidden bg-gray-500">
+              <Image
+                src="/random-avatar.jpg" // Replace with the random avatar image path
+                alt="Random Avatar"
+                layout="fill"
+                objectFit="cover"
+                objectPosition="center"
+              />
             </div>
           </div>
-
-          {/* Collapsible Sidebar for Messages */}
-          <div
-            className={`${
-              isSidebarOpen ? "block" : "hidden"
-            } w-1/3 h-full overflow-y-auto bg-white shadow-lg transition-opacity duration-500 ease-in-out opacity-0 ${
-              isSidebarOpen && "opacity-100"
-            } ${isFullScreen ? "bg-black" : ""}`}
-          >
-            <h2 className="text-xl font-semibold mb-4 text-black text-center mt-4">
-              CHAT
-            </h2>
-            <DropdownMenuSeparator className="bg-gray-300"></DropdownMenuSeparator>
-            <ul className="space-y-2">
-              {messages.map((message, index) => renderMessage(message, index))}
-            </ul>
-            {showTranscript && (
-              <div className="mt-4 p-4 bg-gray-200 rounded-lg">
-                <h3 className="text-lg font-semibold mb-2">Transcript</h3>
-                <p>
-                  {activeTranscript?.transcript || "No transcript available"}
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Control Buttons */}
-        <div
-          className={`flex justify-center items-center p-4 space-x-4 transition-opacity duration-300 ${
-            isFullScreen ? "absolute bottom-0 w-full justify-end" : "justify-center"
-          } ${isFullScreen ? controlsVisible ? "opacity-100" : "opacity-0" : "opacity-100"}`} // Ensure opacity is 100 when not full screen
-        >
-          {/* Call Button */}
-          <div className="relative group">
-            <Button
-              className={`bg-gray-800 text-white rounded-full ${buttonSize}`}
-              onClick={handleCallToggle}
-            >
-              {isCallActive ? <PhoneMissed /> : <Phone />}
-            </Button>
-            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100">
-              {isCallActive ? "End Call" : "Start Call"}
-            </span>
-          </div>
-
-          {/* Video Toggle Button */}
-          <div className="relative group">
-            <Button
-              className={`bg-gray-800 text-white rounded-full ${buttonSize}`}
-              onClick={handleVideoToggle}
-            >
-              {videoEnabled ? <VideoOff /> : <Video />}
-            </Button>
-            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100">
-              {videoEnabled ? "Turn Video Off" : "Turn Video On"}
-            </span>
-          </div>
-
-          {/* Transcript Toggle Button */}
-          <div className="relative group">
-            <Button
-              className={`bg-gray-800 text-white rounded-full ${buttonSize}`}
-              onClick={() => setShowTranscript(!showTranscript)}
-            >
-              {showTranscript ? <CaptionsOff /> : <Captions />}
-            </Button>
-            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100">
-              {showTranscript ? "Hide Transcript" : "Show Transcript"}
-            </span>
-          </div>
-
-          {/* Sidebar Toggle Button */}
-          <div className="relative group">
-            <Button
-              className={`bg-gray-800 text-white rounded-full ${buttonSize}`}
-              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            >
-              <MessageCircleMore />
-            </Button>
-            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100">
-              {isSidebarOpen ? "Close Sidebar" : "Open Sidebar"}
-            </span>
-          </div>
-
-          {/* Fullscreen Toggle Button */}
-          <div className="relative group">
-            <Button
-              className={`bg-gray-800 text-white rounded-full ${buttonSize}`}
-              onClick={() => {
-                handlefullscreen.active ? handlefullscreen.exit() : handlefullscreen.enter();
-                toggleFullScreen();
-              }}
-            >
-              {isFullScreen ? <Shrink /> : <Maximize />}
-            </Button>
-            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100">
-              {isFullScreen ? "Exit Fullscreen" : "Enter Fullscreen"}
-            </span>
-          </div>
-
-          {/* Download Video Button */}
-          {videolink && (
-            <div className="relative group">
-              <Button
-                className={`bg-gray-800 text-white rounded-full ${buttonSize}`}
-                onClick={() => window.open(videolink, "_blank")}
-              >
-                <ArrowDownToLine />
-              </Button>
-              <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100">
-                Download Video
-              </span>
-            </div>
-          )}
         </div>
       </div>
-    </FullScreen>
+  
+      {/* Control Buttons */}
+      <div
+        className={`flex justify-center items-center p-4 space-x-4 transition-opacity duration-300 ${
+          isFullScreen
+            ? controlsVisible
+              ? "absolute bottom-0 w-full justify-end opacity-100"
+              : "opacity-0"
+            : "opacity-100"
+        }`}
+      >
+        {/* Call Button */}
+        <div className="relative group">
+          <Button
+            className={`bg-gray-800 text-white rounded-full p-4`}
+            onClick={handleCallToggle}
+          >
+            {isCallActive ? <PhoneMissed /> : <Phone />}
+          </Button>
+          <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100">
+            {isCallActive ? "End Call" : "Start Call"}
+          </span>
+        </div>
+  
+        {/* Video Toggle Button */}
+        <div className="relative group">
+          <Button
+            className={`bg-gray-800 text-white rounded-full p-4`}
+            onClick={handleVideoToggle}
+          >
+            {videoEnabled ? <VideoOff /> : <Video />}
+          </Button>
+          <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100">
+            {videoEnabled ? "Turn Video Off" : "Turn Video On"}
+          </span>
+        </div>
+  
+        {/* Transcript Toggle Button */}
+        <div className="relative group">
+          <Button
+            className={`bg-gray-800 text-white rounded-full p-4`}
+            onClick={() => setShowTranscript(!showTranscript)}
+          >
+            {showTranscript ? <CaptionsOff /> : <Captions />}
+          </Button>
+          <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100">
+            {showTranscript ? "Hide Transcript" : "Show Transcript"}
+          </span>
+        </div>
+  
+        {/* Sidebar Toggle Button */}
+        <div className="relative group">
+          <Button
+            className={`bg-gray-800 text-white rounded-full p-4`}
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          >
+            <MessageCircleMore />
+          </Button>
+          <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100">
+            {isSidebarOpen ? "Close Sidebar" : "Open Sidebar"}
+          </span>
+        </div>
+  
+        {/* Fullscreen Toggle Button */}
+        <div className="relative group">
+          <Button
+            className={`bg-gray-800 text-white rounded-full p-4`}
+            onClick={() => {
+              handlefullscreen.active
+                ? handlefullscreen.exit()
+                : handlefullscreen.enter();
+              toggleFullScreen();
+            }}
+          >
+            {isFullScreen ? <Shrink /> : <Maximize />}
+          </Button>
+          <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100">
+            {isFullScreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+          </span>
+        </div>
+  
+        {/* Download Video Button */}
+        {videolink && (
+          <div className="relative group">
+            <Button
+              className={`bg-gray-800 text-white rounded-full p-4`}
+              onClick={() => window.open(videolink, "_blank")}
+            >
+              <ArrowDownToLine />
+            </Button>
+            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100">
+                Download Video
+            </span>
+          </div>
+        )}
+      </div>
+    </div>
+  </FullScreen>
   );
 }
 

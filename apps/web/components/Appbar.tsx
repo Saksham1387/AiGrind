@@ -11,10 +11,14 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { cn } from "../lib/utils";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 
-export default function SidebarDemo({ children }: { children: React.ReactNode }) {
-  const {data: session, status: sessionStatus} = useSession();
+export default function SidebarDemo({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const { data: session, status: sessionStatus } = useSession();
   console.log(session);
   const links = [
     {
@@ -53,9 +57,9 @@ export default function SidebarDemo({ children }: { children: React.ReactNode })
       ),
     },
   ];
-  
+
   const [open, setOpen] = useState(false);
-  
+
   return (
     <div
       className={cn(
@@ -76,11 +80,13 @@ export default function SidebarDemo({ children }: { children: React.ReactNode })
           <div>
             <SidebarLink
               link={{
-                label: session?.user?.name,
+                label: session?.user?.name || "",
                 href: "#",
                 icon: (
                   <img
-                    src= {session?.user?.image || ""}
+                    src={
+                      session?.user?.image || "https://github.com/shadcn.png"
+                    }
                     className="h-7 w-7 flex-shrink-0 rounded-full"
                     width={50}
                     height={50}
@@ -90,13 +96,20 @@ export default function SidebarDemo({ children }: { children: React.ReactNode })
               }}
             />
           </div>
+          <div>
+            <button
+              onClick={() => signOut()}
+              className="flex items-center space-x-2 text-sm text-black py-1 relative z-20"
+            >
+              <IconArrowLeft className="h-5 w-5" />
+              <span>Sign out</span>
+            </button>
+          </div>
         </SidebarBody>
       </Sidebar>
-      
+
       {/* Render children instead of Dashboard */}
-      <div className="">
-        {children}
-      </div>
+      <div className="">{children}</div>
     </div>
   );
 }
@@ -105,27 +118,31 @@ export const Logo = () => {
   return (
     <Link
       href="#"
-      className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
+      className="font-normal flex space-x-2 items-center text-sm py-1 relative z-20"
     >
-      <div className="h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
-      <motion.span
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="font-medium text-black dark:text-white whitespace-pre"
-      >
-        Acet Labs
-      </motion.span>
+      <div className="h-5 w-6  dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0 " />
+      <div className="flex flex-row">
+        <div>
+          <img src="/new-logo.png" className="h-9 w-9" />
+        </div>
+        <div>
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="font-medium  dark:text-white whitespace-pre"
+          >
+            AIgrind
+          </motion.span>
+        </div>
+      </div>
     </Link>
   );
 };
 
 export const LogoIcon = () => {
   return (
-    <Link
-      href="#"
-      className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
-    >
-      <div className="h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
+    <Link href="#" className="">
+      <img src="/new-logo.png" className=" " />
     </Link>
   );
 };
