@@ -92,6 +92,7 @@ export const authOptions = {
             return {
               id: userDb.id,
               name: userDb.name,
+              image: userDb.image,
               email: credentials.email,
               token: jwt,
               username: userDb.username,
@@ -127,6 +128,7 @@ export const authOptions = {
             username: user.username,
             email: credentials.email,
             token: jwt,
+            image: user.image,
             name: user.name,
           };
         } catch (e) {

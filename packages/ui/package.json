@@ -23,8 +23,8 @@
     "./animated-tooltip": "./src/@/components/ui/animated-tooltip.tsx",
     "./TypewriterEffect": "./src/@/components/ui/TypewriterEffect.tsx",
     "./3d-card": "./src/@/components/ui/3d-card.tsx",
-    "./navbar-menu": "./src/@/components/ui/navbar-menu.tsx"
-    
+    "./navbar-menu": "./src/@/components/ui/navbar-menu.tsx",
+    "./sidebar": "./src/@/components/ui/sidebar.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
@@ -52,6 +52,7 @@
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-tabs": "^1.0.4",
+    "@tabler/icons-react": "^3.13.0",
     "@tsparticles/engine": "^3.5.0",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.5.0",
@@ -60,6 +61,7 @@
     "date-fns": "^3.6.0",
     "framer-motion": "^11.3.19",
     "lucide-react": "^0.383.0",
+    "next": "^14.2.5",
     "react-day-picker": "^8.10.1",
     "recharts": "^2.12.7",
     "shadcn-ui": "^0.8.0",

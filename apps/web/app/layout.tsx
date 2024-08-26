@@ -2,11 +2,10 @@
 import { Chivo } from "next/font/google";
 import { Rubik } from "next/font/google";
 import "./globals.css";
-import { Appbar } from "../components/Appbar";
+import Appbar from "../components/Appbar";
 import { Footer } from "../components/Footer";
 import { Providers } from "../providers";
 import { usePathname } from "next/navigation";
-
 
 const chivo = Chivo({
   subsets: ["latin"],
@@ -19,7 +18,6 @@ const rubik = Rubik({
   variable: "--font-rubik",
 });
 
-
 export default function RootLayout({
   children,
 }: {
@@ -27,22 +25,31 @@ export default function RootLayout({
 }): JSX.Element {
   const pathname = usePathname();
   const noAppBarRoutes = ["/signin", "/signup", "/forgot-password", "/"];
-  const noFooterRoutes = ["/signin", "/signup", "/forgot-password","/interview"];
+  const noFooterRoutes = [
+    "/signin",
+    "/signup",
+    "/forgot-password",
+    "/interview",
+  ];
   const hideAppBar = noAppBarRoutes.includes(pathname);
   const hideFooter = noFooterRoutes.includes(pathname);
   return (
     <html lang="en">
       <head>
-      <title>AIgrind</title> 
+        <title>AIgrind</title>
         <link rel="icon" href="/new-logo.png" />
       </head>
       <body
         className={`${chivo.variable} ${rubik.variable} min-h-screen flex flex-col`}
       >
         <Providers>
-          {!hideAppBar && <Appbar />}
-          <main className="flex-grow ">{children}</main>
-          {!hideFooter && <Footer />}
+          <Appbar>
+            <div className="flex flex-col flex-grow min-h-screen">
+              <main className="flex-grow ">{children}</main>
+
+              {!hideFooter && <Footer />}
+            </div>
+          </Appbar>
         </Providers>
       </body>
     </html>
