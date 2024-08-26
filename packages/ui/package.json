@@ -22,7 +22,9 @@
     "./dropdown-menu": "./src/@/components/ui/dropdown-menu.tsx",
     "./animated-tooltip": "./src/@/components/ui/animated-tooltip.tsx",
     "./TypewriterEffect": "./src/@/components/ui/TypewriterEffect.tsx",
-    "./3d-card": "./src/@/components/ui/3d-card.tsx"
+    "./3d-card": "./src/@/components/ui/3d-card.tsx",
+    "./navbar-menu": "./src/@/components/ui/navbar-menu.tsx"
+    
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",

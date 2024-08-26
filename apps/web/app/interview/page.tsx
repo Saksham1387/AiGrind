@@ -1,12 +1,6 @@
 "use client";
 import useVapi from "../../hooks/useVapi";
-import { AssistantButton } from "./assistantbutton";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
-import {
-  Message,
-  TranscriptMessage,
-  MessageTypeEnum,
-} from "../types/conversation.types";
 import { useEffect, useState } from "react";
 import { Button } from "@repo/ui/button";
 import {
@@ -18,31 +12,32 @@ import {
   VideoOff,
   Maximize,
   Shrink,
-  Mic,
-  MicOff,
   Phone,
   PhoneMissed,
 } from "lucide-react";
 import { DropdownMenuSeparator } from "@repo/ui/dropdown-menu";
+import Image from "next/image"; // Adjust the path according to where your image is stored
 
 function Interview() {
+  const buttonSize = "w-14 h-14"; // Define button size here
+
   const { messages, toggleCall, callStatus, id, activeTranscript } = useVapi();
   const [videolink, setVideolink] = useState("");
   const [showTranscript, setShowTranscript] = useState(false);
   const [videoEnabled, setVideoEnabled] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
-  const [controlsVisible, setControlsVisible] = useState(false);
+  const [controlsVisible, setControlsVisible] = useState(true); // Set to true to make buttons visible initially
   const [isCallActive, setIsCallActive] = useState(false);
+  const [, setHovered] = useState(false);
 
-  const renderMessage = (message: Message, index: number) => {
-    if (message.type === MessageTypeEnum.FUNCTION_CALL) {
-      return null; // Skip function call messages
+  const renderMessage = (message, index) => {
+    if (message.type === "FUNCTION_CALL") {
+      return null;
     }
-  
-    // Determine if the message is from the user or the bot
+
     const isUserMessage = message.role === "user";
-  
+
     return (
       <div
         key={index}
@@ -86,7 +81,7 @@ function Interview() {
     }
 
     if (videoEnabled) {
-      const stream = videoElement.srcObject as MediaStream;
+      const stream = videoElement.srcObject;
       if (stream) {
         stream.getTracks().forEach((track) => track.stop());
         videoElement.srcObject = null;
@@ -108,10 +103,9 @@ function Interview() {
   };
 
   const handleCallToggle = () => {
-    toggleCall(); // This toggles the call status (start/end)
+    toggleCall();
     setIsCallActive(!isCallActive);
 
-    // Automatically handle video start/stop with call toggle
     if (!isCallActive) {
       handleVideoToggle();
     }
@@ -123,12 +117,14 @@ function Interview() {
   };
 
   const handleMouseMove = () => {
+    setHovered(true);
     setControlsVisible(true);
     if (!isFullScreen) return;
 
     setTimeout(() => {
+      setHovered(false);
       setControlsVisible(false);
-    }, 2000);
+    }, 5000);
   };
 
   const handlefullscreen = useFullScreenHandle();
@@ -151,7 +147,8 @@ function Interview() {
               isSidebarOpen && !isFullScreen ? "w-2/3" : "w-full"
             } ${isFullScreen ? "bg-black" : ""}`}
           >
-            <div className="p-4">
+            {/* First Video Component */}
+            <div className="p-4 w-full h-full relative">
               <video
                 src={videolink}
                 controls={false}
@@ -160,6 +157,24 @@ function Interview() {
                   isFullScreen ? "h-full w-full" : ""
                 }`}
               />
+            </div>
+
+            {/* Second Video Component */}
+            <div className="relative w-1/2 h-full p-2">
+              <div className="w-full h-full bg-[#607D8B] rounded-md flex items-center justify-center">
+                <div
+                  className="rounded-full overflow-hidden w-20 h-20 flex items-center justify-center bg-blue-300" // Added classes for size and background color
+                >
+                  <Image
+                    src="/user1.jpg" // Update with the path to the image
+                    alt="Suryansh Chourasia"
+                    layout="fill"
+                    objectFit="cover"
+                    objectPosition="center"
+                  />
+                </div>
+                <p className="absolute bottom-2 text-white">Suryansh Chourasia</p>
+              </div>
             </div>
           </div>
 
@@ -171,7 +186,9 @@ function Interview() {
               isSidebarOpen && "opacity-100"
             } ${isFullScreen ? "bg-black" : ""}`}
           >
-            <h2 className="text-xl font-semibold mb-4 text-black text-center mt-4">CHAT</h2>
+            <h2 className="text-xl font-semibold mb-4 text-black text-center mt-4">
+              CHAT
+            </h2>
             <DropdownMenuSeparator className="bg-gray-300"></DropdownMenuSeparator>
             <ul className="space-y-2">
               {messages.map((message, index) => renderMessage(message, index))}
@@ -185,60 +202,96 @@ function Interview() {
               </div>
             )}
           </div>
-          
         </div>
 
         {/* Control Buttons */}
         <div
-          className={`flex justify-center items-center p-4 space-x-2 transition-opacity duration-300 ${
-            controlsVisible ? "opacity-100" : "opacity-0"
-          } ${isFullScreen ? "absolute bottom-0 w-full" : ""}`}
+          className={`flex justify-center items-center p-4 space-x-4 transition-opacity duration-300 ${
+            isFullScreen ? "absolute bottom-0 w-full justify-end" : "justify-center"
+          } ${isFullScreen ? controlsVisible ? "opacity-100" : "opacity-0" : "opacity-100"}`} // Ensure opacity is 100 when not full screen
         >
-          <Button className="bg-gray-800 text-white" onClick={handleCallToggle}>
-            {isCallActive ? <PhoneMissed /> : <Phone />}
-          </Button>
-          <Button
-            className="bg-gray-800 text-white"
-            onClick={handleVideoToggle}
-          >
-            {videoEnabled ? <VideoOff /> : <Video />}
-          </Button>
-          <Button
-            className="bg-gray-800 text-white"
-            onClick={() => setShowTranscript(!showTranscript)}
-          >
-            {showTranscript ? <CaptionsOff /> : <Captions />}
-          </Button>
-          <Button
-            className="bg-gray-800 text-white"
-            onClick={() => {
-              window.location.href = videolink;
-            }}
-          >
-            <ArrowDownToLine />
-          </Button>
-          <Button
-            className="bg-gray-800 text-white"
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          >
-            <MessageCircleMore />
-          </Button>
-          
-          <Button
-  className="bg-gray-800 text-white"
-  onClick={() => {
-    if (isFullScreen) {
-      handlefullscreen.exit(); // Call exit when in full screen mode
-    } else {
-      handlefullscreen.enter(); // Call enter when not in full screen mode
-    }
-    
-    toggleFullScreen(); // Toggle the full screen state
-  }}
->
-  {isFullScreen ? <Shrink /> : <Maximize />}
-</Button>
+          {/* Call Button */}
+          <div className="relative group">
+            <Button
+              className={`bg-gray-800 text-white rounded-full ${buttonSize}`}
+              onClick={handleCallToggle}
+            >
+              {isCallActive ? <PhoneMissed /> : <Phone />}
+            </Button>
+            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100">
+              {isCallActive ? "End Call" : "Start Call"}
+            </span>
+          </div>
 
+          {/* Video Toggle Button */}
+          <div className="relative group">
+            <Button
+              className={`bg-gray-800 text-white rounded-full ${buttonSize}`}
+              onClick={handleVideoToggle}
+            >
+              {videoEnabled ? <VideoOff /> : <Video />}
+            </Button>
+            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100">
+              {videoEnabled ? "Turn Video Off" : "Turn Video On"}
+            </span>
+          </div>
+
+          {/* Transcript Toggle Button */}
+          <div className="relative group">
+            <Button
+              className={`bg-gray-800 text-white rounded-full ${buttonSize}`}
+              onClick={() => setShowTranscript(!showTranscript)}
+            >
+              {showTranscript ? <CaptionsOff /> : <Captions />}
+            </Button>
+            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100">
+              {showTranscript ? "Hide Transcript" : "Show Transcript"}
+            </span>
+          </div>
+
+          {/* Sidebar Toggle Button */}
+          <div className="relative group">
+            <Button
+              className={`bg-gray-800 text-white rounded-full ${buttonSize}`}
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            >
+              <MessageCircleMore />
+            </Button>
+            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100">
+              {isSidebarOpen ? "Close Sidebar" : "Open Sidebar"}
+            </span>
+          </div>
+
+          {/* Fullscreen Toggle Button */}
+          <div className="relative group">
+            <Button
+              className={`bg-gray-800 text-white rounded-full ${buttonSize}`}
+              onClick={() => {
+                handlefullscreen.active ? handlefullscreen.exit() : handlefullscreen.enter();
+                toggleFullScreen();
+              }}
+            >
+              {isFullScreen ? <Shrink /> : <Maximize />}
+            </Button>
+            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100">
+              {isFullScreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+            </span>
+          </div>
+
+          {/* Download Video Button */}
+          {videolink && (
+            <div className="relative group">
+              <Button
+                className={`bg-gray-800 text-white rounded-full ${buttonSize}`}
+                onClick={() => window.open(videolink, "_blank")}
+              >
+                <ArrowDownToLine />
+              </Button>
+              <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100">
+                Download Video
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </FullScreen>

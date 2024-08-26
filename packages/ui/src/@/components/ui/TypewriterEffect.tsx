@@ -37,8 +37,8 @@ export const TypewriterEffect = ({
           width: "fit-content",
         },
         {
-          duration: 0.4, // Reduced from 0.3 to 0.1
-          delay: stagger(0.05), // Reduced stagger delay for faster typing effect
+          duration: 0.4,
+          delay: stagger(0.05),
           ease: "easeInOut",
         }
       );
@@ -87,12 +87,12 @@ export const TypewriterEffect = ({
           opacity: 1,
         }}
         transition={{
-          duration: 0.4, // Reduced from 0.8 to 0.4 for a faster cursor blink
+          duration: 0.4,
           repeat: Infinity,
           repeatType: "reverse",
         }}
         className={cn(
-          "inline-block rounded-sm w-[4px] h-4 md:h-6 lg:h-10 bg-blue-500",
+          "inline-block rounded-sm w-[2px] h-4 md:h-5 lg:h-6 bg-purple", // Adjusted width, height, and color
           cursorClassName
         )}
       ></motion.span>
