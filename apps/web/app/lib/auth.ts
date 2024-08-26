@@ -128,7 +128,7 @@ export const authOptions = {
             username: user.username,
             email: credentials.email,
             token: jwt,
-            image: user.image,
+           
             name: user.name,
           };
         } catch (e) {
@@ -165,6 +165,7 @@ export const authOptions = {
           });
         }
         user.id = userDb.id;
+        user.image = userDb.image;
       }
       return true;
     },
@@ -176,6 +177,7 @@ export const authOptions = {
       if (newSession.user && token.uid) {
         newSession.user.id = token.uid as string;
         newSession.user.jwtToken = token.jwtToken as string;
+        newSession.user.image = token.image as string; 
       }
       return newSession!;
     },
@@ -185,6 +187,7 @@ export const authOptions = {
       if (user) {
         newToken.uid = user.id;
         newToken.jwtToken = (user as User).token;
+        newToken.image = (user as User).image;
       }
       return newToken;
     },
