@@ -47,6 +47,7 @@ export default function MCQ({
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [activeTab, setActiveTab] = useState("mcq");
   const [showExplanation, setShowExplanation] = useState(false);
+  const [comments, setComments] = useState([]);
   const [mcqIds, setMcqIds] = useState<string[]>([]);
   const session = useSession();
   const router = useRouter();
@@ -56,6 +57,22 @@ export default function MCQ({
     setSubmissionResult(null);
     setIsCorrect(null);
   };
+
+  useEffect(()=>{
+    const getComments = async () => {
+      try {
+        const response = await fetch(`/api/mcqs/comments/${mcqId}`);
+        const data = await response.json();
+        console.log("comments data",data);
+        setComments(data.comments);
+        
+      } catch (error) {
+        console.error('Error fetching comments:', error);
+      }};
+    getComments();
+  },[])
+
+
 
   useEffect(() => {
     if (mcqId) {
@@ -124,6 +141,30 @@ export default function MCQ({
       setIsCorrect(false);
     }
   };
+
+
+  const handleCommentSubmit = async () => {
+    const text = prompt("Enter your comment");
+    if (!text) return;
+    
+    try {
+      const response = await axios.post('/api/mcqs/comments', {
+        text,
+        mcqProblemId: mcqId,
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      // Assuming the response data matches the Comment type
+      
+    } catch (error) {
+      console.error('Error submitting comment:', error);
+    }
+  };
+
+
 
   const getNextMcqId = (currentMcqId: any) => {
     const currentIndex = mcqIds.indexOf(currentMcqId);
@@ -271,6 +312,24 @@ export default function MCQ({
             <Submissions mcqId={mcqId} />
           </div>
         )}
+      </div>
+      <div>
+        <h1>Comments</h1>
+        <div>
+          <input type="text" placeholder="Add a comment" />
+          <button onClick={handleCommentSubmit}>Submit</button>
+        </div>
+        <div className="text-white">
+          {comments.map((comment: any) => (
+            <div key={comment.id}>
+              <div className="flex flex-row">
+              <p>{comment.user.name}</p>
+              <img src={comment.user.userImage} alt="" className="h-5 w-5"/>
+              </div>
+              <p>{comment.text}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

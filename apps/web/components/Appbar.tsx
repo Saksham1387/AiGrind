@@ -19,7 +19,7 @@ export default function SidebarDemo({
   children: React.ReactNode;
 }) {
   const { data: session, status: sessionStatus } = useSession();
-  console.log(session);
+
   const links = [
     {
       label: "Dashboard",
