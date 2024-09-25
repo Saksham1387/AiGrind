@@ -59,6 +59,7 @@ export default function SidebarDemo({
   ];
 
   const [open, setOpen] = useState(false);
+  const [hover, setHover] = useState(false);
 
   return (
     <div
@@ -97,12 +98,15 @@ export default function SidebarDemo({
             />
           </div>
           <div>
-            <button
-              onClick={() => signOut()}
-              className="flex items-center space-x-2 text-sm text-black py-1 relative z-20"
-            >
+          <button
+         onClick={() => signOut()}
+         className="flex items-center space-x-2 text-sm text-black py-1 relative z-20"
+         onMouseEnter={() => setHover(true)}
+         onMouseLeave={() => setHover(false)}
+        >
               <IconArrowLeft className="h-5 w-5" />
-              <span>Sign out</span>
+              {hover && <div className="absolute left-0 top-8 bg-white border border-gray-300 shadow-lg p-2 rounded-md">signout</div>}
+            <div></div>
             </button>
           </div>
         </SidebarBody>
@@ -126,13 +130,7 @@ export const Logo = () => {
           <img src="/new-logo.png" className="h-9 w-9" />
         </div>
         <div>
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="font-medium  dark:text-white whitespace-pre"
-          >
-            AIgrind
-          </motion.span>
+         
         </div>
       </div>
     </Link>
