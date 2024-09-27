@@ -28,7 +28,7 @@ const chartConfig: ChartConfig = {
 
 export function Radarchart({chartData} :any) {  
   return (
-    <Card className="w-[300px] bg-lightgray border-none text-white">
+    <Card className="w-[300px] h-[400px] bg-lightgray border-none text-white">
       <CardHeader className="items-center text-center">
         <CardTitle>Skill Level</CardTitle>
         <CardDescription>Solve Problems to see your stats</CardDescription>

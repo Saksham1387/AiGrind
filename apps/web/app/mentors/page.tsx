@@ -120,7 +120,7 @@ const MentorCard: React.FC<MentorCardProps> = ({
   const router = useRouter();
 
   return (
-    <div className="rounded-lg border-gray-700 text-white bg-mediumgray shadow-sm md:p-4 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+    <div className="rounded-lg border-gray-700 text-white bg-mediumgray shadow-sm md:p-4 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg ">
       <div className="flex flex-col md:flex-row gap-6">
         <div className="p-3">
           <img

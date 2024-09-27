@@ -89,7 +89,7 @@ export const DesktopSidebar = ({
     <>
       <motion.div
         className={cn(
-          "h-full px-4 py-4 hidden  md:flex md:flex-col bg-neutral-100 dark:bg-neutral-800 w-[300px]",
+          "fixed top-0 left-0 h-screen w-12 bg-white dark:bg-gray-700 p-4 border-r border-purple ",
           className
         )}
         {...props}
@@ -162,28 +162,29 @@ export const SidebarLink = ({
   const { open, animate } = useSidebar();
   const [isHovered, setIsHovered] = useState(false);
   
+  
   return (
+    
     <Link
       href={link.href}
       className={cn(
-        "relative flex items-center justify-start gap-2 group/sidebar py-2", // added relative to position tooltip
+        "relative flex items-center justify-start gap-2 group/sidebar py-2 ", // added relative to position tooltip
         className
       )}
       {...props}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {isHovered && (
-        <div
-          className="absolute -left-[105%] bg-white border border-gray-300 shadow-lg p-2 rounded-md z-10"
-          style={{ transform: 'translateY(-50%)', top: '50%' }} // centering tooltip vertically with the icon
-        >
-          {link.label}
-        </div>
-      )}
       {link.icon}
 
-      <motion.span
+      {isHovered && (
+        <div className="absolute z-40 bg-white border text-neutral-700 border-purple shadow-lg p-2 rounded-md " style={{ transform: 'translateY(-100%) translateX(45%)', top: '100%' }} >
+        {link.label}
+        </div>
+      )}
+      
+
+      {/* <motion.span
         animate={{
           display: animate ? (open ? "inline-block" : "none") : "inline-block",
           opacity: animate ? (open ? 1 : 0) : 1,
@@ -191,7 +192,7 @@ export const SidebarLink = ({
         className="text-neutral-700 dark:text-neutral-200 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
       >
         {link.label}
-      </motion.span>
+      </motion.span> */}
     </Link>
   );
 };

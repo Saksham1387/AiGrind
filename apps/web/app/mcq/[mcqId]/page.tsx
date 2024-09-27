@@ -42,12 +42,14 @@ export default function MCQ({
   params: { mcqId: string };
 }) {
   const [mcq, setMcq] = useState<MCQProblem | null>(null);
+  const [commentText, setCommentText] = useState('');
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [submissionResult, setSubmissionResult] = useState<string | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [activeTab, setActiveTab] = useState("mcq");
   const [showExplanation, setShowExplanation] = useState(false);
   const [comments, setComments] = useState([]);
+  const [count,setCount]=useState(0);
   const [mcqIds, setMcqIds] = useState<string[]>([]);
   const session = useSession();
   const router = useRouter();
@@ -65,12 +67,11 @@ export default function MCQ({
         const data = await response.json();
         console.log("comments data",data);
         setComments(data.comments);
-        
       } catch (error) {
         console.error('Error fetching comments:', error);
       }};
     getComments();
-  },[])
+  },[commentText])
 
 
 
@@ -144,21 +145,21 @@ export default function MCQ({
 
 
   const handleCommentSubmit = async () => {
-    const text = prompt("Enter your comment");
-    if (!text) return;
-    
+    if (!commentText.trim()) return; // Check if the input is not empty
+
     try {
       const response = await axios.post('/api/mcqs/comments', {
-        text,
+        text: commentText,
         mcqProblemId: mcqId,
       }, {
         headers: {
           'Content-Type': 'application/json',
         },
-      });
+      }); 
 
       // Assuming the response data matches the Comment type
-      
+      console.log('Comment submitted:', response.data);
+      setCommentText(''); // Clear the input field after submission
     } catch (error) {
       console.error('Error submitting comment:', error);
     }
@@ -187,6 +188,7 @@ export default function MCQ({
     const previousMcqId = getPreviousMcqId(mcqId);
     window.location.href = `/mcq/${previousMcqId}`;
   };
+  
 
   if (!mcq)
     return (
@@ -196,16 +198,16 @@ export default function MCQ({
     );
 
   return (
-    <div className="text-white relative min-h-screen w-full bg-darkgray flex flex-col items-center py-10 dark:bg-gray-800">
+    <div className="text-white min-h-screen w-full bg-darkgray flex flex-col items-center pt-10 dark:bg-gray-800">
       <Button
-        className="absolute top-4 left-4 text-lg p-2 bg-lightgray hover:bg-lightgray"
+        className="absolute top-4 left-20 text-lg p-2 bg-lightgray hover:bg-lightgray "
         onClick={handlePreviousQuestion}
         title="Previous Question"
       >
         <ArrowLeftFromLine></ArrowLeftFromLine>
       </Button>
       <Button
-        className="absolute top-4 right-4 text-lg p-2 bg-lightgray hover:bg-lightgray"
+        className="absolute top-4 -right-8 text-lg p-2 bg-lightgray hover:bg-lightgray"
         onClick={handleNextQuestion}
         title="Next Question"
       >
@@ -314,19 +316,28 @@ export default function MCQ({
         )}
       </div>
       <div>
-        <h1>Comments</h1>
-        <div>
-          <input type="text" placeholder="Add a comment" />
-          <button onClick={handleCommentSubmit}>Submit</button>
+        <h1 className="border-b p-3 px-4 flex ">Discussion <div className="pl-3">{count}</div></h1>
+        <div  className="p-3"></div>
+        <div className=" bg-darkgray rounded-lg placeholder-gray-500 shadow-sm w-[80rem] h-15">
+          <input type="text" placeholder="Add a comment" className="bg-darkgray  p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-darkgray placeholder-gray-500 shadow-sm w-[75rem] h-12" 
+          value={commentText}  
+          onChange={(e) => setCommentText(e.target.value)} ></input>
+          <button onClick={()=>{handleCommentSubmit(); setCount(count+1)}}  className={`pr-3 pl-3 pt-1 pb-1 rounded-2xl border  ${
+          commentText ? 'bg-blue-500 text-black' : 'bg-gray-700 text-white'
+        }`}
+        disabled={!commentText} >Submit</button>
         </div>
-        <div className="text-white">
+        <div className=" p-3">
           {comments.map((comment: any) => (
             <div key={comment.id}>
               <div className="flex flex-row">
-              <p>{comment.user.name}</p>
-              <img src={comment.user.userImage} alt="" className="h-5 w-5"/>
+              <img src={comment.user.userImage} alt="" className="h-8 w-8 rounded-lg "/>
+              <div className="pl-2">
+              <p >@{comment.user.name}</p>
+              <p>{}</p>
+              <p>{comment.text}</p> 
               </div>
-              <p>{comment.text}</p>
+              </div>
             </div>
           ))}
         </div>
@@ -334,6 +345,7 @@ export default function MCQ({
     </div>
   );
 }
+
 
 function Submissions({ mcqId }: { mcqId: string }) {
   const [submissions, setSubmissions] = useState<McqISubmission[]>([]);
@@ -353,4 +365,5 @@ function Submissions({ mcqId }: { mcqId: string }) {
       <McqSubmissionTable submissions={submissions} />
     </div>
   );
+
 }

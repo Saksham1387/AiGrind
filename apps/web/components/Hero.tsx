@@ -11,7 +11,7 @@ export async function Hero() {
   return (
     <section className="py-8 md:py-12">
       <div className="container px-4 md:px-6">
-        <div className=" text-[30px] text-white font-bold mt-5 ">
+        <div className=" text-[30px] text-black font-bold mt-5 ">
           <Welcome></Welcome>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 ">

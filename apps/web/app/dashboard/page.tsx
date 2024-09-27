@@ -7,9 +7,9 @@ export default async function dashboard() {
   const problems = await getMCQProblems();
 
   return (
-    <div className="flex flex-col min-h-screen bg-darkgray w-full overflow-x-hidden">
+    <div className="flex flex-col min-h-screen bg-white w-full overflow-x-hidden">
       <main className="flex-grow">
-        <div className="flex flex-col min-h-screen bg-darkgray">
+        <div className="flex flex-col min-h-screen bg-white">
           <main className="">
             <Hero />
             <section className="py-8 md:py-12 w-full">

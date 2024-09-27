@@ -54,7 +54,7 @@ const DashboardProblems = ({ problems }) => {
  
 
   return (
-    <section className="text-white py-8 md:py-12 min-h-screen border-none">
+    <section className="text-black py-8 md:py-12 min-h-screen border-none">
       <div className="container mx-auto px-4 md:px-6">
         <div className="mb-6">
           <h2 className="text-2xl font-bold mb-2">TOP 20 !</h2>
@@ -96,7 +96,7 @@ const ProblemCard = ({ problems }: { problems: Problem[] }) => {
         <TableBody>
           {problems.map((problem, index) => (
             <TableRow
-              className="hover:cursor-pointer hover:bg-mediumgray"
+              className="hover:cursor-pointer "
               key={problem.id}
               onClick={() => handleRoute(problem.id)}
             >

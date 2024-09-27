@@ -49,7 +49,7 @@ function Calendar({
       showOutsideDays={showOutsideDays}
       className={cn("p-6", className)} // Increased padding
       classNames={{
-        months: "flex flex-col sm:flex-row space-y-6 sm:space-x-6 sm:space-y-0 text-white ",
+        months: "flex flex-col sm:flex-row space-y-6 sm:space-x-6 sm:space-y-0 text-black ",
         month: "space-y-6 ",
         caption: "flex justify-center relative items-center  ",
         caption_label: "text-sm font-medium ", // Small text size
