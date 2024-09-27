@@ -79,7 +79,7 @@ export default function SidebarDemo({
             </div>
           </div>
           <div>
-            <SidebarLink
+            {/* <SidebarLink
               link={{
                 label: session?.user?.name || "",
                 href: "#",
@@ -95,13 +95,13 @@ export default function SidebarDemo({
                   />
                 ),
               }}
-            />
+            /> */}
           </div>
           <div>
             
           <button
          onClick={() => signOut()}
-         className="flex items-center space-x-1 pl- text-sm text-  relative z-20  "
+         className="flex items-center space-x-1 mt-60 text-sm relative z-20  "
          onMouseEnter={() => setHover(true)}
          onMouseLeave={() => setHover(false)}
         >

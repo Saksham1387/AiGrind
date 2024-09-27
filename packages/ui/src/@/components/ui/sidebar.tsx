@@ -89,7 +89,7 @@ export const DesktopSidebar = ({
     <>
       <motion.div
         className={cn(
-          "fixed top-0 left-0 h-screen w-12 bg-white dark:bg-gray-700 p-4 border-r border-purple ",
+          "fixed top-0 left-0 h-screen w-12 bg-white dark:bg-gray-700 p-4 border-r border-purple  ",
           className
         )}
         {...props}

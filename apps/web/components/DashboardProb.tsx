@@ -54,10 +54,10 @@ const DashboardProblems = ({ problems }) => {
  
 
   return (
-    <section className="text-black py-8 md:py-12 min-h-screen border-none">
+    <section className="text-black py-8 md:py-12 min-h-screen border-none  ">
       <div className="container mx-auto px-4 md:px-6">
         <div className="mb-6">
-          <h2 className="text-2xl font-bold mb-2">TOP 20 !</h2>
+          <h2 className="text-2xl font-bold mb-2 ">TOP 20 !</h2>
           <p className="mb-3">
             Check out the most popular 20 Questions asked in the ML Interviews
             Today
@@ -81,7 +81,7 @@ const ProblemCard = ({ problems }: { problems: Problem[] }) => {
   };
 
   return (
-    <div className="border-none">
+    <div className="border-none ">
       <Table>
         <TableHeader>
           <TableRow className="hover:bg-transparent">
