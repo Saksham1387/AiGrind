@@ -14,7 +14,7 @@ import {
 } from "../../../packages/ui/src/@/components/ui/dropdown-menu";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
-
+  
 export function Appbar() {
   const { data: session, status: sessionStatus } = useSession();
   const isLoading = sessionStatus === "loading";
