@@ -1,3 +1,6 @@
+# What do we do
+AIgrind is an AI/ML-focused coding platform designed to help users learn and master the fundamentals and advanced concepts of artificial intelligence and machine learning. With a diverse range of coding challenges—from foundational programming skills to specialized topics like large language models (LLMs) and retrieval-augmented generation (RAG)—AIgrind aims to provide an interactive and structured learning experience using a mix of MCQ and coding questions.
+
 # Local Development Setup
 ### All Sevices withing Docker
 NOTE: Do not update any of the ENV files for this particular configuration. ( Except the mount path for problems )
